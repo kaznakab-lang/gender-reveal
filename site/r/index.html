@@ -117,6 +117,24 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
 .t-text.in{animation:fadeUp .7s ease-out both}
 .t-text.big{font-size:clamp(32px,9.5vw,52px)}
 .t-text.roll{font-size:clamp(22px,7vw,44px);letter-spacing:.02em;line-height:1.35;color:#ffe9f1;max-width:min(92vw,560px);word-break:break-all;animation:jitter .07s steps(2) infinite}
+/* ---------- drumroll: a pastel snare instead of 「ダダダ」 ---------- */
+.drum-wrap{position:relative;display:flex;flex-direction:column;align-items:center;opacity:0}
+.drum-wrap.in{animation:fadeUp .5s ease-out both}
+.drum{width:min(56vw,230px);height:auto;overflow:visible;filter:drop-shadow(0 14px 22px rgba(0,0,0,.35));animation:tremble .1s steps(2) infinite}
+@keyframes tremble{0%{transform:translate(0,0)}50%{transform:translate(-1.5px,1px)}100%{transform:translate(1.5px,-1px)}}
+.stick{transform-origin:var(--ox) var(--oy);animation:hit .33s cubic-bezier(.5,0,.3,1) infinite}
+.stick.r{animation-delay:.165s}
+@keyframes hit{0%{transform:rotate(var(--up))}35%{transform:rotate(0deg)}45%{transform:rotate(0deg)}100%{transform:rotate(var(--up))}}
+.spark{opacity:0;animation:spark .33s ease-out infinite}
+.spark.r{animation-delay:.165s}
+@keyframes spark{0%,30%{opacity:0;transform:scale(.4)}45%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.3) translateY(-8px)}}
+.note{position:absolute;font-size:26px;color:#ffd0e2;opacity:0;animation:note 1.1s ease-out infinite}
+@keyframes note{0%{opacity:0;transform:translateY(10px) rotate(-8deg)}25%{opacity:1}100%{opacity:0;transform:translateY(-70px) rotate(10deg)}}
+.drum-wrap.hold .drum{animation:none}
+.drum-wrap.hold .stick{animation:none;transform:rotate(var(--up))}
+.drum-wrap.hold .spark,.drum-wrap.hold .note{animation:none;opacity:0}
+.t-dots{margin:0;font-weight:900;font-size:clamp(24px,7vw,36px);letter-spacing:.2em;color:#ffe9f1;opacity:0}
+.t-dots.in{animation:fadeUp .5s ease-out both}
 .t-beat{margin:0;font-family:var(--f-mincho);font-weight:800;font-size:22px;letter-spacing:.3em;color:var(--rose);opacity:0}
 .t-beat.go{animation:beat .75s ease-out}
 @keyframes beat{0%{opacity:0;transform:scale(.8)}12%{opacity:1;transform:scale(1.3)}28%{transform:scale(1)}42%{transform:scale(1.14)}100%{opacity:0;transform:scale(1)}}
@@ -213,7 +231,7 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
 @keyframes flash{0%{opacity:1}100%{opacity:0}}
 
 @media (prefers-reduced-motion: reduce){
-  .rays,.burst,.cm-burst,.btn-ad,.t-text.roll,.guide,.orn,.good{animation:none}
+  .rays,.burst,.cm-burst,.btn-ad,.t-text.roll,.guide,.orn,.good,.drum,.note{animation:none}
 }
 </style>
 
@@ -240,6 +258,35 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
 
   <div id="tension" class="layer tension" hidden aria-live="polite">
     <p id="tText" class="t-text"></p>
+    <div id="drum" class="drum-wrap" hidden aria-hidden="true">
+      <span class="note" style="left:-8%;top:12%;animation-delay:0s">♪</span>
+      <span class="note" style="right:-10%;top:2%;animation-delay:.4s">♫</span>
+      <span class="note" style="left:6%;top:-18%;animation-delay:.8s;font-size:19px">♪</span>
+      <svg class="drum" viewBox="0 0 260 220">
+        <defs>
+          <linearGradient id="drumShell" x1="0" x2="1"><stop offset="0" stop-color="#f6a9c6"/><stop offset=".5" stop-color="#ffe3ee"/><stop offset="1" stop-color="#9ccdf3"/></linearGradient>
+          <linearGradient id="drumHead" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#fdf0f4"/></linearGradient>
+          <linearGradient id="drumGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6dd9a"/><stop offset="1" stop-color="#c9a052"/></linearGradient>
+        </defs>
+        <path d="M40 92 v70 a90 26 0 0 0 180 0 v-70 z" fill="url(#drumShell)"/>
+        <path d="M52 100 L70 160 L88 100 L106 160 L124 100 L142 160 L160 100 L178 160 L196 100 L212 160" fill="none" stroke="#ffffff" stroke-width="3" opacity=".85" stroke-linejoin="round"/>
+        <path d="M40 162 a90 26 0 0 0 180 0" fill="none" stroke="url(#drumGold)" stroke-width="8" stroke-linecap="round"/>
+        <ellipse cx="130" cy="92" rx="90" ry="26" fill="url(#drumHead)"/>
+        <ellipse cx="130" cy="92" rx="90" ry="26" fill="none" stroke="url(#drumGold)" stroke-width="8"/>
+        <ellipse cx="130" cy="92" rx="70" ry="18" fill="none" stroke="#f3d7e2" stroke-width="2" stroke-dasharray="5 6"/>
+        <g class="stick" style="--ox:28px;--oy:40px;--up:-34deg">
+          <line x1="30" y1="42" x2="112" y2="84" stroke="#f3d7b0" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="113" cy="84" r="6" fill="#ffffff" stroke="#c9a052" stroke-width="2"/>
+        </g>
+        <g class="stick r" style="--ox:232px;--oy:40px;--up:34deg">
+          <line x1="230" y1="42" x2="148" y2="84" stroke="#f3d7b0" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="147" cy="84" r="6" fill="#ffffff" stroke="#c9a052" stroke-width="2"/>
+        </g>
+        <g class="spark" style="transform-origin:112px 78px"><path d="M112 66 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z" fill="#fff6d6"/></g>
+        <g class="spark r" style="transform-origin:148px 78px"><path d="M148 66 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z" fill="#fff6d6"/></g>
+      </svg>
+    </div>
+    <p id="tDots" class="t-dots" aria-hidden="true">……</p>
     <p id="tBeat" class="t-beat" aria-hidden="true">ドクン</p>
   </div>
 
@@ -1636,20 +1683,23 @@ function startTension() {
     S.knife.tremble = 0.35;
     tween(S, 'zoom', 0.08, 2600, ease.inOut);
     const ten = $('#tension'); const tt = $('#tText'); tt.textContent = ''; tt.className = 't-text';
+    $('#drum').hidden = true; $('#tDots').hidden = true;
     ten.hidden = false; void ten.offsetWidth; ten.classList.add('on');
     await pause(1000);
     say('いよいよ発表です…');
     await pause(650); beat(); await pause(1150); beat(); await pause(1150);
     say('赤ちゃんは……', 'big');
     await pause(750); beat(); await pause(850); beat(0.8); await pause(950);
-    tt.className = 't-text roll'; tt.textContent = '';
+    // ドラムロール：太鼓の絵（バチは0.33秒に1打ずつ交互）。「赤ちゃんは……」はそのまま残す
+    const drum = $('#drum'), dots = $('#tDots');
+    drum.classList.remove('hold'); drum.hidden = false; retrigger(drum, 'in');
     sfx.drumroll(5.5);
     haptic(Array.from({ length: 50 }, (_, i) => (i % 2 ? 70 : 30)));
     tween(S, 'rumble', 2.6, 5400, ease.in);
-    const dada = 'ダ'.repeat(10) + '……';
-    for (let i = 1; i <= dada.length; i++) { tt.textContent = dada.slice(0, i); await pause(i <= 10 ? 330 : 120); }
-    await pause(1900);
-    await pause(120);
+    await pause(3300);
+    drum.classList.add('hold');            // バチが上がったまま止まる……
+    dots.hidden = false; retrigger(dots, 'in');
+    await pause(2260);
     await zukoBreak();
   });
 }
@@ -1841,7 +1891,8 @@ function hardReset() {
   conf.length = 0; crumbs.length = 0; candy.length = 0; sparks.length = 0; rainAcc = 0;
   Object.assign(S, { p: 0, maxP: 0.86, cakeY: 0, tilt: 0, slide: 0, zoom: 0, glow: 0, open: 0, spot: 0, spotR: 1.3, bgTint: 0, rays: 0, balloons: 0, release: 0, light: 0, shake: 0, rumble: 0, rain: 0 });
   Object.assign(S.knife, { alpha: 0, jx: 0, fall: 0, fx: 0, fy: 0, tremble: 0 });
-  ['#hint', '#prompt', '#sponsor', '#tension', '#cm', '#count', '#result', '#after'].forEach((s) => { $(s).hidden = true; });
+  ['#hint', '#prompt', '#sponsor', '#tension', '#cm', '#count', '#result', '#after', '#drum', '#tDots'].forEach((s) => { $(s).hidden = true; });
+  $('#drum').classList.remove('hold', 'in'); $('#tDots').classList.remove('in');
   $('#tension').classList.remove('on');
   app.style.transform = '';
 }
