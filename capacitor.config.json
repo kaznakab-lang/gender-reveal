@@ -1,0 +1,11 @@
+{
+  "appId": "com.webkuuta.reveal",
+  "appName": "ジェンダーリビール ケーキ",
+  "webDir": "dist",
+  "backgroundColor": "#fffaf6",
+  "ios": {
+    "preferredContentMode": "mobile",
+    "contentInset": "never",
+    "backgroundColor": "#fffaf6"
+  }
+}
