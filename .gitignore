@@ -1,0 +1,23 @@
+# 依存パッケージ
+node_modules/
+# ビルド結果
+dist/
+# iOS（Macのビルドで作られるもの）
+ios/App/Pods/
+ios/App/App/public/
+ios/App/build/
+ios/DerivedData/
+*.xcuserstate
+xcuserdata/
+# エディタ・OS
+.vscode/
+.DS_Store
+Thumbs.db
+# 署名まわり・秘密の鍵（絶対にアップロードしない）
+*.p8
+*.p12
+*.mobileprovision
+*.cer
+*.pem
+*.key
+.env

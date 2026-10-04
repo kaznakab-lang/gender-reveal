@@ -1,0 +1,27 @@
+# =====================================================================
+# Netlify の設定。
+#
+# 配るのは site フォルダの中の、素のHTMLだけです。
+# 組み立て（ビルド）は要らないので、command は空にしています。
+#
+#   /            … サービスの説明ページ（AdSense の審査でも見られます）
+#   /r#xxxxxx    … 受け取った人が開くケーキの画面
+#   /privacy.html, /support.html … プライバシーポリシー、お問い合わせ
+# =====================================================================
+
+[build]
+  command = ""
+  publish = "site"
+
+# 受け取る画面は検索に出さない（一人ひとりの結果のページなので）
+[[headers]]
+  for = "/r/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"
+
+# 安全のための決まりごと
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

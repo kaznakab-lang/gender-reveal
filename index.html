@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ジェンダーリビール ケーキ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Great+Vibes&family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="brand">GENDER REVEAL</p>
+    <div class="steps" aria-hidden="true"><i id="s1" class="on"></i><i id="s2"></i><i id="s3"></i><i id="s4"></i></div>
+  </header>
+
+  <!-- 1: sex -->
+  <section id="step1" class="step">
+    <h1 style="text-align:center">赤ちゃんの性別を<br>選んでください</h1>
+    <div class="pick">
+      <button type="button" class="opt boy" id="optBoy" aria-pressed="false"><span class="check">✓</span>
+        <svg viewBox="0 0 40 36" aria-hidden="true"><path d="M20 33C8 25 2 18 2 11 2 6 6 2 11 2c4 0 7 2 9 5 2-3 5-5 9-5 5 0 9 4 9 9 0 7-6 14-18 22z" fill="#c3e1f8" stroke="#5a9fd8" stroke-width="1.5"/></svg>
+        <span class="big">BOY</span><span class="ja">男の子</span></button>
+      <button type="button" class="opt girl" id="optGirl" aria-pressed="false"><span class="check">✓</span>
+        <svg viewBox="0 0 40 36" aria-hidden="true"><path d="M20 33C8 25 2 18 2 11 2 6 6 2 11 2c4 0 7 2 9 5 2-3 5-5 9-5 5 0 9 4 9 9 0 7-6 14-18 22z" fill="#f9c3d8" stroke="#e57fa6" stroke-width="1.5"/></svg>
+        <span class="big">GIRL</span><span class="ja">女の子</span></button>
+    </div>
+    <p class="secret">選んだ性別は、受け取った人がケーキを切るまで秘密のままです。</p>
+  </section>
+
+  <!-- 2: how it works -->
+  <section id="step2" class="step" hidden>
+    <h1 style="text-align:center">受け取った人は、<br>こんなふうに楽しみます</h1>
+    <div class="panel">
+      <ol class="flow">
+        <li><span class="n">1</span><div><b>URLを開くと、かわいいケーキが登場</b><span>指でナイフを動かして、ケーキを切っていきます。</span></div></li>
+        <li><span class="n">2</span><div><b>中が見える寸前で…</b><span class="tv">結果はCMのあとで！</span><br><span>テレビ番組のように、ここでCMが入ります。</span></div></li>
+        <li><span class="n">3</span><div><b>CMのあと、いよいよ発表</b><span>最後のひと切りとケーキを開くのも、受け取った人の指で。ピンクなら女の子、ブルーなら男の子です。</span></div></li>
+      </ol>
+    </div>
+    <a class="preview" id="sample" href="#" target="_blank" rel="noopener">
+      <span class="pv-ico" aria-hidden="true">▶</span>
+      <span class="pv-txt"><b>サンプルを体験してみる</b><small>受け取った人と同じ画面を、CMの場面までそのまま試せます</small></span>
+    </a>
+    <p class="lead">CMが苦手な方は、次の画面で<br>100円でCMなしにできます。</p>
+  </section>
+
+  <!-- 3: plan -->
+  <section id="step3" class="step" hidden>
+    <h1 style="text-align:center">CMあり・なしを<br>選んでください</h1>
+    <div class="plans">
+      <button type="button" class="opt plan free" id="optFree" aria-pressed="false"><span class="check">✓</span>
+        <span class="txt"><span class="ttl">無料でつくる</span><span class="desc">発表の前に「CMのあとで！」でCMが入ります。笑いもひとつの演出です。</span></span>
+        <span class="price">0<small>円</small></span></button>
+      <button type="button" class="opt plan paid" id="optPaid" aria-pressed="false" disabled><span class="check">✓</span>
+        <span class="txt"><span class="tag">CMなし・準備中</span><span class="ttl">CMなしでつくる</span><span class="desc">「CMのあとで！」の演出はそのまま。CMだけ流さずに発表へ進みます。</span></span>
+        <span class="price">100<small>円</small></span></button>
+    </div>
+    <p class="note">どちらを選んでも、受け取った人はアプリなしでブラウザから見られます。</p>
+  </section>
+
+  <!-- 4: done -->
+  <section id="step4" class="step" hidden>
+    <p class="done-title">Ready!</p>
+    <h1 style="text-align:center;margin-top:0">ジェンダーリビールの<br>URLができました</h1>
+    <div class="panel summary">
+      <dl class="row"><dt>性別</dt><dd id="sumSex">ひみつ</dd></dl>
+      <dl class="row"><dt>CM</dt><dd id="sumPlan"></dd></dl>
+    </div>
+    <div class="url"><code id="url"></code><button type="button" class="btn copy" id="btnCopy">コピー</button></div>
+    <a class="preview" id="preview" href="#" target="_blank" rel="noopener">
+      <span class="pv-ico" aria-hidden="true">▶</span>
+      <span class="pv-txt"><b>受け取る側の画面を見てみる</b><small>送る前に、届いたときの体験をそのまま試せます</small></span>
+    </a>
+    <p class="note">URLを見ても結果は分かりません。<br>家族や友だちに送って、一緒に楽しんでください。</p>
+  </section>
+
+  <div class="actions">
+    <button type="button" class="btn primary" id="btnNext" disabled>次へ</button>
+    <button type="button" class="btn primary" id="btnShare" hidden>共有する</button>
+    <button type="button" class="btn sub" id="btnBack" hidden>戻る</button>
+  </div>
+</div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

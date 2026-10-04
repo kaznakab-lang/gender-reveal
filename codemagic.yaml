@@ -1,0 +1,143 @@
+# =====================================================================
+# クラウド上のMacでiPhoneアプリを組み立てる設定
+#
+# あなたのWindows PCにはMacもXcodeも要りません。
+# GitHubにこのファイルごと置いておくと、Codemagic が
+# クラウドのMacを借りてビルドし、TestFlight まで送ってくれます。
+#
+# Codemagic 側でやってあること：
+#   1. Settings → Integrations → Developer Portal に
+#      「codemagic」という名前でAppleのキーを登録
+#   2. Environment variables に CERTIFICATE_PRIVATE_KEY を登録
+#      （グループ名 code-signing、Secret にチェック）
+#   3. このリポジトリ（gender-reveal）を追加
+#
+# 推し活プリントと同じ Codemagic アカウント・同じ鍵を使い回せます。
+#
+# 証明書やプロビジョニングプロファイルは、ビルドのたびに
+# Codemagic が Apple から取得（無ければ作成）します。
+# Macでキーチェーンを触る作業は発生しません。
+# =====================================================================
+
+workflows:
+  ios-release:
+    name: ジェンダーリビール ケーキ iOS
+    # クラウドのMac（あなたが用意するものではありません）
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+
+    # Codemagic の Settings → Integrations で登録した名前
+    integrations:
+      app_store_connect: codemagic
+
+    environment:
+      # Apple の要件で、2026年4月28日以降の提出は Xcode 26 以上が必須
+      xcode: latest
+      # Capacitor 8 は Node 22 以上が必要
+      node: 22
+
+      # CERTIFICATE_PRIVATE_KEY を読み込む
+      groups:
+        - code-signing
+
+      vars:
+        # ---- ここだけ自分の値に直してください ----
+        BUNDLE_ID: 'com.webkuuta.reveal'
+        XCODE_PROJECT: 'ios/App/App.xcodeproj'
+        XCODE_SCHEME: 'App'
+        # App Store Connect でアプリを作ると発行される数字のID
+        APP_STORE_APPLE_ID: 6818918597
+
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+
+    scripts:
+      - name: 必要なものを入れる
+        script: npm ci || npm install
+
+      - name: アプリ本体を書き出す
+        script: npm run build
+
+      - name: iOSプロジェクトへ反映する
+        script: npx cap sync ios
+
+      # ---- ここから署名（Appleから取得。無ければ作る）----
+      - name: 署名の置き場所を用意する
+        script: keychain initialize
+
+      - name: 署名を取得する（無ければ作る）
+        script: |
+          # --certificate-key を明示しています。
+          #
+          # これを書かないと、Codemagic が登録した鍵を読みそこねたときに、
+          # 黙ってその場かぎりの鍵を作ってしまいます。
+          # すると毎回「合う証明書が無い」→「新しく作る」をくり返し、
+          # Apple の配布証明書（2枚まで）がすぐ満杯になって、
+          #   409 You already have a current Distribution certificate
+          # でビルドが止まります。実際に一度そうなりました。
+          #
+          # 明示しておけば、同じ鍵から作った1枚をずっと使い回します。
+          # 鍵が読めないときは、黙って進まずにその場で止まるので、
+          # 原因もすぐ分かります。
+          app-store-connect fetch-signing-files "$BUNDLE_ID" \
+            --type IOS_APP_STORE \
+            --certificate-key "@env:CERTIFICATE_PRIVATE_KEY" \
+            --create
+
+      - name: 証明書を取り込む
+        script: keychain add-certificates
+
+      - name: 署名をプロジェクトに適用する
+        script: xcode-project use-profiles
+      # ---- 署名ここまで ----
+
+      - name: ビルド番号を1つ進める
+        script: |
+          # TestFlight にある最新のビルド番号の「次」を使う。
+          # （get-latest-app-store-build-number は「App Storeで公開済み」の番号なので、
+          #   公開前はいつも 0 が返り、番号が重複してアップロードに失敗します）
+          LATEST=$(app-store-connect get-latest-testflight-build-number "$APP_STORE_APPLE_ID" 2>/dev/null || echo 0)
+          case "$LATEST" in
+            ''|*[!0-9]*) LATEST=0 ;;
+          esac
+          NEXT=$((LATEST + 1))
+          # 念のため、Codemagic 側の連番のほうが大きければそちらを使う
+          if [ -n "$PROJECT_BUILD_NUMBER" ] && [ "$PROJECT_BUILD_NUMBER" -gt "$NEXT" ]; then
+            NEXT=$PROJECT_BUILD_NUMBER
+          fi
+          echo "ビルド番号: $LATEST → $NEXT"
+          cd ios/App
+          agvtool new-version -all "$NEXT"
+
+      - name: IPA（提出用ファイル）を作る
+        script: |
+          xcode-project build-ipa \
+            --project "$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME"
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+
+    publishing:
+      app_store_connect:
+        auth: integration
+        # TestFlight へのアップロードは、これだけで自動的に行われます。
+        #
+        # submit_to_testflight は「外部テスター向けに Apple の審査へ出す」設定です。
+        # 自分のiPhoneで試すだけなら不要で、true にすると
+        # テスト情報（連絡先など）が未記入のあいだ毎回ここで赤くなります。
+        # 他の人に配りたくなったら true に戻してください。
+        submit_to_testflight: false
+        # 審査に出す準備ができたら、下の行を true にしてください
+        submit_to_app_store: false
+      email:
+        recipients:
+          - kaznakab@gmail.com
+        notify:
+          success: true
+          failure: true
