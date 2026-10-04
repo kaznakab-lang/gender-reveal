@@ -39,9 +39,9 @@
   --f-mincho:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;
   color-scheme:light;
 }
-html{height:100%;box-sizing:border-box;background:var(--milk)}
+html{height:100%;box-sizing:border-box;background:var(--milk);overscroll-behavior:none}
 *,*::before,*::after{box-sizing:inherit}
-body{height:100%;margin:0;overflow:hidden;background:var(--milk);color:var(--cocoa);font-family:var(--f-round);-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none;background:var(--milk);color:var(--cocoa);font-family:var(--f-round);-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 #app{position:relative;height:100%;overflow:hidden;touch-action:none;--sex:var(--boy);--sex-deep:var(--boy-deep);--sex-ink:var(--boy-ink)}
 #app[data-sex="girl"]{--sex:var(--girl);--sex-deep:var(--girl-deep);--sex-ink:var(--girl-ink)}
 canvas{position:absolute;inset:0;display:block}
@@ -1580,6 +1580,8 @@ const endDrag = () => {
   if (S.phase === 'spread' && S.open > 0.55) completeOpen();
   drag = null;
 };
+// iPhone：指でなぞったときに、画面ごと引っぱられたり戻ったりしないようにする
+document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
 cv.addEventListener('pointerup', endDrag);
 cv.addEventListener('pointercancel', endDrag);
 document.addEventListener('keydown', (e) => {

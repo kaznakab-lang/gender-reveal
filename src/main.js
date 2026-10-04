@@ -16,9 +16,10 @@ function toast(msg) {
 }
 const revealUrl = (sex) => `${SITE}/r#${RevealToken.encode(sex, false)}`;
 
-// サイトを開く：アプリの中ではアプリ内ブラウザ、ブラウザで試すときは新しいタブ
+// サイトを開く：アプリの中ではアプリ内ブラウザ（全画面）、ブラウザで試すときは新しいタブ
 async function openSite(url) {
-  if (Capacitor.isNativePlatform()) await Browser.open({ url, presentationStyle: 'popover' });
+  // 全画面で開く（下から出るシート型だと、ケーキを下へなぞったときに画面ごと動いてしまう）
+  if (Capacitor.isNativePlatform()) await Browser.open({ url, presentationStyle: 'fullscreen' });
   else window.open(url, '_blank', 'noopener');
 }
 
