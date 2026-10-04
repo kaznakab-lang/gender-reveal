@@ -53,9 +53,9 @@
       <button type="button" class="opt plan free" id="optFree" aria-pressed="false"><span class="check">✓</span>
         <span class="txt"><span class="ttl">無料でつくる</span><span class="desc">発表の前に「CMのあとで！」でCMが入ります。笑いもひとつの演出です。</span></span>
         <span class="price">0<small>円</small></span></button>
-      <button type="button" class="opt plan paid" id="optPaid" aria-pressed="false" disabled><span class="check">✓</span>
-        <span class="txt"><span class="tag">CMなし・準備中</span><span class="ttl">CMなしでつくる</span><span class="desc">「CMのあとで！」の演出はそのまま。CMだけ流さずに発表へ進みます。</span></span>
-        <span class="price">100<small>円</small></span></button>
+      <button type="button" class="opt plan paid" id="optPaid" aria-pressed="false"><span class="check">✓</span>
+        <span class="txt"><span class="tag">CMなし</span><span class="ttl">CMなしでつくる</span><span class="desc">「CMのあとで！」の演出はそのまま。CMだけ流さずに発表へ進みます。URL1つにつき1回のお支払いです。</span></span>
+        <span class="price" id="paidPrice">100<small>円</small></span></button>
     </div>
     <p class="note">どちらを選んでも、受け取った人はアプリなしでブラウザから見られます。</p>
   </section>
@@ -82,6 +82,9 @@
     <button type="button" class="btn sub" id="btnBack" hidden>戻る</button>
   </div>
 </div>
+
+<!-- 購入の確認中に出す画面 -->
+<div id="busy" class="busy" hidden role="status" aria-live="polite"><span class="spin" aria-hidden="true"></span><p id="busyText"></p></div>
 
 <script type="module" src="/src/main.js"></script>
 </body>

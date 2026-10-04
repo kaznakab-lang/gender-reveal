@@ -165,25 +165,6 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
 .sponsor.in .sp-small,.sponsor.in .sp-main,.sponsor.in .sp-teikyo{animation:fadeUp .6s ease-out both}
 .sponsor.in .sp-main{animation-delay:.15s}
 .sponsor.in .sp-teikyo{animation-delay:.3s}
-/* ---------- dummy commercial ---------- */
-.ad{z-index:8;justify-content:flex-start;background:linear-gradient(180deg,#cfe9ff 0%,#eef7ff 55%,#fff 100%);color:var(--ad-ink);pointer-events:auto}
-.ad-bar{width:100%;max-width:30rem;display:flex;align-items:center;gap:8px;padding-block:12px;font-size:12px;font-weight:700}
-.ad-pr{background:#f6c343;color:var(--ad-ink);border-radius:4px;padding:2px 7px;letter-spacing:.06em}
-.ad-label{color:var(--ad-sub)}
-.ad-timer{margin-left:auto;background:rgba(29,42,68,.78);color:#fff;border-radius:999px;padding:6px 12px;font-variant-numeric:tabular-nums}
-.ad-close{margin-left:auto;border:0;border-radius:999px;background:var(--ad-ink);color:#fff;font-weight:900;font-size:14px;padding:9px 16px}
-.ad-stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;width:100%;max-width:28rem}
-.ad-visual{width:min(74vw,300px);max-width:100%}
-.ad-visual svg{display:block;width:100%;height:auto;overflow:visible}
-.zz{font-family:var(--f-telop);fill:#7fa6dc;animation:zz 2.4s ease-in-out infinite}
-.zz.b{animation-delay:.8s}
-@keyframes zz{0%{opacity:0;transform:translate(0,8px)}30%{opacity:1}100%{opacity:0;transform:translate(14px,-22px)}}
-.ad-copy{margin:0;font-weight:900;font-size:clamp(22px,6.4vw,30px);line-height:1.45;text-wrap:balance;animation:fadeUp .8s .3s ease-out both}
-.ad-name{margin:0;font-weight:700;font-size:15px;color:var(--ad-sub);animation:fadeUp .8s .9s ease-out both}
-.ad-fine{margin:0;font-size:11px;color:var(--ad-sub)}
-.ad-skip{position:absolute;right:0;bottom:max(84px,13vh);border:1px solid rgba(255,255,255,.55);border-right:0;border-radius:8px 0 0 8px;background:rgba(10,18,32,.8);color:#fff;font-weight:700;font-size:14px;padding:12px 18px}
-.ad-foot{margin:0 0 max(16px,3vh);font-size:11px;color:var(--ad-sub)}
-
 /* ---------- after the ad: quiet and warm again ---------- */
 .after{z-index:7;gap:18px;background:radial-gradient(120% 80% at 50% 40%,#fffaf3 0%,#fdeff0 55%,#f1e9f6 100%);transition:opacity 1.3s ease}
 .after.clear{opacity:0}
@@ -232,7 +213,7 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
 @keyframes flash{0%{opacity:1}100%{opacity:0}}
 
 @media (prefers-reduced-motion: reduce){
-  .rays,.burst,.cm-burst,.btn-ad,.t-text.roll,.guide,.zz,.orn,.good{animation:none}
+  .rays,.burst,.cm-burst,.btn-ad,.t-text.roll,.guide,.orn,.good{animation:none}
 }
 </style>
 
@@ -276,7 +257,6 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
     </div>
     <div id="cmActions" class="cm-actions" hidden>
       <button id="btnAd" class="btn-ad" type="button"><span class="play" aria-hidden="true"></span><span>CMを見て結果へ<small>CMのあと、すぐ発表！</small></span></button>
-      <button id="btnNoAd" class="link" type="button">CMを見ずに進む</button>
     </div>
   </div>
 
@@ -325,38 +305,6 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
     <p class="sp-teikyo"><span>提供</span></p>
   </div>
 
-  <div id="ad" class="layer ad" hidden role="dialog" aria-label="広告">
-    <div class="ad-bar">
-      <span class="ad-pr">PR</span><span class="ad-label">ダミー広告</span>
-      <span id="adTimer" class="ad-timer">あと 10 秒</span>
-      <button id="adClose" class="ad-close" type="button" hidden>✕ 閉じて結果へ</button>
-    </div>
-    <div class="ad-stage">
-      <div class="ad-visual" aria-hidden="true">
-        <svg viewBox="0 0 300 210">
-          <ellipse cx="150" cy="196" rx="118" ry="10" fill="#c9def5"/>
-          <circle cx="150" cy="82" r="34" fill="#ffe2cc"/>
-          <circle cx="126" cy="92" r="7" fill="#ffc1b0" opacity=".7"/>
-          <circle cx="174" cy="92" r="7" fill="#ffc1b0" opacity=".7"/>
-          <path d="M131 80q6 6 12 0M157 80q6 6 12 0" stroke="#6b4a3a" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <path d="M120 64q30-34 60 0" fill="#f3d0b5"/>
-          <g fill="#ffffff" stroke="#d6e6fa" stroke-width="2">
-            <circle cx="70" cy="140" r="44"/><circle cx="118" cy="120" r="46"/><circle cx="178" cy="118" r="48"/><circle cx="232" cy="140" r="42"/>
-            <rect x="40" y="132" width="222" height="56" rx="28"/>
-          </g>
-          <path d="M44 150h214" stroke="#ffffff" stroke-width="30" stroke-linecap="round"/>
-          <text class="zz" x="196" y="52" font-size="26">z</text>
-          <text class="zz b" x="216" y="34" font-size="18">z</text>
-        </svg>
-      </div>
-      <p class="ad-copy">ふわっと、<br>くもに くるまれて。</p>
-      <p class="ad-name">ベビー毛布「くもねんね」</p>
-      <p class="ad-fine">※架空の商品です</p>
-    </div>
-    <button id="adSkip" class="ad-skip" type="button" hidden>スキップ ▸</button>
-    <p class="ad-foot">本番ではここに広告SDKの動画広告が入ります</p>
-  </div>
-
   <div id="flash" class="flash"></div>
 
   <div id="bad" class="layer intro" hidden>
@@ -365,6 +313,17 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
       <h1 class="intro-title" style="font-size:clamp(22px,6.4vw,30px)">このURLは<br>開けませんでした</h1>
       <p class="lead">送られてきたURLが途中で切れていないか、<br>もう一度確かめてみてください。</p>
       <a class="btn-start" href="/" style="text-decoration:none">トップページへ</a>
+    </div>
+  </div>
+
+  <div id="resume" class="layer intro" hidden>
+    <div class="intro-card">
+      <p class="eyebrow">GENDER REVEAL</p>
+      <p class="intro-sub">CMが終わりました</p>
+      <h1 class="intro-title" style="font-size:clamp(26px,7.6vw,40px)">いよいよ<br>発表です</h1>
+      <p class="lead">準備ができたら、続きをどうぞ。</p>
+      <button id="btnResume" class="btn-start" type="button">続きを見る</button>
+      <p class="note">音が出ます。iPhoneはマナーモードを切ってね</p>
     </div>
   </div>
 
@@ -1595,43 +1554,6 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-/* ================= ads (the only part that changes for production) =================
-   本番では showRewarded() の中身だけを差し替える:
-     iPhoneアプリ … Google Mobile Ads SDK（AdMob）のリワード広告
-     Web         … Google Publisher Tag のリワード広告（OutOfPageFormat.REWARDED）
-   演出側は「広告が閉じたら { completed } で resolve される Promise」しか見ていない。 */
-const DummyAd = {
-  timer: null,
-  show() {
-    return new Promise((resolve) => {
-      const ad = $('#ad'), tEl = $('#adTimer'), skip = $('#adSkip'), close = $('#adClose');
-      let left = 10;
-      ad.hidden = false; tEl.hidden = false; skip.hidden = true; close.hidden = true;
-      tEl.textContent = `あと ${left} 秒`;
-      sfx.jingle();
-      const done = (completed) => {
-        clearInterval(this.timer); this.timer = null; ad.hidden = true;
-        skip.onclick = null; close.onclick = null;
-        resolve({ completed });
-      };
-      this.timer = setInterval(() => {
-        left -= 1;
-        if (left === 5) { skip.hidden = false; sfx.jingle(); }
-        if (left <= 0) {
-          clearInterval(this.timer); this.timer = null;
-          tEl.hidden = true; skip.hidden = true; close.hidden = false;
-          try { close.focus({ preventScroll: true }); } catch (_) { /* ignore */ }
-          return;
-        }
-        tEl.textContent = `あと ${left} 秒`;
-      }, 1000);
-      skip.onclick = () => done(false);
-      close.onclick = () => done(true);
-    });
-  },
-  cancel() { if (this.timer) clearInterval(this.timer); this.timer = null; $('#ad').hidden = true; }
-};
-const Ads = { showRewarded: () => DummyAd.show() };
 
 /* ================= the show (timings unchanged from v1) ================= */
 async function T(promise) { const g = gen; await promise; if (g !== gen) throw ABORT; }
@@ -1639,10 +1561,55 @@ function say(text, cls) { const tt = $('#tText'); tt.className = 't-text' + (cls
 function beat(v = 1) { sfx.heart(v); haptic([40, 160, 30]); retrigger($('#tBeat'), 'go'); S.shake = Math.max(S.shake, 2); }
 // the result comes from the share token after # in the URL
 const TOKEN = RevealToken.decode((location.hash || '').slice(1));
-// CMなし（100円）は、サーバーの署名を確かめられたときだけ有効にする（署名の確認は次の段階で追加）
-const NOAD = false;
-// 広告: 'none' = 広告なしで進む（AdSense審査が通るまで）, 'dummy' = ダミーCM（?ad=dummy で確認用）
-const AD_MODE = new URLSearchParams(location.search).get('ad') === 'dummy' ? 'dummy' : 'none';
+/* ---- CMなし（100円）----
+   アプリで購入すると、URLの最後にサーバーの署名（.xxxx）が付きます。
+   その署名をここで公開鍵で確かめられたときだけCMなしにします（URLを書き換えても有効になりません）。
+   公開鍵は見られても大丈夫な鍵です。署名に使う秘密の鍵はNetlifyの環境変数にだけ置いてあります。 */
+const SIGN_PUBLIC_KEY = 'mpHtoAouTbO7mWVnfMkBI9pZOomL7Q2szmxJ5N-FNkA';
+const b64uBytes = (s) => { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; return Uint8Array.from(atob(s), (c) => c.charCodeAt(0)); };
+async function checkNoad(tok) {
+  if (!tok || !tok.noadRequested || !tok.sig) return false;
+  const msg = new TextEncoder().encode('gr1:' + tok.body);
+  try {
+    const key = await crypto.subtle.importKey('raw', b64uBytes(SIGN_PUBLIC_KEY), { name: 'Ed25519' }, false, ['verify']);
+    return await crypto.subtle.verify({ name: 'Ed25519' }, key, b64uBytes(tok.sig), msg);
+  } catch (_) {
+    // 古いブラウザ（この確かめ方に未対応）は、サーバーに確かめてもらう
+    try {
+      const r = await fetch('/api/verify', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ token: tok.body + '.' + tok.sig }) });
+      return r.ok && (await r.json()).ok === true;
+    } catch (_e) { return false; }
+  }
+}
+let NOAD = false;
+const noadReady = checkNoad(TOKEN).then((v) => { NOAD = v; }, () => {});
+
+/* ---- CM（AdSense のオファーウォール）----
+   無料のURLは、スポンサー表示のあと /cm/ のページへ移ります。そこで AdSense のCMが出ます。
+   CMのあと「続きを見る」を押すと、この画面に戻ってきて、カウントダウンから続きます。
+   AdSense の審査が通るまでは ADS_ON = false（CMなしで進みます）。
+   確認用：URLに ?cmtest を付けると、審査前でもCMページへの流れを試せます（例 /r/?cmtest#xxxx）。 */
+const ADS_ON = false;
+const CM_TEST = new URLSearchParams(location.search).has('cmtest');
+const CM_KEY = 'gr-cm-done';
+// /cm/ のページで「続きを見る」を押したときだけ、同じタブの中に印が残る（URLだけでは飛ばせない）
+function takeCmDone() {
+  try {
+    const v = JSON.parse(sessionStorage.getItem(CM_KEY) || 'null');
+    sessionStorage.removeItem(CM_KEY);
+    return !!(v && TOKEN && v.body === TOKEN.body && Date.now() - v.t < 15 * 60 * 1000);
+  } catch (_) { return false; }
+}
+const RESUME = takeCmDone();
+let cmWatched = RESUME;            // 一度見たら「もう一度見る」ではCMを挟まない
+const cmNeeded = () => (ADS_ON || CM_TEST) && !NOAD && !cmWatched;
+function goCM() { location.replace('/cm/' + location.search + location.hash); }
+function resumeAfterCM() {
+  audioInit(); decideSex(); hardReset();
+  $('#resume').hidden = true;
+  S.p = S.maxP; S.knife.alpha = 1; S.phase = 'ad';
+  run(async () => { await finale(); });
+}
 function decideSex() { S.sex = TOKEN ? TOKEN.sex : 'boy'; }
 
 function enterCake() {
@@ -1708,7 +1675,8 @@ async function zukoBreak() {
   sfx.crash(); S.shake = 16; haptic([60, 40, 140]); retrigger(sweat, 'go');
   await pause(850);
   S.phase = 'cmAsk';
-  if (NOAD || AD_MODE === 'none') { await pause(1200); goAd(false); return; }  // CMなしプラン: the gag plays, the ad does not
+  await T(noadReady);
+  if (!cmNeeded()) { await pause(1200); goAd(false); return; }  // CMなし・CM視聴済み・審査前：ズコーはあるけど、CMは流さない
   $('#cmActions').hidden = false;
   try { $('#btnAd').focus({ preventScroll: true }); } catch (_) { /* ignore */ }
 }
@@ -1725,8 +1693,8 @@ function goAd(watch) {
       // TV-style sponsor card before the commercial
       const sp = $('#sponsor'); sp.hidden = false; retrigger(sp, 'in'); sfx.chime();
       await pause(2600);
-      sp.hidden = true;
-      await T(Ads.showRewarded());
+      goCM();          // CMのページへ（戻ってきたら「続きを見る」からカウントダウン）
+      return;
     }
     await finale();
   });
@@ -1869,22 +1837,23 @@ function celebrate() {
 /* ================= reset / wiring ================= */
 function hardReset() {
   gen++; tweens = []; drag = null;
-  DummyAd.cancel(); sfx.padStop(true);
+  sfx.padStop(true);
   conf.length = 0; crumbs.length = 0; candy.length = 0; sparks.length = 0; rainAcc = 0;
   Object.assign(S, { p: 0, maxP: 0.86, cakeY: 0, tilt: 0, slide: 0, zoom: 0, glow: 0, open: 0, spot: 0, spotR: 1.3, bgTint: 0, rays: 0, balloons: 0, release: 0, light: 0, shake: 0, rumble: 0, rain: 0 });
   Object.assign(S.knife, { alpha: 0, jx: 0, fall: 0, fx: 0, fy: 0, tremble: 0 });
-  ['#hint', '#prompt', '#sponsor', '#tension', '#cm', '#count', '#result', '#after', '#ad'].forEach((s) => { $(s).hidden = true; });
+  ['#hint', '#prompt', '#sponsor', '#tension', '#cm', '#count', '#result', '#after'].forEach((s) => { $(s).hidden = true; });
   $('#tension').classList.remove('on');
   app.style.transform = '';
 }
 if (!TOKEN) { $('#intro').hidden = true; $('#bad').hidden = false; }
+else if (RESUME) { $('#intro').hidden = true; $('#resume').hidden = false; }
+$('#btnResume').addEventListener('click', resumeAfterCM);
 $('#btnStart').addEventListener('click', () => {
   audioInit(); decideSex(); hardReset();
   $('#intro').hidden = true;
   enterCake();
 });
 $('#btnAd').addEventListener('click', () => goAd(true));
-$('#btnNoAd').addEventListener('click', () => goAd(false));
 $('#btnReplay').addEventListener('click', () => { audioInit(); hardReset(); enterCake(); });
 // the comic starburst behind 「CMのあとで！」
 (function buildBurst() {

@@ -6,16 +6,30 @@
 #
 #   /            … サービスの説明ページ（AdSense の審査でも見られます）
 #   /r#xxxxxx    … 受け取った人が開くケーキの画面
+#   /cm/#xxxxxx   … 無料のURLで流れるCMのページ（AdSense のオファーウォール）
 #   /privacy.html, /support.html … プライバシーポリシー、お問い合わせ
+#   /api/sign     … アプリで「CMなし」を買ったときに署名を返す（netlify/functions/sign.mjs）
+#   /api/verify   … 古いブラウザ向けに署名を確かめる（netlify/functions/verify.mjs）
+#
+# 署名の秘密の鍵は、Netlify の環境変数 REVEAL_SIGN_KEY にだけ置きます。
 # =====================================================================
 
 [build]
   command = ""
   publish = "site"
 
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
 # 受け取る画面は検索に出さない（一人ひとりの結果のページなので）
 [[headers]]
   for = "/r/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"
+
+[[headers]]
+  for = "/cm/*"
   [headers.values]
     X-Robots-Tag = "noindex"
 

@@ -1,2 +1,7 @@
 User-agent: *
 Disallow: /r/
+Disallow: /cm/
+
+# AdSense の確認用ロボットは、どのページも見られるようにしておく
+User-agent: Mediapartners-Google
+Allow: /
