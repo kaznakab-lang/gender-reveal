@@ -27,6 +27,8 @@ function busy(msg) {
   if (msg) $('#busyText').textContent = msg;
 }
 const freeUrl = (sex) => `${SITE}/r#${RevealToken.encode(sex, false)}`;
+// CMなし版のサンプル：署名は付かないが、画面に SAMPLE と出る見本として動く
+const paidSampleUrl = (sex) => `${SITE}/r#${RevealToken.encode(sex, true, true)}`;
 const paidUrl = (body, sig) => `${SITE}/r#${body}.${sig}`;
 
 // サイトを開く：アプリの中ではアプリ内ブラウザ（全画面）、ブラウザで試すときは新しいタブ
@@ -146,6 +148,7 @@ $('#optPaid').onclick = () => { st.plan = 'paid'; pressed(['#optFree', '#optPaid
 
 // サンプル体験と送信前プレビュー：選んだ性別で、受け取る人と同じ画面を開く
 $('#sample').onclick = (e) => { e.preventDefault(); openSite(freeUrl(st.sex || 'boy')); };
+$('#samplePaid').onclick = (e) => { e.preventDefault(); openSite(paidSampleUrl(st.sex || 'boy')); };
 $('#preview').onclick = (e) => { e.preventDefault(); openSite(st.url); };
 
 $('#btnNext').onclick = () => {

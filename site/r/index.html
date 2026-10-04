@@ -133,6 +133,7 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
 .drum-wrap.hold .drum{animation:none}
 .drum-wrap.hold .stick{animation:none;transform:rotate(var(--up))}
 .drum-wrap.hold .spark,.drum-wrap.hold .note{animation:none;opacity:0}
+.sample-badge{position:absolute;left:50%;top:max(10px,env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:12;pointer-events:none;font-family:var(--f-latin);font-weight:700;font-size:12px;letter-spacing:.28em;padding:5px 14px 5px 16px;border-radius:999px;background:rgba(107,79,90,.78);color:#fff;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 .t-dots{margin:0;font-weight:900;font-size:clamp(24px,7vw,36px);letter-spacing:.2em;color:#ffe9f1;opacity:0}
 .t-dots.in{animation:fadeUp .5s ease-out both}
 .t-beat{margin:0;font-family:var(--f-mincho);font-weight:800;font-size:22px;letter-spacing:.3em;color:var(--rose);opacity:0}
@@ -341,6 +342,7 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
   </div>
 
   <canvas id="fx" aria-hidden="true"></canvas>
+  <div id="sampleBadge" class="sample-badge" hidden>SAMPLE</div>
 
   <div id="after" class="layer after" hidden>
     <p id="afterText" class="after-text"></p>
@@ -410,16 +412,17 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
 /* ================= share token =================
    URLの # の後ろに付ける短い文字列。見ても性別は分かりません（ただの目隠しで、暗号ではありません）。
    形式: [salt][version, flags, random×4] を XOR で混ぜて base64url にしたもの（約11文字）。
-   flags: bit0 = 女の子, bit1 = CMなし（CMなしは、のちほどサーバーの署名 ".xxxx" が付いたときだけ有効） */
+   flags: bit0 = 女の子, bit1 = CMなし（CMなしは、のちほどサーバーの署名 ".xxxx" が付いたときだけ有効）,
+          bit2 = サンプル（アプリの「CMなし版を見てみる」用。画面に「サンプル」と出る。署名はもらえない） */
 const RevealToken = (() => {
   const KEY = [107, 117, 116, 97, 108, 97, 98, 111, 45, 114, 101, 118, 101, 97, 108];
   const mask = (bytes, salt) => bytes.map((b, i) => b ^ KEY[(i + salt) % KEY.length] ^ ((salt * 31 + i * 17) & 255));
   const b64u = (bytes) => btoa(String.fromCharCode(...bytes)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   const unb64u = (s) => { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; return Array.from(atob(s), (c) => c.charCodeAt(0)); };
-  function encode(sex, noad) {
+  function encode(sex, noad, sample) {
     const rnd = Array.from(crypto.getRandomValues(new Uint8Array(5)));
     const salt = rnd[0];
-    const data = [1, (sex === 'girl' ? 1 : 0) | (noad ? 2 : 0), rnd[1], rnd[2], rnd[3], rnd[4]];
+    const data = [1, (sex === 'girl' ? 1 : 0) | (noad ? 2 : 0) | (sample ? 4 : 0), rnd[1], rnd[2], rnd[3], rnd[4]];
     return b64u([salt, ...mask(data, salt)]);
   }
   function decode(str) {
@@ -429,7 +432,7 @@ const RevealToken = (() => {
       if (bytes.length !== 7) return null;
       const data = mask(bytes.slice(1), bytes[0]);
       if (data[0] !== 1) return null;
-      return { sex: data[1] & 1 ? 'girl' : 'boy', noadRequested: !!(data[1] & 2), body, sig: sig || null };
+      return { sex: data[1] & 1 ? 'girl' : 'boy', noadRequested: !!(data[1] & 2), sample: !!(data[1] & 4), body, sig: sig || null };
     } catch (e) { return null; }
   }
   return { encode, decode };
@@ -1628,8 +1631,11 @@ async function checkNoad(tok) {
     } catch (_e) { return false; }
   }
 }
-let NOAD = false;
-const noadReady = checkNoad(TOKEN).then((v) => { NOAD = v; }, () => {});
+// サンプル（アプリの「CMなし版を見てみる」）は署名なしでCMなしとして動く。そのかわり画面に SAMPLE と出る
+const SAMPLE = !!(TOKEN && TOKEN.sample);
+let NOAD = SAMPLE;
+const noadReady = SAMPLE ? Promise.resolve() : checkNoad(TOKEN).then((v) => { NOAD = v; }, () => {});
+if (SAMPLE) $('#sampleBadge').hidden = false;
 
 /* ---- CM（AdSense のオファーウォール）----
    無料のURLは、スポンサー表示のあと /cm/ のページへ移ります。そこで AdSense のCMが出ます。
@@ -1697,10 +1703,12 @@ function startTension() {
     haptic(Array.from({ length: 50 }, (_, i) => (i % 2 ? 70 : 30)));
     tween(S, 'rumble', 2.6, 5400, ease.in);
     await pause(3300);
-    drum.classList.add('hold');            // バチが上がったまま止まる……
-    dots.hidden = false; retrigger(dots, 'in');
-    await pause(2260);
-    await zukoBreak();
+    dots.hidden = false; retrigger(dots, 'in');   // 「……」が出ても、バチは音が鳴っているあいだ打ち続ける
+    await pause(2200);
+    drum.classList.add('hold');            // 音が終わると同時に、バチが上がったまま止まる
+    await pause(420);
+    if (NOAD) await straightReveal();   // CMなし：ズコーなし。そのまま発表へ
+    else await zukoBreak();
   });
 }
 
@@ -1716,7 +1724,7 @@ async function zukoBreak() {
   retrigger(small, 'go'); sfx.sting(); haptic(50); S.shake = 8;
   await pause(300);
   retrigger(big, 'go'); sfx.crash(); haptic([100]); S.shake = 24;
-  await pause(700);
+  await pause(1500);                 // 「……え？」の間。ここで一拍おいてから、ズコーッ
   retrigger(zk, 'go'); sfx.zuko();
   box.classList.add('fall');
   tween(S, 'tilt', -0.3, 750, ease.back);
@@ -1750,6 +1758,20 @@ function goAd(watch) {
   });
 }
 
+// CMなし（100円）の流れ：おふざけなしで、ドラムロールのあと、すぐカウントダウンへ
+async function straightReveal() {
+  S.phase = 'finale';
+  const ten = $('#tension'); ten.classList.remove('on');
+  S.knife.tremble = 0; S.rumble = 0; tweens = tweens.filter((t) => t.o !== S || t.k !== 'rumble');
+  tween(S, 'zoom', 0, 500, ease.out);
+  S.spot = 1; S.spotR = 1.35;
+  sfx.padStart();
+  await pause(900);
+  ten.hidden = true;
+  await pause(600);
+  await countdown();
+}
+
 async function finale() {
   S.phase = 'finale';
   const af = $('#after'), at = $('#afterText');
@@ -1766,6 +1788,10 @@ async function finale() {
   af.classList.add('clear');
   await pause(2300);
   af.hidden = true;
+  await countdown();
+}
+
+async function countdown() {
   const cnt = $('#count'), num = $('#countNum'), cb = $('#countBeat');
   cnt.hidden = false;
   for (const n of [3, 2, 1]) {

@@ -43,7 +43,7 @@ export async function handle(req, { store, signKey, verifyOptions } = {}) {
   if (typeof jws !== 'string' || jws.length > 20000 || typeof body !== 'string' || body.length > 40) return reply(400, { error: 'bad_request' });
 
   const tok = RevealToken.decode(body);
-  if (!tok || tok.sig || !tok.noadRequested || tok.body !== body) return reply(400, { error: 'bad_token' });
+  if (!tok || tok.sig || !tok.noadRequested || tok.sample || tok.body !== body) return reply(400, { error: 'bad_token' });
 
   let tx;
   try { tx = verifyAppleJWS(jws, verifyOptions); } catch (e) { return reply(403, { error: 'bad_purchase', why: e.message }); }
