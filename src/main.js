@@ -94,10 +94,10 @@ async function buyNoad(sex) {
     const msg = String((e && (e.message || e.errorMessage)) || e);
     if (/cancel/i.test(msg)) toast('購入をキャンセルしました');
     else if (/pending/i.test(msg)) toast('購入の承認待ちです。承認されたら、もう一度「URLをつくる」を押してください');
-    else toast('購入できませんでした。時間をおいて、もう一度お試しください');
+    else toast('購入できませんでした。時間をおいて、もう一度お試しください（' + msg.slice(0, 120) + '）');
     return null;
   }
-  if (!tx || !tx.jwsRepresentation) { busy(false); toast('購入の確認ができませんでした。時間をおいてお試しください'); return null; }
+  if (!tx || !tx.jwsRepresentation) { busy(false); toast('購入の確認ができませんでした。時間をおいてお試しください（購入データなし）'); return null; }
 
   const p = { jws: tx.jwsRepresentation, body, sex, at: Date.now() };
   savePending(p);
