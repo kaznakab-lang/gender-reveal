@@ -117,7 +117,7 @@ async function redeem(p) {
     throw new Error('sign ' + r.status + ' ' + (j.error || ''));
   } catch (e) {
     console.warn(e);
-    toast('通信できませんでした。電波のよい所で、もう一度「URLをつくる」を押してください（追加の料金はかかりません）');
+    toast('通信できませんでした。電波のよい所で、もう一度「URLをつくる」を押してください（追加の料金はかかりません）（' + String(e && e.message || e).slice(0, 80) + '）');
     return null;
   } finally { busy(false); }
 }

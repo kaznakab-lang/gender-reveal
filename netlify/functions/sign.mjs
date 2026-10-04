@@ -25,8 +25,12 @@ const CORS = {
   'access-control-allow-methods': 'POST, OPTIONS',
   'access-control-allow-headers': 'content-type',
 };
-const reply = (status, data) =>
-  new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json', 'cache-control': 'no-store', ...CORS } });
+const reply = (status, data) => {
+  // Netlify のログ（Logs → Functions → sign）に結果だけ残す。購入データや署名は書かない
+  if (status !== 200) console.log('sign', status, JSON.stringify(data));
+  else console.log('sign 200 ok');
+  return new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json', 'cache-control': 'no-store', ...CORS } });
+};
 
 // テストしやすいように、保存先と鍵を外から渡せる形にしている
 export async function handle(req, { store, signKey, verifyOptions } = {}) {
@@ -57,7 +61,7 @@ export async function handle(req, { store, signKey, verifyOptions } = {}) {
   }
 
   try { return reply(200, { sig: signBody(body, signKey) }); }
-  catch { return reply(500, { error: 'not_configured' }); }
+  catch (e) { return reply(500, { error: 'not_configured', why: e.message }); }
 }
 
 const env = (k) => (globalThis.Netlify?.env?.get(k) ?? process.env[k]);
