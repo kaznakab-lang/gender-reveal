@@ -8,7 +8,7 @@ import { RevealToken } from './token.js';
 // 受け取る人が開くサイト（Netlify）
 const SITE = 'https://webkuuta.com';
 // 「CMなし」の商品（App Store Connect で作る「消耗型」の App 内課金。URL1つにつき1回）
-const PRODUCT_ID = 'com.webkuuta.reveal.noad';
+const PRODUCT_ID = 'com.webkuuta.reveal.noad2';  // ※ noad は別アプリで使われてしまったので noad2
 // 購入のあと、CMなしの署名をもらう所（netlify/functions/sign.mjs）
 const SIGN_API = `${SITE}/api/sign`;
 // 購入は済んだのに署名をもらう前に通信が切れたとき、やり直せるように覚えておく

@@ -18,7 +18,7 @@ import { signBody } from '../lib/reveal-sign.mjs';
 import { RevealToken } from '../../src/token.js';
 
 export const BUNDLE_ID = 'com.webkuuta.reveal';
-export const PRODUCT_ID = 'com.webkuuta.reveal.noad';
+export const PRODUCT_ID = 'com.webkuuta.reveal.noad2';
 
 const CORS = {
   'access-control-allow-origin': '*',
