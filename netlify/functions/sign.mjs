@@ -18,7 +18,8 @@ import { signBody } from '../lib/reveal-sign.mjs';
 import { RevealToken } from '../../src/token.js';
 
 export const BUNDLE_ID = 'com.webkuuta.reveal';
-export const PRODUCT_ID = 'com.webkuuta.reveal.noad2';
+export const PRODUCT_ID = 'com.webkuuta.reveal.noad2';         // 感動まっすぐ（100円）
+export const PRODUCT_TOGETHER = 'com.webkuuta.reveal.together'; // いっしょに発表（300円）
 
 const CORS = {
   'access-control-allow-origin': '*',
@@ -47,7 +48,9 @@ export async function handle(req, { store, signKey, verifyOptions } = {}) {
 
   let tx;
   try { tx = verifyAppleJWS(jws, verifyOptions); } catch (e) { return reply(403, { error: 'bad_purchase', why: e.message }); }
-  if (tx.bundleId !== BUNDLE_ID || tx.productId !== PRODUCT_ID) return reply(403, { error: 'wrong_product' });
+  // URLの印と、買った商品が合っていること（100円で「いっしょに発表」は作れない）
+  const want = tok.together ? PRODUCT_TOGETHER : PRODUCT_ID;
+  if (tx.bundleId !== BUNDLE_ID || tx.productId !== want) return reply(403, { error: 'wrong_product' });
   if (tx.revocationDate) return reply(403, { error: 'refunded' });
   if (!tx.transactionId) return reply(403, { error: 'bad_purchase' });
 

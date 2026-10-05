@@ -152,6 +152,23 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
 .lobby .btn-start{align-self:center}
 .lobby .btn-start:disabled{opacity:.45}
 .lb-err{color:#c0392b;font-size:13px;text-align:center}
+.gd-link{border:0;background:none;padding:0;font:inherit;color:var(--blue-deep);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.gd{position:absolute;inset:0;z-index:20;background:linear-gradient(180deg,#fffaf6,#fdf2f4 60%,#f3eef8);overflow-y:auto;padding:max(24px,env(safe-area-inset-top,0px)) 16px 24px;display:flex;flex-direction:column;align-items:center;pointer-events:auto}
+.gd-in{width:100%;max-width:24rem;display:flex;flex-direction:column;gap:10px;text-align:left}
+.gd h2{margin:0;font-weight:900;font-size:clamp(20px,5.6vw,24px);line-height:1.45;text-align:center;color:var(--cocoa)}
+.gd .gd-lead{margin:0;font-size:13px;line-height:1.7;text-align:center;color:var(--cocoa-soft)}
+.gd-tabs{display:flex;gap:6px;justify-content:center}
+.gd-tabs button{border:0;font:inherit;font-size:12px;font-weight:900;padding:6px 14px;border-radius:999px;background:#fff;color:var(--cocoa);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.gd-tabs button[aria-pressed="true"]{background:var(--cocoa);color:#fff}
+.gd-step{display:grid;grid-template-columns:28px 1fr 64px;gap:10px;align-items:center;background:#fff;border-radius:16px;padding:10px 12px;box-shadow:0 4px 14px rgba(180,140,170,.12)}
+.gd-step.wide{grid-template-columns:1fr}
+.gd-n{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--f-latin);font-weight:600;font-size:13px;background:linear-gradient(135deg,var(--pink),var(--blue))}
+.gd-step b{display:block;font-size:14px;line-height:1.45;color:var(--cocoa)}
+.gd-step small{display:block;font-size:12px;line-height:1.65;color:var(--cocoa-soft);margin-top:2px}
+.gd-step svg{width:64px;height:64px}
+.gd-tip{background:linear-gradient(100deg,var(--pink-wash),var(--blue-wash));border-radius:14px;padding:10px 12px;font-size:12.5px;line-height:1.7;color:var(--cocoa)}
+.gd-tip b{display:block}
+.gd-close{align-self:center;margin-top:6px;border:0;border-radius:999px;padding:12px 40px;font:inherit;font-weight:900;background:var(--cocoa);color:#fff}
 .who{position:absolute;left:12px;right:12px;top:max(12px,env(safe-area-inset-top,0px));z-index:9;display:flex;align-items:center;justify-content:space-between;gap:8px;background:rgba(255,255,255,.9);border-radius:999px;padding:7px 14px;font-size:12px;font-weight:700;color:var(--cocoa);box-shadow:0 4px 14px rgba(0,0,0,.08);pointer-events:none}
 .who b{color:var(--pink-deep)}
 .who.me b{color:#2e9e6a}
@@ -399,12 +416,14 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
   <div id="lobby" class="layer intro lobby" hidden>
     <div class="intro-card">
       <p class="eyebrow">GENDER REVEAL</p>
-      <h1 class="intro-title" id="lbTitle" style="font-size:clamp(22px,6.4vw,30px)">いっしょに発表に<br>招待されました</h1>
+      <h1 class="intro-title" id="lbTitle" style="font-size:clamp(22px,6.4vw,30px)">いっしょに<br>発表の瞬間を楽しみましょう</h1>
+      <p class="lead" id="lbTag">離れていても、同じ瞬間に。</p>
       <div id="lbJoin" style="display:flex;flex-direction:column;gap:12px">
-        <div class="lb-call">📞 LINEやFaceTimeで、家族とつないだまま開いてね。通話の画面は小さな窓にできます。</div>
+        <div class="lb-call" id="lbCall"><b>📞 通話はつながっていますか？</b><br>パパ・ママとLINEやFaceTimeなどで通話をつないだまま、この画面を開いてください。 <button type="button" class="gd-link" data-guide>通話のしかたを見る</button></div>
         <p class="lb-label">あなたの呼び名</p>
         <input id="lbName" class="lb-input" maxlength="12" placeholder="例：おばあちゃん" autocomplete="off">
-        <p class="note">みんなの画面に表示されます。登録はありません。</p>
+        <p class="note">この名前は、みんなの画面に表示されます。会員登録は必要ありません。</p>
+        <div class="lb-call">🔊 <b style="display:inline">音が流れます</b><br>マナーモードをOFFにして、通話をスピーカーにすると、みんなで一緒に楽しめます。</div>
         <button id="lbJoinBtn" class="btn-start" type="button">参加する</button>
         <p id="lbErr" class="lb-err" hidden></p>
       </div>
@@ -423,6 +442,31 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
         </div>
         <p id="lbGuestNote" class="note" hidden>パパ・ママが「はじめる」を押すと、みんなの画面で同時に始まります</p>
       </div>
+    </div>
+  </div>
+  <div id="callGuide" class="gd" hidden role="dialog" aria-label="通話のしかた">
+    <div class="gd-in" id="gdMain">
+      <p class="eyebrow" style="align-self:center">GENDER REVEAL</p>
+      <h2>通話をつないでから<br>はじめましょう</h2>
+      <p class="gd-lead">顔を見ながら、みんなで同じ瞬間に「わぁ！」を。<br>LINEやFaceTimeなど、いつもの通話で大丈夫です。</p>
+      <div class="gd-tabs"><button type="button" data-os="ios" aria-pressed="true">iPhone</button><button type="button" data-os="android" aria-pressed="false">Android</button></div>
+      <div class="gd-step"><span class="gd-n">1</span><div><b>先に、通話をつなぐ</b><small>LINEやFaceTimeで、みんなとビデオ通話をつなぎます。</small></div><svg viewBox="0 0 74 74" aria-hidden="true"><rect x="18" y="4" width="38" height="66" rx="8" fill="#2b2b33"/><rect x="21" y="9" width="32" height="56" rx="5" fill="#cfe3f5"/><circle cx="37" cy="27" r="7" fill="#f5dcc8"/><path d="M25 46c2-8 22-8 24 0" fill="#7a8fae"/><circle cx="31" cy="57" r="4" fill="#ff5a5a"/><circle cx="43" cy="57" r="4" fill="#06c755"/></svg></div>
+      <div class="gd-step"><span class="gd-n">2</span><div><b>ホーム画面にもどる</b><small data-ios>画面の下から上へスワイプします。通話はそのまま続き、相手の顔が小さな窓で表示されます。</small><small data-android hidden>ホームボタン（または下から上へスワイプ）でホーム画面へ。通話はそのまま続き、相手の顔が小さな窓で表示されます。</small></div><svg viewBox="0 0 74 74" aria-hidden="true"><rect x="18" y="4" width="38" height="66" rx="8" fill="#2b2b33"/><rect x="21" y="9" width="32" height="56" rx="5" fill="#f4eef6"/><rect x="40" y="13" width="11" height="15" rx="3" fill="#cfe3f5" stroke="#fff" stroke-width="1.5"/><path d="M37 60V40" stroke="#e57fa6" stroke-width="3.5" stroke-linecap="round"/><path d="M31 46l6-7 6 7" fill="none" stroke="#e57fa6" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="gd-step"><span class="gd-n">3</span><div><b>届いたURLを開く</b><small>家族から届いたURLを開くと、ケーキの画面が表示されます。</small></div><svg viewBox="0 0 74 74" aria-hidden="true"><rect x="18" y="4" width="38" height="66" rx="8" fill="#2b2b33"/><rect x="21" y="9" width="32" height="56" rx="5" fill="#fdf2f4"/><ellipse cx="37" cy="50" rx="11" ry="3.5" fill="#f3e3c4"/><rect x="28" y="38" width="18" height="12" rx="2" fill="#fff" stroke="#efd9e2"/><rect x="31" y="31" width="12" height="8" rx="2" fill="#fff" stroke="#efd9e2"/><rect x="40" y="12" width="11" height="15" rx="3" fill="#cfe3f5" stroke="#fff" stroke-width="1.5"/><circle cx="45.5" cy="18" r="2.5" fill="#f5dcc8"/></svg></div>
+      <div class="gd-tip"><b>💡 小さな窓にならないときは</b>音声通話にしてスピーカーをONにするだけでも大丈夫。声を聞きながら、一緒にケーキを楽しめます。</div>
+      <p class="gd-lead">うまくいかないとき → <button type="button" class="gd-link" id="gdMore">くわしい設定を見る</button></p>
+      <button type="button" class="gd-close" data-gdclose>わかった</button>
+    </div>
+    <div class="gd-in" id="gdDetail" hidden>
+      <p class="eyebrow" style="align-self:center">GENDER REVEAL</p>
+      <h2>通話を小さな窓で<br>表示する設定</h2>
+      <div class="gd-tabs"><button type="button" data-os="ios" aria-pressed="true">iPhone</button><button type="button" data-os="android" aria-pressed="false">Android</button></div>
+      <div class="gd-step wide" data-ios><div><b>FaceTimeの場合</b><small>「設定」→「一般」→「ピクチャ・イン・ピクチャ」→「自動的に開始」をONにします。通話中にホーム画面へ戻ると、通話画面が小さな窓で表示されます。</small></div></div>
+      <div class="gd-step wide"><div><b>LINEの場合</b><small>ビデオ通話中に、画面の「縮小」ボタンを押すと小さな窓になります。表示されない場合は、LINEを最新版に更新してみてください。</small></div></div>
+      <div class="gd-step wide" data-android hidden><div><b>Androidの場合</b><small>「設定」→「アプリ」→ 通話に使うアプリ →「ピクチャー イン ピクチャー」を許可にします（機種によって名前が少しちがいます）。</small></div></div>
+      <div class="gd-step wide"><div><b>音が小さいとき</b><small data-ios>通話をスピーカーにして、iPhoneのマナーモードをOFFにしてください。</small><small data-android hidden>通話をスピーカーにして、音量を上げてください。</small></div></div>
+      <div class="gd-tip"><b>💡 それでもうまくいかないとき</b>家族のスマホは通話用、自分のスマホはケーキ用にして、2台で楽しむ方法もおすすめです。</div>
+      <button type="button" class="gd-close" data-gdback>もどる</button>
     </div>
   </div>
   <div id="who" class="who" hidden></div>
@@ -464,16 +508,17 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
    URLの # の後ろに付ける短い文字列。見ても性別は分かりません（ただの目隠しで、暗号ではありません）。
    形式: [salt][version, flags, random×4] を XOR で混ぜて base64url にしたもの（約11文字）。
    flags: bit0 = 女の子, bit1 = CMなし（CMなしは、のちほどサーバーの署名 ".xxxx" が付いたときだけ有効）,
-          bit2 = サンプル（アプリの「CMなし版を見てみる」用。画面に「サンプル」と出る。署名はもらえない） */
+          bit2 = サンプル（アプリの「CMなし版を見てみる」用。画面に「サンプル」と出る。署名はもらえない）,
+          bit3 = いっしょに発表（300円。署名つきのときだけ、みんなの画面をそろえる部屋が開ける） */
 const RevealToken = (() => {
   const KEY = [107, 117, 116, 97, 108, 97, 98, 111, 45, 114, 101, 118, 101, 97, 108];
   const mask = (bytes, salt) => bytes.map((b, i) => b ^ KEY[(i + salt) % KEY.length] ^ ((salt * 31 + i * 17) & 255));
   const b64u = (bytes) => btoa(String.fromCharCode(...bytes)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   const unb64u = (s) => { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; return Array.from(atob(s), (c) => c.charCodeAt(0)); };
-  function encode(sex, noad, sample) {
+  function encode(sex, noad, sample, together) {
     const rnd = Array.from(crypto.getRandomValues(new Uint8Array(5)));
     const salt = rnd[0];
-    const data = [1, (sex === 'girl' ? 1 : 0) | (noad ? 2 : 0) | (sample ? 4 : 0), rnd[1], rnd[2], rnd[3], rnd[4]];
+    const data = [1, (sex === 'girl' ? 1 : 0) | (noad ? 2 : 0) | (sample ? 4 : 0) | (together ? 8 : 0), rnd[1], rnd[2], rnd[3], rnd[4]];
     return b64u([salt, ...mask(data, salt)]);
   }
   function decode(str) {
@@ -483,7 +528,7 @@ const RevealToken = (() => {
       if (bytes.length !== 7) return null;
       const data = mask(bytes.slice(1), bytes[0]);
       if (data[0] !== 1) return null;
-      return { sex: data[1] & 1 ? 'girl' : 'boy', noadRequested: !!(data[1] & 2), sample: !!(data[1] & 4), body, sig: sig || null };
+      return { sex: data[1] & 1 ? 'girl' : 'boy', noadRequested: !!(data[1] & 2), sample: !!(data[1] & 4), together: !!(data[1] & 8), body, sig: sig || null };
     } catch (e) { return null; }
   }
   return { encode, decode };
@@ -1643,7 +1688,7 @@ const endDrag = () => {
   drag = null;
 };
 // iPhone：指でなぞったときに、画面ごと引っぱられたり戻ったりしないようにする
-document.addEventListener('touchmove', (e) => { if (!(e.target.closest && e.target.closest('#lobby'))) e.preventDefault(); }, { passive: false });
+document.addEventListener('touchmove', (e) => { if (!(e.target.closest && e.target.closest('#lobby, #callGuide'))) e.preventDefault(); }, { passive: false });
 cv.addEventListener('pointerup', endDrag);
 cv.addEventListener('pointercancel', endDrag);
 document.addEventListener('keydown', (e) => {
@@ -1669,6 +1714,7 @@ const TOKEN = RevealToken.decode(HASH_PARTS[0]);
 // いっしょに発表：~g<部屋番号>（招待された人） / ~h<合い言葉>（主役。アプリの中だけで使う）
 const TOGETHER = (() => {
   const r = HASH_PARTS[1] || '';
+  if (!TOKEN || !TOKEN.together) return null;   // 「いっしょに発表（300円）」のURLだけ
   if (/^g[A-Za-z0-9_-]{12}$/.test(r)) return { host: false, room: r.slice(1) };
   if (/^h[A-Za-z0-9_-]{16,64}$/.test(r)) return { host: true, secret: r.slice(1) };
   return null;
@@ -2009,7 +2055,7 @@ const TG = (() => {
   // ---------- 中継役 ----------
   async function connectAbly() {
     await new Promise((res, rej) => { if (window.Ably) return res(); const sc = document.createElement('script'); sc.src = 'https://cdn.ably.com/lib/ably.min-2.js'; sc.onload = res; sc.onerror = () => rej(new Error('script')); document.head.appendChild(sc); });
-    const params = TOGETHER.host ? { secret: TOGETHER.secret } : { room: TOGETHER.room };
+    const params = TOGETHER.host ? { secret: TOGETHER.secret, t: HASH_PARTS[0] } : { room: TOGETHER.room, t: HASH_PARTS[0] };
     const test = await fetch('/api/rt-token?' + new URLSearchParams(params));
     if (!test.ok) throw new Error('token ' + test.status);
     const first = await test.json();
@@ -2164,7 +2210,7 @@ const TG = (() => {
   }
   if (on && TOKEN) {
     $('#intro').hidden = true; $('#lobby').hidden = false;
-    if (st.host) { $('#lbTitle').innerHTML = 'いっしょに発表の<br>主役の画面です'; $('#lbName').value = 'パパ・ママ'; }
+    if (st.host) { $('#lbTitle').innerHTML = 'もうすぐ、<br>みんなで発表です 🎂'; $('#lbName').value = 'パパ・ママ'; $('#lbCall').innerHTML = '<b>📞 通話はつながっていますか？</b><br>家族や友だちとLINEやFaceTimeなどで通話をつないでから、参加してください。 <button type="button" class="gd-link" data-guide>通話のしかたを見る</button>'; $('#lbCall [data-guide]').addEventListener('click', () => { $('#gdMain').hidden = false; $('#gdDetail').hidden = true; $('#callGuide').hidden = false; }); }
     $('#lbJoinBtn').addEventListener('click', join);
     $('#lbName').addEventListener('keydown', (e) => { if (e.key === 'Enter') join(); });
     $('#lbStart').addEventListener('click', () => { if (st.started) return; send({ t: 'start', cfg: st.cfg }); begin(st.cfg); });
@@ -2201,6 +2247,23 @@ const TG = (() => {
     },
     opened() { if (on && st.started && !st.remote) send({ t: 'opened' }); },
   };
+})();
+
+/* ---- 通話のしかた（案内） ---- */
+(function guide() {
+  const g = $('#callGuide'); if (!g) return;
+  const isAndroid = /Android/i.test(navigator.userAgent);
+  const setOs = (os) => {
+    g.querySelectorAll('[data-os]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.os === os)));
+    g.querySelectorAll('[data-ios]').forEach((el) => { el.hidden = os !== 'ios'; });
+    g.querySelectorAll('[data-android]').forEach((el) => { el.hidden = os !== 'android'; });
+  };
+  setOs(isAndroid ? 'android' : 'ios');
+  g.querySelectorAll('[data-os]').forEach((b) => b.addEventListener('click', () => setOs(b.dataset.os)));
+  document.querySelectorAll('[data-guide]').forEach((b) => b.addEventListener('click', () => { $('#gdMain').hidden = false; $('#gdDetail').hidden = true; g.hidden = false; g.scrollTop = 0; }));
+  $('#gdMore').addEventListener('click', () => { $('#gdMain').hidden = true; $('#gdDetail').hidden = false; g.scrollTop = 0; });
+  g.querySelector('[data-gdback]').addEventListener('click', () => { $('#gdMain').hidden = false; $('#gdDetail').hidden = true; g.scrollTop = 0; });
+  g.querySelector('[data-gdclose]').addEventListener('click', () => { g.hidden = true; });
 })();
 
 /* ================= reset / wiring ================= */

@@ -51,17 +51,20 @@
     <h1 style="text-align:center">発表の演出を<br>選んでください</h1>
     <div class="plans">
       <button type="button" class="opt plan free" id="optFree" aria-pressed="false"><span class="check">✓</span>
-        <span class="txt"><span class="ttl">笑いあり（無料）</span><span class="desc">発表の直前に「結果はCMのあとで！ズコーッ！」のおふざけが入ります。みんなで笑える演出です。</span></span>
+        <span class="txt"><span class="ttl">笑いあり</span><span class="desc">ひとりずつ見てもらいます。発表の直前に「結果はCMのあとで！ズコーッ！」のおふざけが入ります。</span></span>
         <span class="price">0<small>円</small></span></button>
       <button type="button" class="opt plan paid" id="optPaid" aria-pressed="false"><span class="check">✓</span>
-        <span class="txt"><span class="tag">おふざけなし</span><span class="ttl">感動まっすぐ</span><span class="desc">おふざけなし。ドラムロールのあと、そのまま発表へ進みます。URL1つにつき1回のお支払いです。</span></span>
+        <span class="txt"><span class="tag">おふざけなし</span><span class="ttl">感動まっすぐ</span><span class="desc">ひとりずつ見てもらいます。ドラムロールのあと、そのまま発表へ。</span></span>
         <span class="price" id="paidPrice">100<small>円</small></span></button>
+      <button type="button" class="opt plan paid tgplan" id="optTogether" aria-pressed="false"><span class="check">✓</span>
+        <span class="txt"><span class="tag tg-new">いっしょに・おふざけなし</span><span class="ttl">いっしょに発表</span><span class="desc">LINEやFaceTimeでつないだまま、全員のスマホで同じケーキが同時に動きます。切る人もその場で決められます。</span></span>
+        <span class="price" id="togetherPrice">300<small>円</small></span></button>
     </div>
     <a class="preview" id="samplePaid" href="#" target="_blank" rel="noopener">
       <span class="pv-ico" aria-hidden="true">▶</span>
       <span class="pv-txt"><b>「感動まっすぐ」を見てみる</b><small>おふざけなしの流れを、サンプルで試せます</small></span>
     </a>
-    <p class="note">どちらを選んでも、受け取った人はアプリなしでブラウザから見られます。</p>
+    <p class="note">どれを選んでも、受け取った人はアプリなしでブラウザから見られます。お支払いはURL1つにつき1回です。</p>
   </section>
 
   <!-- 4: done -->
@@ -72,24 +75,24 @@
       <dl class="row"><dt>性別</dt><dd id="sumSex">ひみつ</dd></dl>
       <dl class="row"><dt>演出</dt><dd id="sumPlan"></dd></dl>
     </div>
+    <div id="soloBox" style="display:flex;flex-direction:column;gap:16px">
     <div class="url"><code id="url"></code><button type="button" class="btn copy" id="btnCopy">コピー</button></div>
     <a class="preview" id="preview" href="#" target="_blank" rel="noopener">
       <span class="pv-ico" aria-hidden="true">▶</span>
       <span class="pv-txt"><b>受け取る側の画面を見てみる</b><small>送る前に、届いたときの体験をそのまま試せます</small></span>
     </a>
     <p class="note">URLを見ても結果は分かりません。<br>家族や友だちに送って、一緒に楽しんでください。</p>
+    </div>
 
-    <div class="panel tg" id="tgCard">
-      <span class="tag tg-new">NEW</span>
-      <b class="tg-ttl">いっしょに発表する</b>
-      <span class="tg-desc">LINEやFaceTimeでつないだまま、全員のスマホで同じケーキが同時に動きます。切る人もその場で決められます。</span>
-      <button type="button" class="btn tg-btn" id="tgMake">いっしょに発表の準備をする</button>
-      <ol class="tg-steps" id="tgReady" hidden>
-        <li><b>家族と通話をつなぐ</b><span>LINEやFaceTimeで。通話の画面は小さな窓にできます。</span></li>
-        <li><b>招待URLを送る</b><span>受け取った人は、呼び名を入れて参加します。</span><button type="button" class="btn tg-btn" id="tgInvite">招待URLを送る</button></li>
-        <li><b>主役の画面を開く</b><span>みんながそろったら「はじめる」を押します。</span><button type="button" class="btn tg-btn" id="tgHost">主役の画面を開く</button></li>
+    <div class="tg" id="tgCard" hidden>
+      <p class="tg-hero">もうすぐ、みんなで発表です 🎂</p>
+      <p class="tg-sub">離れていても、同じ瞬間に。</p>
+      <ol class="tg-steps">
+        <li><b>家族や友だちと通話をつなぐ</b><span>LINEやFaceTimeなどで、先に通話を始めます。</span><button type="button" class="tg-link" id="tgGuide">通話のしかたを見る</button></li>
+        <li><b>招待URLを送る</b><span>通話中に、LINEやメッセージでURLを送ってください。</span><button type="button" class="btn tg-btn" id="tgInvite">招待URLを送る</button></li>
+        <li><b>ケーキの画面を開く</b><span>みんながそろったら、あなたのケーキ画面を開きましょう。「はじめる」を押すと、全員の画面で同時に始まります。</span><button type="button" class="btn tg-btn" id="tgHost">ケーキの画面を開く</button></li>
       </ol>
-      <p class="note" id="tgNote" hidden>主役の画面は、このアプリから開いてください（ほかの人には送らないでね）。</p>
+      <p class="note">この「ケーキの画面」は、主役のパパ・ママ専用です。ほかの人には「招待URL」を送ってください。</p>
     </div>
   </section>
 
@@ -97,6 +100,30 @@
     <button type="button" class="btn primary" id="btnNext" disabled>次へ</button>
     <button type="button" class="btn primary" id="btnShare" hidden>共有する</button>
     <button type="button" class="btn sub" id="btnBack" hidden>戻る</button>
+  </div>
+</div>
+
+<!-- 通話のしかた -->
+<div id="guide" class="gd" hidden role="dialog" aria-label="通話のしかた">
+  <div class="gd-in" id="gdMain">
+    <p class="gd-eb">GENDER REVEAL</p>
+    <h2>通話をつないでから<br>はじめましょう</h2>
+    <p class="gd-lead">顔を見ながら、みんなで同じ瞬間に「わぁ！」を。<br>LINEやFaceTimeなど、いつもの通話で大丈夫です。</p>
+    <div class="gd-step"><span class="gd-n">1</span><div><b>先に、通話をつなぐ</b><small>LINEやFaceTimeで、みんなとビデオ通話をつなぎます。</small></div></div>
+    <div class="gd-step"><span class="gd-n">2</span><div><b>このアプリにもどる</b><small>画面の下から上へスワイプして、このアプリにもどります。通話はそのまま続き、相手の顔が小さな窓で表示されます。</small></div></div>
+    <div class="gd-step"><span class="gd-n">3</span><div><b>招待URLを送って、ケーキの画面を開く</b><small>みんながそろったら「はじめる」を押します。</small></div></div>
+    <div class="gd-tip"><b>💡 小さな窓にならないときは</b>音声通話にしてスピーカーをONにするだけでも大丈夫。声を聞きながら、一緒にケーキを楽しめます。</div>
+    <p class="gd-lead">うまくいかないとき → <button type="button" class="tg-link" id="gdMore">くわしい設定を見る</button></p>
+    <button type="button" class="btn tg-btn" data-gdclose>わかった</button>
+  </div>
+  <div class="gd-in" id="gdDetail" hidden>
+    <p class="gd-eb">GENDER REVEAL</p>
+    <h2>通話を小さな窓で<br>表示する設定</h2>
+    <div class="gd-step wide"><div><b>FaceTimeの場合</b><small>「設定」→「一般」→「ピクチャ・イン・ピクチャ」→「自動的に開始」をONにします。通話中にホーム画面へ戻ると、通話画面が小さな窓で表示されます。</small></div></div>
+    <div class="gd-step wide"><div><b>LINEの場合</b><small>ビデオ通話中に、画面の「縮小」ボタンを押すと小さな窓になります。表示されない場合は、LINEを最新版に更新してみてください。</small></div></div>
+    <div class="gd-step wide"><div><b>音が小さいとき</b><small>通話をスピーカーにして、iPhoneのマナーモードをOFFにしてください。</small></div></div>
+    <div class="gd-tip"><b>💡 それでもうまくいかないとき</b>家族のスマホは通話用、自分のスマホはケーキ用にして、2台で楽しむ方法もおすすめです。</div>
+    <button type="button" class="btn tg-btn" data-gdback>もどる</button>
   </div>
 </div>
 

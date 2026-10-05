@@ -5,12 +5,15 @@
    スマホに渡すのは、キーで署名した「トークンリクエスト」だけ（1時間で使えなくなる）。
    スマホはそれを Ably に見せて、1つのルームにだけ入れる鍵を受け取ります。
 
+   どちらも ?t=URLの本体.署名 が必要。「いっしょに発表（300円）」で買った正しい署名のときだけ部屋に入れる。
    ?secret=xxx … 主役（パパ・ママ）。secret から部屋番号を計算し、ID の頭に "host:" を付ける
    ?room=xxx   … 招待された人。ID の頭は "g:"
    Ably はメッセージに送り主の ID を必ず付ける（なりすまし不可）ので、
    「はじめる」「切る人の指名」は "host:" からのものだけを受け付ける。
    ===================================================================== */
 import { createHash, createHmac, randomBytes } from 'node:crypto';
+import { verifyBody } from '../lib/reveal-sign.mjs';
+import { RevealToken } from '../../src/token.js';
 
 export const roomFromSecret = (secret) =>
   createHash('sha256').update('gr-room:' + secret).digest('base64url').slice(0, 12);
@@ -35,9 +38,11 @@ export function tokenRequest(apiKey, clientId, room, now = Date.now()) {
   return { keyName, ttl, capability, clientId, timestamp, nonce, mac };
 }
 
-export async function handle(req, { apiKey } = {}) {
+export async function handle(req, { apiKey, verify = verifyBody } = {}) {
   if (req.method !== 'GET') return reply(405, { error: 'method' });
   const q = new URL(req.url).searchParams;
+  const tok = RevealToken.decode(q.get('t') || '');
+  if (!tok || !tok.together || !tok.noadRequested || !tok.sig || !verify(tok.body, tok.sig)) return reply(403, { error: 'not_paid' });
   const secret = q.get('secret'), roomQ = q.get('room');
   let room, clientId;
   if (secret) {
