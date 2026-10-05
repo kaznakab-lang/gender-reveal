@@ -47,8 +47,10 @@ function render() {
   next.hidden = st.step === 4;
   next.disabled = (st.step === 1 && !st.sex) || (st.step === 3 && !st.plan);
   next.textContent = st.step === 2 ? 'わかりました' : st.step === 3 ? 'URLをつくる' : '次へ';
-  $('#btnBack').hidden = st.step === 1; // できあがり画面からも、CMの選択に戻れる
-  $('#btnShare').hidden = st.step !== 4;
+  // いっしょに発表のできあがり画面は、カードの中に「招待URLを送る」があるので、下の「共有する」「戻る」は出さない
+  const tgDone = st.step === 4 && st.plan === 'together';
+  $('#btnBack').hidden = st.step === 1 || tgDone; // ひとりずつ見るプランは、できあがり画面からも演出の選択に戻れる
+  $('#btnShare').hidden = st.step !== 4 || tgDone;
   window.scrollTo({ top: 0 });
 }
 
