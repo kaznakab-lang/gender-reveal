@@ -15,7 +15,7 @@ const SIGN_API = `${SITE}/api/sign`;
 const PENDING_KEY = 'gr-pending-noad';
 
 const $ = (s) => document.querySelector(s);
-const st = { step: 1, sex: null, plan: null, url: '', paid: null, working: false };
+const st = { step: 1, sex: null, plan: null, url: '', paid: null, working: false, tg: null };
 const pressed = (ids, on) => ids.forEach((id) => $(id).setAttribute('aria-pressed', String(id === on)));
 const sexName = (sex) => (sex === 'boy' ? '男の子' : '女の子');
 function toast(msg) {
@@ -51,6 +51,7 @@ function render() {
 
 function showDone() {
   $('#url').textContent = st.url;
+  st.tg = null; $('#tgReady').hidden = true; $('#tgNote').hidden = true; $('#tgMake').hidden = false;
   $('#sumSex').textContent = sexName(st.sex) + '（受け取った人にはひみつ）';
   $('#sumPlan').textContent = st.plan === 'paid' ? '感動まっすぐ（購入済み）' : '笑いあり（無料）';
   st.step = 4; render();
@@ -164,6 +165,31 @@ $('#btnCopy').onclick = async () => {
     const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); toast('選択しました。長押しでコピーしてね');
   }
 };
+
+/* ================= いっしょに発表 =================
+   合い言葉（secret）をこのスマホで作り、部屋番号はその合い言葉から計算する（サーバーと同じ計算）。
+   招待URL：#本体~g部屋番号　／　主役の画面：#本体~h合い言葉（主役だけが「はじめる」を押せる） */
+const b64u = (bytes) => btoa(String.fromCharCode(...bytes)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+async function makeTogether() {
+  const secret = b64u(crypto.getRandomValues(new Uint8Array(16)));
+  const hash = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode('gr-room:' + secret)));
+  const room = b64u(hash).slice(0, 12);
+  return { guest: `${st.url}~g${room}`, host: `${st.url}~h${secret}` };
+}
+$('#tgMake').onclick = async () => {
+  st.tg = await makeTogether();
+  $('#tgMake').hidden = true; $('#tgReady').hidden = false; $('#tgNote').hidden = false;
+};
+$('#tgInvite').onclick = async () => {
+  if (!st.tg) return;
+  const data = { title: 'いっしょにジェンダーリビール', text: '赤ちゃんは男の子？女の子？ 通話をつないだまま開いて、いっしょにケーキを切ろう', url: st.tg.guest };
+  try {
+    if (Capacitor.isNativePlatform()) await Share.share({ ...data, dialogTitle: '招待する' });
+    else if (navigator.share) await navigator.share(data);
+    else { await navigator.clipboard.writeText(st.tg.guest); toast('招待URLをコピーしました'); }
+  } catch (_) { /* 閉じただけ */ }
+};
+$('#tgHost').onclick = () => { if (st.tg) openSite(st.tg.host); };
 
 // 共有：iPhone標準の共有画面（LINE・メッセージ・メールなど、入っているアプリから選べる）
 $('#btnShare').onclick = async () => {

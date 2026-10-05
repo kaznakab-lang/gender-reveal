@@ -128,12 +128,33 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
 .spark{opacity:0;animation:spark .33s ease-out infinite}
 .spark.r{animation-delay:.165s}
 @keyframes spark{0%,30%{opacity:0;transform:scale(.4)}45%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.3) translateY(-8px)}}
-.note{position:absolute;font-size:26px;color:#ffd0e2;opacity:0;animation:note 1.1s ease-out infinite}
+.mnote{position:absolute;font-size:26px;color:#ffd0e2;opacity:0;animation:note 1.1s ease-out infinite}
 @keyframes note{0%{opacity:0;transform:translateY(10px) rotate(-8deg)}25%{opacity:1}100%{opacity:0;transform:translateY(-70px) rotate(10deg)}}
 .drum-wrap.hold .drum{animation:none}
 .drum-wrap.hold .stick{animation:none;transform:rotate(var(--up))}
-.drum-wrap.hold .spark,.drum-wrap.hold .note{animation:none;opacity:0}
+.drum-wrap.hold .spark,.drum-wrap.hold .mnote{animation:none;opacity:0}
 .sample-badge{position:absolute;left:50%;top:max(10px,env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:12;pointer-events:none;font-family:var(--f-latin);font-weight:700;font-size:12px;letter-spacing:.28em;padding:5px 14px 5px 16px;border-radius:999px;background:rgba(107,79,90,.78);color:#fff;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+/* ---------- いっしょに発表（待ち合わせ） ---------- */
+.lobby{z-index:11;overflow-y:auto;justify-content:flex-start;padding-top:max(28px,env(safe-area-inset-top,0px));padding-bottom:24px}
+.lobby .intro-card{margin-top:2vh;width:100%;max-width:24rem;align-items:stretch;text-align:left}
+.lobby .eyebrow,.lobby .intro-title,.lobby .lead,.lobby .note{text-align:center;align-self:center}
+.lb-call{background:linear-gradient(100deg,var(--pink-wash),var(--blue-wash));border-radius:14px;padding:10px 12px;font-size:13px;line-height:1.6}
+.lb-label{font-weight:900;font-size:13px;margin:6px 0 -4px}
+.lb-input{width:100%;box-sizing:border-box;font:inherit;font-size:16px;padding:12px 14px;border-radius:14px;border:2px solid #eddfe5;background:#fff;color:var(--cocoa)}
+.lb-input:focus{outline:none;border-color:var(--pink)}
+.lb-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.lb-list li{display:flex;align-items:center;gap:10px;background:#fff;border-radius:14px;padding:9px 12px;box-shadow:0 3px 10px rgba(180,140,170,.1);font-size:14px;font-weight:700}
+.lb-av{flex:none;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:13px}
+.lb-list .r{margin-left:auto;font-size:11px;font-weight:500;color:var(--cocoa-soft)}
+.lb-roles{display:flex;flex-direction:column;gap:6px}
+.lb-role{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff;border-radius:12px;padding:6px 6px 6px 12px;font-size:13px;box-shadow:0 3px 10px rgba(180,140,170,.1)}
+.lb-role select{font:inherit;font-size:13px;font-weight:900;color:var(--pink-deep);border:0;background:var(--pink-wash);border-radius:999px;padding:6px 10px;max-width:58%}
+.lobby .btn-start{align-self:center}
+.lobby .btn-start:disabled{opacity:.45}
+.lb-err{color:#c0392b;font-size:13px;text-align:center}
+.who{position:absolute;left:12px;right:12px;top:max(12px,env(safe-area-inset-top,0px));z-index:9;display:flex;align-items:center;justify-content:space-between;gap:8px;background:rgba(255,255,255,.9);border-radius:999px;padding:7px 14px;font-size:12px;font-weight:700;color:var(--cocoa);box-shadow:0 4px 14px rgba(0,0,0,.08);pointer-events:none}
+.who b{color:var(--pink-deep)}
+.who.me b{color:#2e9e6a}
 .t-dots{margin:0;font-weight:900;font-size:clamp(24px,7vw,36px);letter-spacing:.2em;color:#ffe9f1;opacity:0}
 .t-dots.in{animation:fadeUp .5s ease-out both}
 .t-beat{margin:0;font-family:var(--f-mincho);font-weight:800;font-size:22px;letter-spacing:.3em;color:var(--rose);opacity:0}
@@ -232,7 +253,7 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
 @keyframes flash{0%{opacity:1}100%{opacity:0}}
 
 @media (prefers-reduced-motion: reduce){
-  .rays,.burst,.cm-burst,.btn-ad,.t-text.roll,.guide,.orn,.good,.drum,.note{animation:none}
+  .rays,.burst,.cm-burst,.btn-ad,.t-text.roll,.guide,.orn,.good,.drum,.mnote{animation:none}
 }
 </style>
 
@@ -259,9 +280,9 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
   <div id="tension" class="layer tension" hidden aria-live="polite">
     <p id="tText" class="t-text"></p>
     <div id="drum" class="drum-wrap" hidden aria-hidden="true">
-      <span class="note" style="left:-8%;top:12%;animation-delay:0s">♪</span>
-      <span class="note" style="right:-10%;top:2%;animation-delay:.4s">♫</span>
-      <span class="note" style="left:6%;top:-18%;animation-delay:.8s;font-size:19px">♪</span>
+      <span class="mnote" style="left:-8%;top:12%;animation-delay:0s">♪</span>
+      <span class="mnote" style="right:-10%;top:2%;animation-delay:.4s">♫</span>
+      <span class="mnote" style="left:6%;top:-18%;animation-delay:.8s;font-size:19px">♪</span>
       <svg class="drum" viewBox="0 0 260 220">
         <defs>
           <linearGradient id="drumShell" x1="0" x2="1"><stop offset="0" stop-color="#f6a9c6"/><stop offset=".5" stop-color="#ffe3ee"/><stop offset="1" stop-color="#9ccdf3"/></linearGradient>
@@ -374,6 +395,37 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
       <p class="note">音が出ます。iPhoneはマナーモードを切ってね</p>
     </div>
   </div>
+
+  <div id="lobby" class="layer intro lobby" hidden>
+    <div class="intro-card">
+      <p class="eyebrow">GENDER REVEAL</p>
+      <h1 class="intro-title" id="lbTitle" style="font-size:clamp(22px,6.4vw,30px)">いっしょに発表に<br>招待されました</h1>
+      <div id="lbJoin" style="display:flex;flex-direction:column;gap:12px">
+        <div class="lb-call">📞 LINEやFaceTimeで、家族とつないだまま開いてね。通話の画面は小さな窓にできます。</div>
+        <p class="lb-label">あなたの呼び名</p>
+        <input id="lbName" class="lb-input" maxlength="12" placeholder="例：おばあちゃん" autocomplete="off">
+        <p class="note">みんなの画面に表示されます。登録はありません。</p>
+        <button id="lbJoinBtn" class="btn-start" type="button">参加する</button>
+        <p id="lbErr" class="lb-err" hidden></p>
+      </div>
+      <div id="lbRoom" hidden style="display:flex;flex-direction:column;gap:12px">
+        <p class="lead" id="lbWait">みんながそろうのを待っています</p>
+        <ul id="lbList" class="lb-list"></ul>
+        <div id="lbHost" hidden style="display:flex;flex-direction:column;gap:10px">
+          <p class="lb-label">ケーキを切る人</p>
+          <div class="lb-roles">
+            <label class="lb-role">最初のひと切り<select id="lbCut1"></select></label>
+            <label class="lb-role">最後のひと切り<select id="lbCut2"></select></label>
+            <label class="lb-role">ケーキを開く<select id="lbOpen"></select></label>
+          </div>
+          <button id="lbStart" class="btn-start" type="button">はじめる</button>
+          <p class="note">まだ来ていない人には、アプリから招待のURLを送ってね</p>
+        </div>
+        <p id="lbGuestNote" class="note" hidden>パパ・ママが「はじめる」を押すと、みんなの画面で同時に始まります</p>
+      </div>
+    </div>
+  </div>
+  <div id="who" class="who" hidden></div>
 
   <div id="intro" class="layer intro">
     <div class="mobile" aria-hidden="true">
@@ -1552,6 +1604,7 @@ function frame(tms) {
 let drag = null, lastCutSfx = 0;
 const cutting = () => S.phase === 'cut' || S.phase === 'cut2';
 function advanceCut(before, speed) {
+  TG.localCut();
   if (S.phase === 'cut') {
     const g = $('#guide'); if (g) g.hidden = true;
     if (S.p > 0.14) $('#hint').hidden = true;
@@ -1566,13 +1619,14 @@ function advanceCut(before, speed) {
 }
 cv.addEventListener('pointerdown', (e) => {
   if (!cutting() && S.phase !== 'spread') return;
+  if (!TG.mayTouch()) return;   // いっしょに発表：切る番・開く番の人だけ
   drag = { id: e.pointerId, y: e.clientY, x0: e.clientX, t: performance.now() };
   try { cv.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
   e.preventDefault();
 });
 cv.addEventListener('pointermove', (e) => {
   if (!drag || e.pointerId !== drag.id) return;
-  if (S.phase === 'spread') { spreadTo(Math.abs(e.clientX - drag.x0) / (W * 0.38)); return; }
+  if (S.phase === 'spread') { TG.localSpread(Math.abs(e.clientX - drag.x0) / (W * 0.38)); return; }
   if (!cutting()) return;
   const tm = performance.now(), dy = e.clientY - drag.y, dtm = Math.max(1, tm - drag.t);
   drag.y = e.clientY; drag.t = tm;
@@ -1585,16 +1639,17 @@ cv.addEventListener('pointermove', (e) => {
   advanceCut(before, (dy / dtm) * 1000);
 });
 const endDrag = () => {
-  if (S.phase === 'spread' && S.open > 0.55) completeOpen();
+  if (S.phase === 'spread' && S.open > 0.55 && TG.mayCompleteOpen()) { completeOpen(); TG.opened(); }
   drag = null;
 };
 // iPhone：指でなぞったときに、画面ごと引っぱられたり戻ったりしないようにする
-document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+document.addEventListener('touchmove', (e) => { if (!(e.target.closest && e.target.closest('#lobby'))) e.preventDefault(); }, { passive: false });
 cv.addEventListener('pointerup', endDrag);
 cv.addEventListener('pointercancel', endDrag);
 document.addEventListener('keydown', (e) => {
+  if (!TG.mayTouch()) return;
   if (S.phase === 'spread' && (e.key === 'ArrowRight' || e.key === 'ArrowLeft' || e.key === ' ' || e.key === 'Enter')) {
-    e.preventDefault(); spreadTo(S.open + 0.1); return;
+    e.preventDefault(); TG.localSpread(S.open + 0.1); return;
   }
   if (!cutting()) return;
   if (e.key === 'ArrowDown' || e.key === ' ' || e.key === 'Enter') {
@@ -1609,7 +1664,15 @@ async function T(promise) { const g = gen; await promise; if (g !== gen) throw A
 function say(text, cls) { const tt = $('#tText'); tt.className = 't-text' + (cls ? ' ' + cls : ''); tt.textContent = text; retrigger(tt, 'in'); }
 function beat(v = 1) { sfx.heart(v); haptic([40, 160, 30]); retrigger($('#tBeat'), 'go'); S.shake = Math.max(S.shake, 2); }
 // the result comes from the share token after # in the URL
-const TOKEN = RevealToken.decode((location.hash || '').slice(1));
+const HASH_PARTS = (location.hash || '').slice(1).split('~');
+const TOKEN = RevealToken.decode(HASH_PARTS[0]);
+// いっしょに発表：~g<部屋番号>（招待された人） / ~h<合い言葉>（主役。アプリの中だけで使う）
+const TOGETHER = (() => {
+  const r = HASH_PARTS[1] || '';
+  if (/^g[A-Za-z0-9_-]{12}$/.test(r)) return { host: false, room: r.slice(1) };
+  if (/^h[A-Za-z0-9_-]{16,64}$/.test(r)) return { host: true, secret: r.slice(1) };
+  return null;
+})();
 /* ---- CMなし（100円）----
    アプリで購入すると、URLの最後にサーバーの署名（.xxxx）が付きます。
    その署名をここで公開鍵で確かめられたときだけCMなしにします（URLを書き換えても有効になりません）。
@@ -1674,7 +1737,7 @@ function enterCake() {
     await pause(500);
     tween(S.knife, 'alpha', 1, 400, ease.out);
     const hint = $('#hint'); hint.hidden = false; $('#guide').hidden = false; placeGuide();
-    S.phase = 'cut';
+    S.phase = 'cut'; TG.mark('cut');
   });
 }
 
@@ -1821,6 +1884,7 @@ function showPrompt(title, sub, mode) {
   p.hidden = false; retrigger(p, 'in');
 }
 function startFinalCut() {
+  TG.mark('cut2');
   S.phase = 'cut2'; S.maxP = 1; S.knife.tremble = 0.3;
   tween(S, 'spotR', 1.0, 800, ease.out);
   showPrompt('最後まで切ってみて！', 'ナイフを下までなぞってね', 'cut');
@@ -1835,7 +1899,7 @@ function finishFinalCut() {
     await pause(350);
     tween(S.knife, 'fy', -G.rx * 1.6, 700, ease.in); tween(S.knife, 'alpha', 0, 650, ease.in);
     await pause(900);
-    S.phase = 'spread'; spreadStarted = false;
+    S.phase = 'spread'; spreadStarted = false; TG.mark('spread');
     showPrompt('ケーキを開いてみて！', '<span class="arw l">←</span> 指で左右に広げてね <span class="arw r">→</span>', 'spread');
   });
 }
@@ -1855,7 +1919,7 @@ function spreadTo(target) {
   S.open = target;
   S.light = Math.max(S.light, target);
   S.spotR = Math.max(S.spotR, 1.0 + 0.05 * target);
-  if (target >= 0.97) completeOpen();
+  if (target >= 0.97) { completeOpen(); TG.opened(); }
 }
 function completeOpen() {
   if (S.phase !== 'spread') return;
@@ -1873,6 +1937,7 @@ function completeOpen() {
 }
 
 function celebrate() {
+  TG.mark('result');
   S.phase = 'result';
   app.dataset.sex = S.sex;
   const word = S.sex === 'boy' ? 'BOY!' : 'GIRL!';
@@ -1909,6 +1974,235 @@ function celebrate() {
   });
 }
 
+/* ================= いっしょに発表（全員の画面をそろえる） =================
+   通話は LINE や FaceTime。ここでは「いま何%切ったか」「次の場面へ」の短い合図だけを送り合う。
+   進行役は主役（パパ・ママ）。「はじめる」と「切る人の指名」は主役からの合図だけを信じる。
+   中継役は Ably（キーは Netlify の環境変数だけ。スマホには1時間で切れる合い言葉だけが届く）。
+   ?rtlocal を付けると、同じブラウザの中だけで動く練習用の中継役になる（テスト用）。 */
+const TG = (() => {
+  const on = !!TOGETHER;
+  const st = { me: null, host: !!(TOGETHER && TOGETHER.host), room: null, members: new Map(), cfg: { cut1: 'host', cut2: 'host', open: 'all' }, started: false, phase: 'lobby', send: null, lastSent: 0, remote: false, spreads: new Map(), openTimer: 0, lastO: 0 };
+  const COLORS = ['#e57fa6', '#5a9fd8', '#c9a052', '#7bbf8e', '#a58ad6', '#f0a35e', '#6fb7c4'];
+  const nameOf = (id) => (st.members.get(id) || {}).name || 'だれか';
+  const hostId = () => { for (const [id, m] of st.members) if (m.host) return id; return null; };
+  const resolve = (who) => (who === 'host' ? hostId() : who);
+  const stage = () => (S.phase === 'cut' ? 'cut1' : S.phase === 'cut2' ? 'cut2' : S.phase === 'spread' ? 'open' : null);
+  const isMe = (who) => who === 'all' || resolve(who) === st.me;
+
+  function badge() {
+    const el = $('#who'); const sg = stage();
+    if (!on || !st.started || !sg || S.phase === 'opened') { el.hidden = true; return; }
+    const who = st.cfg[sg]; const verb = sg === 'open' ? '開くのは' : 'いま切っているのは';
+    const name = who === 'all' ? 'みんな' : resolve(who) === st.me ? 'あなた' : nameOf(resolve(who));
+    el.className = 'who' + (isMe(who) ? ' me' : '');
+    el.innerHTML = '';
+    const a = document.createElement('span'); a.append(verb + ' '); const b = document.createElement('b'); b.textContent = name; a.append(b);
+    const c = document.createElement('span'); c.textContent = '👀 ' + st.members.size + '人で見ています';
+    el.append(a, c); el.hidden = false;
+    // 自分の番でない人には「切ってみて！」の案内を出さない
+    if (!isMe(who) && !(st.host && who !== 'all' && !st.members.has(resolve(who)))) {
+      for (const sel of ['#hint', '#guide', '#guide2', '#prompt']) { const g = $(sel); if (g) g.hidden = true; }
+    }
+  }
+  setInterval(badge, 150);
+
+  // ---------- 中継役 ----------
+  async function connectAbly() {
+    await new Promise((res, rej) => { if (window.Ably) return res(); const sc = document.createElement('script'); sc.src = 'https://cdn.ably.com/lib/ably.min-2.js'; sc.onload = res; sc.onerror = () => rej(new Error('script')); document.head.appendChild(sc); });
+    const params = TOGETHER.host ? { secret: TOGETHER.secret } : { room: TOGETHER.room };
+    const test = await fetch('/api/rt-token?' + new URLSearchParams(params));
+    if (!test.ok) throw new Error('token ' + test.status);
+    const first = await test.json();
+    st.room = JSON.parse(first.capability) && Object.keys(JSON.parse(first.capability))[0].slice(5);
+    let used = false;
+    const ably = new window.Ably.Realtime({ echoMessages: false, authCallback: (_p, cb) => { if (!used) { used = true; cb(null, first); return; } fetch('/api/rt-token?' + new URLSearchParams(params)).then((r) => r.json()).then((t) => cb(null, t), (e) => cb(e)); } });
+    await new Promise((res, rej) => { ably.connection.once('connected', res); ably.connection.once('failed', () => rej(new Error('failed'))); });
+    st.me = ably.auth.clientId;
+    const ch = ably.channels.get('room:' + st.room);
+    ch.subscribe((m) => onMsg(m.clientId, m.data));
+    const refresh = async () => { const list = await ch.presence.get(); st.members = new Map(list.map((p) => [p.clientId, p.data || {}])); renderLobby(); };
+    ch.presence.subscribe(refresh);
+    await ch.presence.enter({ name: myName, host: st.host });
+    await refresh();
+    st.send = (data) => ch.publish('m', data);
+  }
+  function connectLocal() {
+    st.me = (st.host ? 'host:' : 'g:') + Math.random().toString(36).slice(2, 10);
+    st.room = TOGETHER.host ? 'local' : 'local';
+    const bc = new BroadcastChannel('gr-room-local');
+    const seen = new Map();
+    const hello = () => bc.postMessage({ from: st.me, hello: { name: myName, host: st.host } });
+    bc.onmessage = (e) => {
+      const d = e.data;
+      if (d.hello) { seen.set(d.from, Date.now()); if (!st.members.has(d.from)) { st.members.set(d.from, d.hello); renderLobby(); hello(); } return; }
+      if (d.bye) { st.members.delete(d.from); renderLobby(); return; }
+      onMsg(d.from, d.data);
+    };
+    st.members.set(st.me, { name: myName, host: st.host });
+    setInterval(() => { hello(); const now = Date.now(); for (const [id, t] of seen) if (now - t > 4000) { seen.delete(id); st.members.delete(id); renderLobby(); } }, 1000);
+    addEventListener('pagehide', () => bc.postMessage({ from: st.me, bye: 1 }));
+    hello(); renderLobby();
+    st.send = (data) => { bc.postMessage({ from: st.me, data }); };
+    return Promise.resolve();
+  }
+  const send = (data) => { if (st.send) try { st.send(data); } catch (_) { /* ignore */ } };
+
+  // ---------- 待ち合わせ画面 ----------
+  let myName = '';
+  function renderLobby() {
+    const ul = $('#lbList'); if (!ul) return;
+    ul.innerHTML = '';
+    let i = 0;
+    const ids = [...st.members.keys()].sort((a, b) => (st.members.get(b).host ? 1 : 0) - (st.members.get(a).host ? 1 : 0));
+    for (const id of ids) {
+      const m = st.members.get(id); const li = document.createElement('li');
+      const av = document.createElement('span'); av.className = 'lb-av'; av.style.background = COLORS[i++ % COLORS.length]; av.textContent = (m.name || '？').slice(0, 1);
+      const nm = document.createElement('span'); nm.textContent = (m.name || 'だれか') + (id === st.me ? '（あなた）' : '');
+      const r = document.createElement('span'); r.className = 'r'; r.textContent = m.host ? '主役' : '● 参加中';
+      li.append(av, nm, r); ul.appendChild(li);
+    }
+    $('#lbWait').textContent = st.started ? 'はじまっています' : st.members.size + '人がそろいました';
+    if (st.host) fillRoles();
+    badge();
+  }
+  function fillRoles() {
+    const opts = (withAll) => {
+      const list = [['host', 'パパ・ママ（あなた）']];
+      for (const [id, m] of st.members) if (!m.host) list.push([id, m.name || 'だれか']);
+      if (withAll) list.push(['all', 'みんなで']);
+      return list;
+    };
+    for (const [sel, key, all] of [['#lbCut1', 'cut1', false], ['#lbCut2', 'cut2', false], ['#lbOpen', 'open', true]]) {
+      const el = $(sel); const cur = st.cfg[key]; el.innerHTML = '';
+      for (const [v, t] of opts(all)) { const o = document.createElement('option'); o.value = v; o.textContent = t; el.appendChild(o); }
+      el.value = [...el.options].some((o) => o.value === cur) ? cur : (all ? 'all' : 'host');
+      st.cfg[key] = el.value;
+      el.onchange = () => { st.cfg[key] = el.value; };
+    }
+  }
+
+  // ---------- 合図を受け取る ----------
+  function begin(cfg) {
+    st.cfg = cfg; st.started = true;
+    $('#lobby').hidden = true; $('#intro').hidden = true;
+    audioInit(); decideSex(); hardReset();
+    enterCake();
+    renderLobby();
+  }
+  function applyCut(p) {
+    if (!cutting() || p <= S.p) return;
+    const before = S.p; st.remote = true;
+    S.p = Math.min(S.maxP, p);
+    try { advanceCut(before, Math.min(900, (S.p - before) * 6000)); } finally { st.remote = false; }
+  }
+  function applyOpen(v) { st.remote = true; try { spreadTo(v); } finally { st.remote = false; } }
+  function onMsg(from, d) {
+    if (!d || typeof d !== 'object') return;
+    const fromHost = String(from).startsWith('host:');
+    switch (d.t) {
+      case 'start': if (fromHost && !st.started) begin(d.cfg); break;
+      case 'p': { const who = resolve(st.cfg[d.s === 1 ? 'cut1' : 'cut2']); if ((from === who || fromHost) && ((d.s === 1 && S.phase === 'cut') || (d.s === 2 && S.phase === 'cut2'))) applyCut(d.p); break; }
+      case 'o': // ひとりで開く場合はその人の値、みんなで開く場合は主役が合計して配る
+        if (st.cfg.open === 'all') { if (st.host) { st.spreads.set(from, d.v); hostAggregate(); } }
+        else if (from === resolve(st.cfg.open) || fromHost) applyOpen(d.v);
+        break;
+      case 'O': if (fromHost && st.cfg.open === 'all') applyOpen(d.v); break;
+      case 'opened': if (S.phase === 'spread') completeOpen(); break;
+      case 'sync': if (fromHost) catchUp(d); break;
+      case 'phase': if (fromHost) catchUp(d); break;
+    }
+  }
+  function hostAggregate() {
+    const n = Math.max(1, st.members.size);
+    let sum = 0; for (const v of st.spreads.values()) sum += v;
+    const total = Math.min(1, sum / Math.max(1, n * 0.5));
+    if (total > S.open) { applyOpen(total); send({ t: 'O', v: total }); }
+    // ある程度ひらいて、しばらく指が止まったら、主役が「開いた」を出す
+    clearTimeout(st.openTimer);
+    if (S.phase === 'spread' && S.open >= 0.6) st.openTimer = setTimeout(() => { if (S.phase === 'spread') { completeOpen(); send({ t: 'opened' }); } }, 1200);
+  }
+  // 途中から入った人・通信が切れて戻った人を、主役の場面に合わせる
+  function catchUp(d) {
+    if (!st.started && d.cfg) { st.cfg = d.cfg; }
+    if (!st.started) {
+      if (d.ph === 'lobby') return;
+      st.started = true; $('#lobby').hidden = true; $('#intro').hidden = true;
+      audioInit(); decideSex(); hardReset();
+      S.cakeY = 0; S.knife.alpha = 1;
+      if (d.ph === 'cut') { S.phase = 'cut'; S.p = d.p || 0; }
+      else if (d.ph === 'cut2') { S.p = Math.max(d.p || 0, S.maxP); startFinalCut(); S.p = d.p || S.p; }
+      else if (d.ph === 'spread' || d.ph === 'result') { S.p = 1; S.maxP = 1; S.knife.alpha = 0; S.phase = 'spread'; spreadStarted = false; applyOpen(1); }
+      else { S.p = S.maxP; S.phase = 'watch'; }
+      renderLobby(); return;
+    }
+    if (S.phase === 'watch') {
+      if (d.ph === 'cut2') { startFinalCut(); if (d.p) applyCut(d.p); }
+      else if (d.ph === 'spread' || d.ph === 'result') { S.p = 1; S.maxP = 1; S.knife.alpha = 0; S.phase = 'spread'; spreadStarted = false; applyOpen(1); }
+    }
+    if (d.ph === 'cut' && S.phase === 'cut' && d.p) applyCut(d.p);
+    if (d.ph === 'cut2' && S.phase === 'cut2' && d.p) applyCut(d.p);
+  }
+  // 主役は1秒ごとに今の場面を配る（途中参加の人のため）
+  setInterval(() => { if (on && st.host && st.started && st.phase !== 'left') send({ t: 'sync', ph: st.phase, p: S.p, cfg: st.cfg }); else if (on && st.host) send({ t: 'sync', ph: 'lobby', cfg: st.cfg }); }, 1000);
+
+  // ---------- 入口 ----------
+  async function join() {
+    const name = ($('#lbName').value || '').trim().slice(0, 12);
+    if (!name) { $('#lbName').focus(); return; }
+    myName = name; audioInit();
+    $('#lbJoinBtn').disabled = true; $('#lbErr').hidden = true;
+    try {
+      if (new URLSearchParams(location.search).has('rtlocal')) await connectLocal(); else await connectAbly();
+      $('#lbJoin').hidden = true; $('#lbRoom').hidden = false;
+      $('#lbHost').hidden = !st.host; $('#lbGuestNote').hidden = st.host;
+      renderLobby();
+    } catch (e) {
+      console.warn(e);
+      $('#lbErr').textContent = 'つながりませんでした。電波のよい所で、もう一度お試しください。';
+      $('#lbErr').hidden = false; $('#lbJoinBtn').disabled = false;
+    }
+  }
+  if (on && TOKEN) {
+    $('#intro').hidden = true; $('#lobby').hidden = false;
+    if (st.host) { $('#lbTitle').innerHTML = 'いっしょに発表の<br>主役の画面です'; $('#lbName').value = 'パパ・ママ'; }
+    $('#lbJoinBtn').addEventListener('click', join);
+    $('#lbName').addEventListener('keydown', (e) => { if (e.key === 'Enter') join(); });
+    $('#lbStart').addEventListener('click', () => { if (st.started) return; send({ t: 'start', cfg: st.cfg }); begin(st.cfg); });
+  }
+
+  return {
+    on,
+    mark(ph) { if (on && st.started) { st.phase = ph; if (st.host) send({ t: 'phase', ph, p: S.p }); } },
+    leave() { st.started = false; $('#who').hidden = true; },
+    mayTouch() {
+      if (!on || !st.started) return true;
+      const sg = stage(); if (!sg) return true;
+      const who = st.cfg[sg];
+      if (isMe(who)) return true;
+      // 指名した人が抜けてしまったときは、主役が代わりに切れる
+      return st.host && who !== 'all' && !st.members.has(resolve(who));
+    },
+    mayCompleteOpen() { return !on || st.cfg.open !== 'all'; },
+    localCut() {
+      if (!on || st.remote || !st.started) return;
+      const now = performance.now(); const s = S.phase === 'cut' ? 1 : 2;
+      if (S.p >= S.maxP || now - st.lastSent > 70) { st.lastSent = now; send({ t: 'p', s, p: S.p }); }
+    },
+    localSpread(v) {
+      if (!on || !st.started) { spreadTo(v); return; }
+      if (st.cfg.open === 'all') {
+        v = clamp(v, 0, 1);
+        if (st.host) { st.spreads.set(st.me, Math.max(st.spreads.get(st.me) || 0, v)); hostAggregate(); }
+        else { const now = performance.now(); if (now - st.lastO > 70) { st.lastO = now; send({ t: 'o', v }); } }
+        return;
+      }
+      spreadTo(v);
+      const now = performance.now(); if (now - st.lastO > 70 || v >= 0.97) { st.lastO = now; send({ t: 'o', v: clamp(v, 0, 1) }); }
+    },
+    opened() { if (on && st.started && !st.remote) send({ t: 'opened' }); },
+  };
+})();
+
 /* ================= reset / wiring ================= */
 function hardReset() {
   gen++; tweens = []; drag = null;
@@ -1921,7 +2215,7 @@ function hardReset() {
   $('#tension').classList.remove('on');
   app.style.transform = '';
 }
-if (!TOKEN) { $('#intro').hidden = true; $('#bad').hidden = false; }
+if (!TOKEN) { $('#intro').hidden = true; $('#lobby').hidden = true; $('#bad').hidden = false; }
 else if (RESUME) { $('#intro').hidden = true; $('#resume').hidden = false; }
 $('#btnResume').addEventListener('click', resumeAfterCM);
 $('#btnStart').addEventListener('click', () => {
@@ -1930,7 +2224,7 @@ $('#btnStart').addEventListener('click', () => {
   enterCake();
 });
 $('#btnAd').addEventListener('click', () => goAd(true));
-$('#btnReplay').addEventListener('click', () => { audioInit(); hardReset(); enterCake(); });
+$('#btnReplay').addEventListener('click', () => { TG.leave(); audioInit(); hardReset(); enterCake(); });   // もう一度見るは、ひとりで
 // the comic starburst behind 「CMのあとで！」
 (function buildBurst() {
   const poly = $('#burstPoly'); if (!poly) return;

@@ -10,8 +10,10 @@
 #   /privacy.html, /support.html … プライバシーポリシー、お問い合わせ
 #   /api/sign     … アプリで「CMなし」を買ったときに署名を返す（netlify/functions/sign.mjs）
 #   /api/verify   … 古いブラウザ向けに署名を確かめる（netlify/functions/verify.mjs）
+#   /api/rt-token … 「いっしょに発表」の中継役（Ably）につなぐ合い言葉を出す（netlify/functions/rt-token.mjs）
 #
 # 署名の秘密の鍵は、Netlify の環境変数 REVEAL_SIGN_KEY にだけ置きます。
+# Ably の API キーは、Netlify の環境変数 ABLY_API_KEY にだけ置きます。
 # =====================================================================
 
 [build]
