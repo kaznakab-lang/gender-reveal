@@ -39,3 +39,26 @@ dl.faq dd{margin:4px 0 0;color:var(--cocoa-soft)}
 ul{padding-left:1.2em}
 footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--cocoa-soft);display:flex;flex-wrap:wrap;gap:8px 18px}
 footer a{color:var(--cocoa-soft)}
+
+/* ---------- articles ---------- */
+.crumbs{font-size:12px;color:var(--cocoa-soft);margin-top:8px}
+.crumbs a{color:var(--cocoa-soft)}
+.meta{font-size:13px;color:var(--cocoa-soft);margin:0 0 20px}
+.toc{background:var(--card);border-radius:16px;padding:14px 18px;margin:20px 0;box-shadow:0 6px 18px rgba(180,140,170,.12);font-size:14px}
+.toc b{display:block;margin-bottom:4px}
+.toc ol{margin:0;padding-left:1.4em}
+.idea{background:var(--card);border-radius:18px;padding:16px 18px;margin:14px 0;box-shadow:0 6px 18px rgba(180,140,170,.12)}
+.idea h3{margin:0 0 6px;display:flex;align-items:center;gap:10px}
+.idea h3 .num{flex:none;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-latin);font-weight:600;font-size:14px;color:#fff;background:linear-gradient(135deg,var(--pink),var(--blue))}
+.idea p{margin:0;font-size:15px}
+.idea .tags{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.idea .tags span{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--pink-wash);color:var(--pink-deep)}
+.idea .tags span.b{background:var(--blue-wash);color:var(--blue-deep)}
+.note-box{border-left:4px solid var(--pink);background:#fff;border-radius:0 14px 14px 0;padding:12px 16px;margin:18px 0;font-size:14px}
+.app-card{display:grid;grid-template-columns:64px 1fr;gap:14px;align-items:center;background:linear-gradient(100deg,var(--pink-wash),var(--blue-wash));border-radius:20px;padding:16px;margin:28px 0}
+.app-card img{width:64px;height:64px;border-radius:15px;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.app-card b{display:block}
+.app-card span{font-size:13px;color:var(--cocoa-soft)}
+.related{display:grid;gap:10px;margin-top:12px}
+.related a{display:block;background:var(--card);border-radius:14px;padding:12px 16px;text-decoration:none;color:var(--cocoa);font-weight:700;box-shadow:0 4px 12px rgba(180,140,170,.1)}
+.related a small{display:block;font-weight:500;color:var(--cocoa-soft);font-size:12px}

@@ -236,7 +236,6 @@ button:focus-visible,summary:focus-visible{outline:3px solid var(--gold-deep);ou
 }
 </style>
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3569112084446052" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -1642,7 +1641,7 @@ if (SAMPLE) $('#sampleBadge').hidden = false;
    CMのあと「続きを見る」を押すと、この画面に戻ってきて、カウントダウンから続きます。
    広告（オファーウォール）は AdSense の審査が通ってから出ます。それまでは /cm/ のページが短く挟まるだけです。
    確認用：URLに ?cmtest を付けると、審査前でもCMページへの流れを試せます（例 /r/?cmtest#xxxx）。 */
-const ADS_ON = true;   // CMの区切り（/cm/ のページ）は常に入れる。広告そのものは AdSense の審査が通ると自動で出る
+const ADS_ON = false;  // 本物の広告はケーキの画面では流さない（AdSense のルール）。無料版は「CMのあとで！」のおふざけだけ
 const CM_TEST = new URLSearchParams(location.search).has('cmtest');
 const CM_KEY = 'gr-cm-done';
 // /cm/ のページで「続きを見る」を押したときだけ、同じタブの中に印が残る（URLだけでは飛ばせない）

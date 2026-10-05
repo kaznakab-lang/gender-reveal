@@ -52,7 +52,7 @@ function render() {
 function showDone() {
   $('#url').textContent = st.url;
   $('#sumSex').textContent = sexName(st.sex) + '（受け取った人にはひみつ）';
-  $('#sumPlan').textContent = st.plan === 'paid' ? 'なし（購入済み）' : 'あり（無料）';
+  $('#sumPlan').textContent = st.plan === 'paid' ? '感動まっすぐ（購入済み）' : '笑いあり（無料）';
   st.step = 4; render();
 }
 
