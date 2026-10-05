@@ -63,6 +63,15 @@ function showDone() {
   st.step = 4; render();
 }
 
+function confirmTogether() {
+  return new Promise((resolve) => {
+    const m = $('#tgConfirm'); m.hidden = false; m.scrollTop = 0;
+    const done = (ok) => { m.hidden = true; resolve(ok); };
+    $('#cfBuy').onclick = () => done(true);
+    $('#cfCancel').onclick = () => done(false);
+  });
+}
+
 async function finish() {
   if (st.working) return;
   if (st.plan === 'free') { st.url = freeUrl(st.sex); showDone(); return; }
@@ -70,6 +79,8 @@ async function finish() {
   st.paid = st.paid || {};
   const key = st.plan + ':' + st.sex;
   if (st.paid[key]) { st.url = st.paid[key]; showDone(); return; }
+  // いっしょに発表：購入の前に、通話の組み合わせ（顔が見えるのはiPhone同士のFaceTimeだけ）を必ず確認してもらう
+  if (st.plan === 'together' && !(await confirmTogether())) return;
   st.working = true;
   try {
     const url = await buyNoad(st.sex, st.plan);
@@ -92,7 +103,7 @@ async function buyNoad(sex, plan) {
     if (pending.sex !== sex || pplan !== plan) {
       st.sex = pending.sex; st.plan = pplan;
       pressed(['#optBoy', '#optGirl'], pending.sex === 'boy' ? '#optBoy' : '#optGirl');
-      pressed(['#optFree', '#optPaid', '#optTogether'], pplan === 'together' ? '#optTogether' : '#optPaid');
+      pressed(['#optFree', '#optPaid', '#optTogether'], pplan === 'together' ? '#optTogether' : '#optPaid'); $('#tgNotice').hidden = pplan !== 'together';
       toast(`お支払い済みの「${sexName(pending.sex)}・${pplan === 'together' ? 'いっしょに発表' : '感動まっすぐ'}」のURLを作ります`);
     }
     return redeem(pending);
@@ -159,9 +170,10 @@ async function loadPrice() {
 $('#optBoy').onclick = () => { st.sex = 'boy'; pressed(['#optBoy', '#optGirl'], '#optBoy'); render(); };
 $('#optGirl').onclick = () => { st.sex = 'girl'; pressed(['#optBoy', '#optGirl'], '#optGirl'); render(); };
 const PLANS = ['#optFree', '#optPaid', '#optTogether'];
-$('#optFree').onclick = () => { st.plan = 'free'; pressed(PLANS, '#optFree'); render(); };
-$('#optPaid').onclick = () => { st.plan = 'paid'; pressed(PLANS, '#optPaid'); render(); };
-$('#optTogether').onclick = () => { st.plan = 'together'; pressed(PLANS, '#optTogether'); render(); };
+const tgNote = () => { $('#tgNotice').hidden = st.plan !== 'together'; };
+$('#optFree').onclick = () => { st.plan = 'free'; pressed(PLANS, '#optFree'); tgNote(); render(); };
+$('#optPaid').onclick = () => { st.plan = 'paid'; pressed(PLANS, '#optPaid'); tgNote(); render(); };
+$('#optTogether').onclick = () => { st.plan = 'together'; pressed(PLANS, '#optTogether'); tgNote(); render(); };
 
 // サンプル体験と送信前プレビュー：選んだ性別で、受け取る人と同じ画面を開く
 $('#sample').onclick = (e) => { e.preventDefault(); openSite(freeUrl(st.sex || 'boy')); };
@@ -197,6 +209,13 @@ $('#tgGuide').onclick = () => { $('#gdMain').hidden = false; $('#gdDetail').hidd
 $('#gdMore').onclick = () => { $('#gdMain').hidden = true; $('#gdDetail').hidden = false; $('#guide').scrollTop = 0; };
 document.querySelector('[data-gdback]').onclick = () => { $('#gdMain').hidden = false; $('#gdDetail').hidden = true; };
 document.querySelector('[data-gdclose]').onclick = () => { $('#guide').hidden = true; };
+// みんなiPhone／Androidの人もいる の切り替え
+const setMix = (m) => {
+  document.querySelectorAll('#guide [data-mix]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mix === m)));
+  document.querySelectorAll('#guide [data-c]').forEach((el) => { el.hidden = el.dataset.c !== m; });
+};
+document.querySelectorAll('#guide [data-mix]').forEach((b) => { b.onclick = () => setMix(b.dataset.mix); });
+setMix('all');
 $('#tgInvite').onclick = async () => {
   if (!st.tg) return;
   const data = { title: 'いっしょにジェンダーリビール', text: '赤ちゃんは男の子？女の子？ 通話をつないだまま開いて、いっしょにケーキを切ろう', url: st.tg.guest };
@@ -228,7 +247,7 @@ loadPrice();
   if (!p) return;
   st.sex = p.sex; st.plan = p.plan || 'paid'; st.step = 3;
   pressed(['#optBoy', '#optGirl'], p.sex === 'boy' ? '#optBoy' : '#optGirl');
-  pressed(['#optFree', '#optPaid', '#optTogether'], st.plan === 'together' ? '#optTogether' : '#optPaid');
+  pressed(['#optFree', '#optPaid', '#optTogether'], st.plan === 'together' ? '#optTogether' : '#optPaid'); $('#tgNotice').hidden = st.plan !== 'together';
   render();
   toast('お支払い済みのURLがまだできていません。「URLをつくる」を押すと続きから作れます（追加の料金はかかりません）');
 })();

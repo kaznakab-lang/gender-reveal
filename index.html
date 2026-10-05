@@ -57,8 +57,12 @@
         <span class="txt"><span class="tag">おふざけなし</span><span class="ttl">感動まっすぐ</span><span class="desc">ひとりずつ見てもらいます。ドラムロールのあと、そのまま発表へ。</span></span>
         <span class="price" id="paidPrice">100<small>円</small></span></button>
       <button type="button" class="opt plan paid tgplan" id="optTogether" aria-pressed="false"><span class="check">✓</span>
-        <span class="txt"><span class="tag tg-new">いっしょに・おふざけなし</span><span class="ttl">いっしょに発表</span><span class="desc">LINEやFaceTimeでつないだまま、全員のスマホで同じケーキが同時に動きます。切る人もその場で決められます。</span></span>
+        <span class="txt"><span class="tag tg-new">いっしょに・おふざけなし</span><span class="ttl">いっしょに発表</span><span class="desc">通話をつないだまま、全員のスマホで同じケーキが同時に動きます。切る人もその場で決められます。</span></span>
         <span class="price" id="togetherPrice">300<small>円</small></span></button>
+    </div>
+    <div class="tg-warn" id="tgNotice" hidden>
+      <b>⚠ ご購入の前に、通話のしかたをご確認ください</b>
+      <ul><li><b>顔を見ながら楽しめるのは、全員がiPhoneで「FaceTime」を使うときだけ</b>です。</li><li><b>Androidの人が1人でもいるときは、声だけの通話</b>になります（顔は映りません）。</li><li>LINE・Zoomなどのビデオ通話は、iPhoneではケーキの画面を開くと声だけになります。</li></ul>
     </div>
     <a class="preview" id="samplePaid" href="#" target="_blank" rel="noopener">
       <span class="pv-ico" aria-hidden="true">▶</span>
@@ -108,22 +112,34 @@
   <div class="gd-in" id="gdMain">
     <p class="gd-eb">GENDER REVEAL</p>
     <h2>通話をつないでから<br>はじめましょう</h2>
-    <p class="gd-lead">顔を見ながら、みんなで同じ瞬間に「わぁ！」を。<br>LINEやFaceTimeなど、いつもの通話で大丈夫です。</p>
-    <div class="gd-step"><span class="gd-n">1</span><div><b>先に、通話をつなぐ</b><small>LINEやFaceTimeで、みんなとビデオ通話をつなぎます。</small></div></div>
-    <div class="gd-step"><span class="gd-n">2</span><div><b>このアプリにもどる</b><small>画面の下から上へスワイプして、このアプリにもどります。通話はそのまま続き、相手の顔が小さな窓で表示されます。</small></div></div>
+    <p class="gd-lead">顔を見ながら、みんなで同じ瞬間に「わぁ！」を。<br>まず、通話する人のスマホを選んでください。</p>
+    <div class="gd-tabs"><button type="button" data-mix="all" aria-pressed="true">みんなiPhone</button><button type="button" data-mix="mix" aria-pressed="false">Androidの人もいる</button></div><div class="gd-rec" data-c="all"><b>顔を見ながらできるのは FaceTime だけ</b>ケーキの画面を開いても、相手の顔は小さな窓に映り、自分の顔も相手に映ったままです。<em>⚠ LINEのビデオ通話は、iPhoneではケーキの画面にうつると顔が映らなくなり、声だけの通話になります。</em></div><div class="gd-rec" data-c="mix" hidden><b>iPhoneとAndroidは 声だけの通話になります</b>AndroidにはFaceTimeのアプリがないので、LINEなどの音声通話（スピーカーON）でつなぎます。顔は映りません。<em>⚠ iPhoneの人がケーキの画面を開くと、iPhoneの人のカメラは止まり、声だけになります。おたがいの顔は見えなくなりますが、声はつながったまま。「せーの！」で一緒に楽しめます。</em></div>
+    <div class="gd-step"><span class="gd-n">1</span><div><b>先に、通話をつなぐ</b><small data-c="all">FaceTimeで、みんなとビデオ通話をつなぎます。グループFaceTimeなら何人でもつなげます。</small><small data-c="mix" hidden>LINEで、みんなと通話をつなぎます。スピーカーをONにしておくと、声がよく聞こえます。</small></div></div>
+    <div class="gd-step"><span class="gd-n">2</span><div><b>このアプリにもどる</b><small data-c="all">画面の下から上へスワイプして、このアプリにもどります。通話はそのまま続き、相手の顔が小さな窓で表示されます。</small><small data-c="mix" hidden>画面の下から上へスワイプして、このアプリにもどります。iPhoneのLINEは、ここで声だけの通話になります（顔は映りません）。</small></div></div>
     <div class="gd-step"><span class="gd-n">3</span><div><b>招待URLを送って、ケーキの画面を開く</b><small>みんながそろったら「はじめる」を押します。</small></div></div>
-    <div class="gd-tip"><b>💡 小さな窓にならないときは</b>音声通話にしてスピーカーをONにするだけでも大丈夫。声を聞きながら、一緒にケーキを楽しめます。</div>
+    <div class="gd-tip" data-c="all"><b>💡 小さな窓にならないときは</b>「くわしい設定」でFaceTimeの設定を確認してください。音声通話にしてスピーカーをONにするだけでも、声を聞きながら一緒に楽しめます。</div><div class="gd-tip" data-c="mix" hidden><b>💡 顔も見ながら楽しみたいときは</b>iPhoneの人は、通話をiPadやパソコンなど別の端末でつなぎ、ケーキはスマホで開くと、顔を見ながら一緒に楽しめます。</div>
     <p class="gd-lead">うまくいかないとき → <button type="button" class="tg-link" id="gdMore">くわしい設定を見る</button></p>
     <button type="button" class="btn tg-btn" data-gdclose>わかった</button>
   </div>
   <div class="gd-in" id="gdDetail" hidden>
     <p class="gd-eb">GENDER REVEAL</p>
-    <h2>通話を小さな窓で<br>表示する設定</h2>
-    <div class="gd-step wide"><div><b>FaceTimeの場合</b><small>「設定」→「一般」→「ピクチャ・イン・ピクチャ」→「自動的に開始」をONにします。通話中にホーム画面へ戻ると、通話画面が小さな窓で表示されます。</small></div></div>
-    <div class="gd-step wide"><div><b>LINEの場合</b><small>ビデオ通話中に、画面の「縮小」ボタンを押すと小さな窓になります。表示されない場合は、LINEを最新版に更新してみてください。</small></div></div>
-    <div class="gd-step wide"><div><b>音が小さいとき</b><small>通話をスピーカーにして、iPhoneのマナーモードをOFFにしてください。</small></div></div>
-    <div class="gd-tip"><b>💡 それでもうまくいかないとき</b>家族のスマホは通話用、自分のスマホはケーキ用にして、2台で楽しむ方法もおすすめです。</div>
+    <h2>通話の<br>くわしい設定</h2><div class="gd-tabs"><button type="button" data-mix="all" aria-pressed="true">みんなiPhone</button><button type="button" data-mix="mix" aria-pressed="false">Androidの人もいる</button></div><div class="gd-step wide" data-c="all"><div><b>FaceTimeを小さな窓にする</b><small>iPhoneの「設定」→「一般」→「ピクチャ・イン・ピクチャ」→「自動的に開始」をONにします。通話中にホーム画面へ戻ると、通話画面が小さな窓で表示され、自分の顔も相手に映ったままです。</small></div></div><div class="gd-step wide" data-c="all"><div><b>みんなでFaceTimeをつなぐ</b><small>FaceTimeアプリで「新規FaceTime」を押し、家族を追加して「FaceTime」（ビデオ）で発信します。</small></div></div><div class="gd-step wide" data-c="all"><div><b>LINEを使う場合</b><small>iPhoneのLINEは、ほかの画面にうつると顔が映らず、声だけの通話になります。LINEの「縮小」ボタンの小さな窓は、LINEの中でしか表示されません。顔を見ながら楽しみたいときは、FaceTimeを使ってください。</small></div></div><div class="gd-step wide" data-c="mix" hidden><div><b>LINEでみんなとつなぐ</b><small>家族のグループトークを開き、右上の電話マークから「音声通話」または「ビデオ通話」を始めます。</small></div></div><div class="gd-step wide" data-c="mix" hidden><div><b>Androidの人：小さな窓の設定</b><small>「設定」→「アプリ」→「LINE」→「ピクチャー イン ピクチャー」を許可にします（機種によって名前が少しちがいます）。ホーム画面に戻ると、通話が小さな窓で表示されます。</small></div></div><div class="gd-step wide" data-c="mix" hidden><div><b>iPhoneの人：声だけになります</b><small>ケーキの画面を開くと、iPhoneのLINEはカメラが止まり、声だけの通話になります。これはiPhoneのLINEのしくみで、設定では変えられません。顔も見たいときは、通話を別の端末（iPadやパソコンなど）でつないでください。</small></div></div><div class="gd-step wide"><div><b>音が小さいとき</b><small>通話をスピーカーにして、音量を上げてください。iPhoneはマナーモードもOFFにしてください。</small></div></div><div class="gd-tip"><b>💡 それでもうまくいかないとき</b>家族のスマホは通話用、自分のスマホはケーキ用にして、2台で楽しむ方法もおすすめです。</div>
     <button type="button" class="btn tg-btn" data-gdback>もどる</button>
+  </div>
+</div>
+
+<!-- いっしょに発表：購入前の確認 -->
+<div id="tgConfirm" class="gd" hidden role="dialog" aria-label="ご購入前の確認">
+  <div class="gd-in">
+    <p class="gd-eb">GENDER REVEAL</p>
+    <h2>ご購入の前に<br>ご確認ください</h2>
+    <p class="gd-lead">「いっしょに発表」は、家族と通話をつないだまま楽しむプランです。<br>スマホの組み合わせで、できることが変わります。</p>
+    <div class="cf-case ok"><span class="cf-ico">📹</span><div><b>全員 iPhone → 顔を見ながらできます</b><small>FaceTimeのビデオ通話を使ってください。顔を見ながらできるのは、FaceTimeだけです。</small></div></div>
+    <div class="cf-case voice"><span class="cf-ico">🔊</span><div><b>iPhone と Android → 声だけになります</b><small>Androidの人が1人でもいるときは、LINEなどの音声通話（声だけ）で楽しみます。顔は映りません。</small></div></div>
+    <div class="gd-tip"><b>💡 iPhone同士でも、LINEやZoomのビデオ通話は</b>ケーキの画面を開くと声だけになります。顔を見ながら楽しみたいときは、FaceTimeを使ってください。</div>
+    <p class="gd-lead">ケーキはどの組み合わせでも、全員の画面で同時に動きます。</p>
+    <button type="button" class="btn tg-btn" id="cfBuy">わかりました。購入へ進む</button>
+    <button type="button" class="cf-cancel" id="cfCancel">やめる</button>
   </div>
 </div>
 

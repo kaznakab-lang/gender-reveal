@@ -119,3 +119,24 @@ body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .gd-step small{display:block;font-size:12.5px;line-height:1.65;color:var(--cocoa-soft);margin-top:2px}
 .gd-tip{background:linear-gradient(100deg,var(--pink-wash),var(--blue-wash));border-radius:14px;padding:10px 12px;font-size:12.5px;line-height:1.7}
 .gd-tip b{display:block}
+.gd-tabs{display:flex;gap:6px;justify-content:center}
+.gd-tabs button{border:0;font:inherit;font-size:12px;font-weight:900;padding:6px 14px;border-radius:999px;background:#fff;color:var(--cocoa);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.gd-tabs button[aria-pressed="true"]{background:var(--cocoa);color:#fff}
+.gd-rec{background:#fff;border:2px solid var(--pink);border-radius:16px;padding:12px 14px;font-size:12.5px;line-height:1.7;color:var(--cocoa)}
+.gd-rec b{display:block;font-size:15px;color:var(--pink-deep);margin-bottom:2px}
+.gd-rec em{display:block;font-style:normal;margin-top:6px;padding-top:6px;border-top:1px dashed #efd9e2;color:#9a5a3a}
+
+/* いっしょに発表：購入前の注意 */
+.tg-warn{margin-top:10px;background:#fff7ec;border:2px solid #f0b46a;border-radius:16px;padding:12px 14px;font-size:12.5px;line-height:1.7;color:var(--cocoa)}
+.tg-warn>b{display:block;color:#b5641c;font-size:13.5px;margin-bottom:4px}
+.tg-warn ul{margin:0;padding-left:1.2em}
+.tg-warn li{margin:2px 0}
+.cf-case{display:grid;grid-template-columns:36px 1fr;gap:10px;align-items:start;background:#fff;border-radius:16px;padding:12px;border:2px solid transparent;box-shadow:0 4px 14px rgba(180,140,170,.12)}
+.cf-case.ok{border-color:#7cc8a0}
+.cf-case.voice{border-color:#f0b46a}
+.cf-ico{font-size:24px;line-height:1.2;text-align:center}
+.cf-case b{display:block;font-size:14.5px}
+.cf-case.ok b{color:#2e8a5c}
+.cf-case.voice b{color:#b5641c}
+.cf-case small{display:block;font-size:12.5px;line-height:1.65;color:var(--cocoa-soft);margin-top:2px}
+.cf-cancel{align-self:center;border:0;background:none;font:inherit;font-size:14px;color:var(--cocoa-soft);text-decoration:underline;text-underline-offset:3px;padding:8px}
