@@ -211,7 +211,7 @@ $('#tgGuide').onclick = () => { $('#gdMain').hidden = false; $('#gdDetail').hidd
 $('#gdMore').onclick = () => { $('#gdMain').hidden = true; $('#gdDetail').hidden = false; $('#guide').scrollTop = 0; };
 document.querySelector('[data-gdback]').onclick = () => { $('#gdMain').hidden = false; $('#gdDetail').hidden = true; };
 document.querySelector('[data-gdclose]').onclick = () => { $('#guide').hidden = true; };
-// みんなiPhone／Androidの人もいる の切り替え
+// みんなiPhone／iPhone以外の人もいる の切り替え
 const setMix = (m) => {
   document.querySelectorAll('#guide [data-mix]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mix === m)));
   document.querySelectorAll('#guide [data-c]').forEach((el) => { el.hidden = el.dataset.c !== m; });
