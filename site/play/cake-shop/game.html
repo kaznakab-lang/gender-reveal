@@ -1,0 +1,1025 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>ジェンダーリビール ケーキ屋さん｜注文どおりに焼いて、飾って、発表する無料ゲーム</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://webkuuta.com/play/cake-shop/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
+<style>
+/* ===== ジェンダーリビール ケーキ屋さん：注文の色で生地を作り、焼いて、ぬって、飾って、時間内に切る ===== */
+:root{
+  --milk:#fffaf6;--cocoa:#6b4f5a;--soft:#8c727c;
+  --pink:#f6a9c6;--pink-deep:#e57fa6;--pink-wash:#ffeef5;
+  --blue:#9ccdf3;--blue-deep:#5a9fd8;--blue-wash:#ebf5fd;
+  --gold:#ffd66b;--gold-deep:#b98f3f;--green:#2e9e6a;
+  --cake-fill:#fff;--sponge:#f7dfb5;
+  --f-round:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;
+  --f-latin:"Fredoka","Zen Maru Gothic",sans-serif;
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
+body{background:linear-gradient(180deg,#fffaf6,#fdf2f4 60%,#f3eef8);color:var(--cocoa);font-family:var(--f-round);font-size:15px;line-height:1.6;-webkit-text-size-adjust:100%;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer}
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding:calc(env(safe-area-inset-top,0px) + 54px) 16px calc(env(safe-area-inset-bottom,0px) + 14px);text-align:center}
+.scene[hidden]{display:none}
+.hud{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 12px);display:flex;justify-content:space-between;align-items:center;gap:4px;padding:0 10px;z-index:5;pointer-events:none}
+.hud .l{display:flex;gap:4px;align-items:center}
+.pill{background:rgba(255,255,255,.92);border-radius:999px;padding:4px 9px;font-size:12px;white-space:nowrap;font-weight:900;box-shadow:0 3px 10px rgba(107,79,90,.1);pointer-events:auto;border:0}
+.pill.round{font-family:var(--f-latin);letter-spacing:.18em;background:var(--cocoa);color:#fff;font-weight:600;font-size:11px}
+.pill.streak{color:var(--pink-deep)}
+.pill.fever{background:linear-gradient(100deg,#ffd66b,#ff8fb1,#9ccdf3);color:#6b4f5a;animation:glow 1s infinite alternate}
+@keyframes glow{from{box-shadow:0 0 0 rgba(255,214,107,.4)}to{box-shadow:0 0 18px rgba(255,214,107,.9)}}
+.eb{margin:0;font-family:var(--f-latin);font-weight:600;font-size:11px;letter-spacing:.3em;color:var(--gold-deep)}
+h1,h2{margin:4px 0 0;font-weight:900;line-height:1.35;text-wrap:balance}
+h1{font-size:clamp(24px,7vw,30px)} h2{font-size:clamp(20px,5.8vw,24px)}
+p{margin:6px 0 0;color:var(--soft);font-size:13px}
+.btn{border:0;border-radius:999px;padding:14px 34px;font-weight:900;font-size:17px;letter-spacing:.04em;color:#fff;background:linear-gradient(100deg,var(--pink-deep),#f1a2bf 50%,var(--blue-deep));box-shadow:0 10px 24px rgba(214,160,190,.4);transition:transform .1s}
+.btn:active{transform:scale(.97)}
+.btn.dark{background:var(--cocoa);box-shadow:0 8px 18px rgba(107,79,90,.25)}
+.btn.light{background:#fff;color:var(--cocoa);box-shadow:0 6px 16px rgba(180,140,170,.18)}
+.btn.sm{padding:11px 22px;font-size:14px}
+.btn.big{padding:18px 40px;font-size:19px}
+.btn:disabled{opacity:.45}
+.cakebox{position:relative;width:min(84vw,330px);flex:none}
+.cakebox svg{width:100%;height:auto;display:block;overflow:visible}
+.spacer{flex:1}
+.stepnav{display:flex;gap:5px;margin-top:4px}
+.stepnav i{width:22px;height:5px;border-radius:3px;background:#e9dde3}.stepnav i.on{background:var(--pink-deep)}
+/* ---- title ---- */
+.title-cake{width:min(56vw,200px)}
+.best{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+.best span{background:#fff;border-radius:12px;padding:6px 12px;font-size:12px;box-shadow:0 4px 12px rgba(180,140,170,.12)}
+.best b{display:block;font-size:15px;color:var(--pink-deep)}
+/* ---- 色の素 ---- */
+.colors{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;width:100%;max-width:340px;margin-top:8px}
+.colors button{border:3px solid transparent;border-radius:18px;padding:10px 4px 8px;font-weight:900;font-size:14px;background:#fff;box-shadow:0 6px 16px rgba(180,140,170,.16);display:flex;flex-direction:column;align-items:center;gap:4px}
+.colors button i{display:block;width:34px;height:44px;border-radius:8px 8px 12px 12px;box-shadow:inset 0 -8px 0 rgba(0,0,0,.08)}
+.colors .g i{background:linear-gradient(#f9c2d6,#e57fa6)}.colors .b i{background:linear-gradient(#bfe0fa,#5a9fd8)}.colors .t i{background:linear-gradient(90deg,#f6a9c6 50%,#9ccdf3 50%)}
+.colors button[aria-pressed="true"]{border-color:var(--cocoa);transform:scale(1.04)}
+.colors small{font-size:11px;color:var(--soft);font-weight:700}
+.revealword{font-family:var(--f-latin);font-weight:700;font-size:clamp(40px,13vw,58px);line-height:1;text-shadow:0 4px 0 #fff;margin-top:2px}
+.revealword.girl{color:var(--pink-deep)}.revealword.boy{color:var(--blue-deep)}.revealword.twins{background:linear-gradient(90deg,var(--pink-deep),var(--blue-deep));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none}
+.secret{display:inline-block;background:#fff4c2;border:2px dashed #e0b84a;border-radius:12px;padding:4px 10px;font-weight:900;font-size:13px;margin-top:6px}
+/* ---- コイン・改装・評判・のぞき見・停電・VIP ---- */
+.pill.coin{color:#b98f3f}
+.pill.peek{background:#fff4c2;border:2px dashed #e0b84a;color:#6b4f5a}
+.rep{display:flex;gap:4px;justify-content:center;margin-top:4px;font-size:12px;color:var(--soft);align-items:center}
+.rep i{width:26px;height:8px;border-radius:4px;background:#e9dde3}.rep i.on{background:linear-gradient(90deg,#ffd66b,#ff8fb1)}
+.secret.hide{background:#f1e4ea;border-color:#c9b0bb;color:var(--soft)}
+.shop{width:100%;max-width:380px;display:grid;gap:8px;margin-top:8px}
+.item{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;background:#fff;border-radius:16px;padding:10px 12px;box-shadow:0 6px 16px rgba(180,140,170,.14);text-align:left}
+.item .ic{font-size:28px;text-align:center}
+.item b{display:block;font-size:14px}
+.item small{display:block;font-size:12px;color:var(--soft)}
+.item .lv{display:flex;gap:3px;margin-top:3px}.item .lv i{width:14px;height:6px;border-radius:3px;background:#e9dde3}.item .lv i.on{background:var(--pink-deep)}
+.item button{border:0;border-radius:999px;padding:8px 12px;font-weight:900;font-size:13px;color:#fff;background:var(--cocoa);white-space:nowrap}
+.item button:disabled{background:#d9cfd4}
+.item.max button{background:#7cc8a0}
+.vipbar{background:linear-gradient(100deg,#ffd66b,#ffb347);color:#6b4f5a;border-radius:12px;padding:6px 12px;font-weight:900;font-size:13px;margin-top:8px;animation:glow 1s infinite alternate}
+.blackout .win{background:#141014!important}
+.blackout .heat{opacity:.25!important}
+.blackout .gauge-wrap{visibility:hidden}
+.scene.bakeout .gauge{visibility:hidden}
+.outnote{background:#2b2b33;color:#ffd66b;border-radius:12px;padding:6px 12px;font-weight:900;font-size:13px;margin-top:8px}
+/* ---- お店の成長（レベル・経験値・腕前） ---- */
+.store{width:min(80vw,300px);margin-top:2px}
+.lvrow{display:flex;align-items:center;gap:10px;width:100%;max-width:340px;margin-top:8px}
+.lvbadge{flex:none;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--blue));color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--f-latin);font-weight:700;line-height:1;box-shadow:0 6px 16px rgba(214,160,190,.4)}
+.lvbadge small{font-size:9px;letter-spacing:.1em;font-weight:600}.lvbadge b{font-size:22px}
+.xp{flex:1;text-align:left}
+.xp b{display:block;font-size:13px}
+.xpbar{position:relative;height:12px;border-radius:999px;background:#fff;box-shadow:inset 0 2px 5px rgba(0,0,0,.08);overflow:hidden;margin-top:4px}
+.xpbar i{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:999px;background:linear-gradient(90deg,var(--pink),var(--blue));transition:width 1s ease-out}
+.xp small{display:block;font-size:11px;color:var(--soft);margin-top:2px}
+.skills{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;width:100%;max-width:340px;margin-top:8px}
+.sk{background:#fff;border-radius:12px;padding:6px 2px;box-shadow:0 4px 12px rgba(180,140,170,.12);font-size:10px;color:var(--soft)}
+.sk .ic{font-size:18px;line-height:1.2}
+.sk .st{font-size:10px;letter-spacing:-1px;color:#f0b429;line-height:1.2}
+.sk .st span{color:#e3d2c3}
+.lvup{background:linear-gradient(100deg,#fff2c2,#ffe49a,#ffd1e3);border-radius:16px;padding:10px 14px;margin-top:8px;font-weight:900;text-align:center;animation:facepop .6s}
+.lvup b{display:block;font-family:var(--f-latin);font-size:22px;color:var(--pink-deep)}
+.lvup small{display:block;font-size:12px;color:var(--cocoa);font-weight:700}
+/* ---- mix ---- */
+.bowlbox{width:min(70vw,250px);margin-top:6px}
+.meter{position:relative;width:min(80vw,280px);height:14px;border-radius:999px;background:#fff;box-shadow:inset 0 2px 6px rgba(0,0,0,.08);overflow:hidden;margin-top:10px}
+.meter .bar{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,var(--pink),var(--blue));transition:width .08s}
+.meter .mk{position:absolute;top:0;bottom:0;width:2px;background:rgba(107,79,90,.35)}
+.counter{font-family:var(--f-latin);font-weight:700;font-size:40px;line-height:1;margin-top:8px;color:var(--pink-deep)}
+.counter small{font-family:var(--f-round);font-size:13px;color:var(--soft);font-weight:700;margin-left:4px}
+.timer{font-size:12px;color:var(--soft)}
+/* ---- bake ---- */
+.oven{position:relative;width:min(80vw,290px);aspect-ratio:1/0.82;border-radius:22px;background:linear-gradient(#9c8f93,#7b6f74);padding:14px;box-shadow:0 14px 30px rgba(107,79,90,.3);margin-top:8px}
+.oven .win{position:absolute;inset:14px 14px 40px;border-radius:14px;background:radial-gradient(circle at 50% 70%,#5a3b2b,#2b1b17 75%);overflow:hidden;border:4px solid #c7bcc0}
+.oven .heat{position:absolute;inset:0;background:radial-gradient(circle at 50% 100%,rgba(255,140,40,.55),transparent 65%);opacity:0;transition:opacity .3s}
+.oven .sponge{position:absolute;left:14%;right:14%;bottom:12%;height:38%;border-radius:12px 12px 8px 8px;background:#fff1d6;box-shadow:inset 0 -10px 0 rgba(0,0,0,.08);transition:background .25s,height .4s}
+.oven .smoke{position:absolute;left:50%;bottom:55%;width:20px;height:20px;border-radius:50%;background:rgba(80,80,80,.55);opacity:0;filter:blur(3px)}
+.oven.burn .smoke{animation:smoke 1.2s infinite}
+@keyframes smoke{0%{opacity:.6;transform:translate(-50%,0) scale(.6)}100%{opacity:0;transform:translate(-30%,-70px) scale(1.8)}}
+.oven .knobs{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:14px}
+.oven .knobs i{width:16px;height:16px;border-radius:50%;background:#e8dfe3;box-shadow:inset 0 -2px 0 rgba(0,0,0,.2)}
+.oven .knobs i.on{background:#ff8c3a;box-shadow:0 0 10px #ff8c3a}
+.gauge{position:relative;width:min(80vw,280px);height:24px;border-radius:999px;background:#fff;box-shadow:inset 0 2px 6px rgba(0,0,0,.08);overflow:hidden;margin-top:10px}
+.gauge .z2{position:absolute;top:0;bottom:0;background:rgba(255,214,107,.3)}
+.gauge .z1{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,#ffe9a8,var(--gold),#ffe9a8)}
+.gauge .cur{position:absolute;top:-3px;width:6px;height:30px;border-radius:3px;background:var(--cocoa);left:50%;transform:translateX(-50%)}
+.gauge .lab{position:absolute;inset:0;display:flex;justify-content:space-between;align-items:center;padding:0 10px;font-size:10px;font-weight:900;color:var(--soft);pointer-events:none}
+/* ---- cream ---- */
+.cakebox.cream{cursor:crosshair}
+.cakebox .spat{position:absolute;width:26px!important;height:70px!important;pointer-events:none;transform:translate(-50%,-90%) rotate(20deg);opacity:0;transition:opacity .2s}
+.cakebox.cream.on .spat{opacity:1}
+/* ---- deco ---- */
+.tray{width:100%;max-width:380px;background:rgba(255,255,255,.9);border-radius:20px;padding:10px;box-shadow:0 8px 22px rgba(180,140,170,.16)}
+.tray .row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.tp{position:relative;border:2px solid transparent;border-radius:14px;background:var(--milk);padding:6px 2px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:var(--soft)}
+.tp svg{width:30px;height:30px}
+.tp[aria-pressed="true"]{border-color:var(--pink-deep);background:var(--pink-wash)}
+.tp.lock{opacity:.55}.tp.lock::after{content:"🔒";position:absolute;right:4px;top:2px;font-size:11px}
+.tray .acts{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:12px;color:var(--soft)}
+.link{border:0;background:none;padding:4px 6px;color:var(--blue-deep);text-decoration:underline;text-underline-offset:3px;font-size:13px}
+.placed{cursor:pointer}
+/* ---- guess ---- */
+.guess{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:340px;margin-top:14px}
+.guess button{border:0;border-radius:22px;padding:18px 8px;font-weight:900;font-size:19px;color:#fff;box-shadow:0 10px 22px rgba(0,0,0,.12);transition:transform .1s}
+.guess button:active{transform:scale(.96)}
+.guess .b{background:linear-gradient(160deg,var(--blue),var(--blue-deep))}.guess .g{background:linear-gradient(160deg,var(--pink),var(--pink-deep))}
+.guess small{display:block;font-family:var(--f-latin);font-weight:600;font-size:12px;opacity:.9;letter-spacing:.1em}
+/* ---- cut ---- */
+.cuts{display:flex;gap:8px;margin-top:8px}
+.cuts span{width:40px;height:8px;border-radius:4px;background:#e9dde3;transition:background .2s}
+.cuts .pf{background:var(--gold)}.cuts .gd{background:#7cc8a0}.cuts .ok{background:#c9b0bb}
+.judge{position:absolute;left:0;right:0;top:40%;font-weight:900;font-size:34px;color:var(--pink-deep);text-shadow:0 3px 0 #fff;opacity:0;transform:scale(.6);pointer-events:none;z-index:3}
+.judge.show{animation:pop .9s ease-out forwards}
+@keyframes pop{0%{opacity:0;transform:scale(.6)}20%{opacity:1;transform:scale(1.15)}60%{opacity:1;transform:scale(1)}100%{opacity:0;transform:translateY(-24px)}}
+.wob{animation:wob .5s ease-out}
+@keyframes wob{0%{transform:translateY(0) scaleX(1)}25%{transform:translateY(4px) scaleX(1.04)}55%{transform:translateY(-2px) scaleX(.98)}100%{transform:translateY(0) scaleX(1)}}
+.flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:9}
+.flash.on{animation:flash .35s}
+@keyframes flash{0%{opacity:.85}100%{opacity:0}}
+.crumb{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--sponge);pointer-events:none;animation:crumb .8s ease-in forwards}
+@keyframes crumb{to{transform:translate(var(--dx),80px) rotate(200deg);opacity:0}}
+/* ---- reveal / result ---- */
+.scene.reveal{background:radial-gradient(circle at 50% 35%,#4a3744,#2a1f28 70%);color:#fff}
+.scene.reveal p{color:#d8c7d0}
+.scene.reveal .eb{color:#ffd66b}
+.tv{display:none;background:#111;border-radius:14px;padding:18px 20px;border:6px solid #333;box-shadow:0 0 0 3px #666,0 20px 40px rgba(0,0,0,.5);margin-top:16px}
+.tv b{display:block;color:#fff;font-size:22px;background:#ff1f2d;padding:4px 14px;transform:skewX(-8deg)}
+.tv small{display:block;color:#aaa;margin-top:6px;font-size:12px}
+.scene.reveal.cm .tv{display:block}
+.zuko{font-size:46px;font-weight:900;color:#ffd66b;text-shadow:0 4px 0 #222;transform:rotate(-8deg);opacity:0}
+.zuko.on{animation:zuko .7s ease-out forwards}
+@keyframes zuko{0%{opacity:0;transform:rotate(-8deg) scale(.4)}40%{opacity:1;transform:rotate(-8deg) scale(1.3)}100%{opacity:1;transform:rotate(-8deg) scale(1)}}
+.scene.result{background:radial-gradient(circle at 50% 20%,#fff8ec,#fff0d8 45%,#fbe3ec)}
+.scene.result.angry{background:radial-gradient(circle at 50% 20%,#fff0f0,#ffe0e0 45%,#f3eef8)}
+.stars{font-size:clamp(34px,11vw,46px);line-height:1.1;letter-spacing:.06em;color:#e3d2c3;margin-top:4px;text-shadow:0 3px 0 #fff}
+.stars b{color:#f0b429;font-weight:400}
+.card{width:100%;max-width:360px;background:rgba(255,255,255,.92);border-radius:18px;padding:10px 14px;box-shadow:0 6px 18px rgba(180,140,170,.16);font-size:13px;text-align:left;margin-top:8px}
+.card b{display:block;font-size:14px}
+.card .r{display:flex;justify-content:space-between;margin-top:1px}
+.card .r em{font-style:normal;font-weight:900;color:var(--cocoa)}
+.card .r.total{border-top:1px dashed #eadfe5;margin-top:5px;padding-top:5px}
+.card .r.total em{color:var(--pink-deep);font-size:16px}
+.badge-new{display:inline-block;margin:4px 4px 0 0;padding:3px 10px;border-radius:999px;background:linear-gradient(100deg,#fff2c2,#ffe49a);font-size:12px;font-weight:900}
+.res-btns{display:grid;gap:8px;width:100%;max-width:360px;margin-top:8px}
+.res-btns .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.confetti i{position:absolute;top:-12px;width:9px;height:14px;border-radius:2px;opacity:.95;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);transform:translateX(-50%);background:var(--cocoa);color:#fff;border-radius:999px;padding:9px 16px;font-size:13px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:20;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
+.toast.on{opacity:1}
+.shake{animation:shake .35s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+/* ---- お客さん・注文 ---- */
+.pill.timer{font-family:var(--f-latin);font-weight:700;font-size:13px;min-width:62px;text-align:center}
+.pill.timer.low{background:#ffe3e3;color:#c0392b;animation:glow2 .6s infinite alternate}
+@keyframes glow2{from{transform:scale(1)}to{transform:scale(1.08)}}
+.pill.lives{letter-spacing:.05em}
+.cust{display:grid;grid-template-columns:72px 1fr;gap:12px;align-items:center;width:100%;max-width:360px;margin-top:14px;text-align:left}
+.cust .face{width:72px;height:72px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:44px;box-shadow:0 8px 20px rgba(180,140,170,.2)}
+.cust .face.pop{animation:facepop .5s}
+@keyframes facepop{0%{transform:scale(.4)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+.bubble{position:relative;background:#fff;border-radius:18px;padding:12px 14px;font-size:14px;line-height:1.6;box-shadow:0 8px 20px rgba(180,140,170,.16)}
+.bubble::before{content:"";position:absolute;left:-10px;top:26px;border:8px solid transparent;border-right-color:#fff;border-left:0}
+.bubble b{display:block;font-size:12px;color:var(--soft);font-weight:700;margin-bottom:2px}
+.order{width:100%;max-width:360px;margin-top:10px;background:rgba(255,255,255,.9);border-radius:18px;padding:12px 14px;box-shadow:0 6px 18px rgba(180,140,170,.14);text-align:left}
+.order b.t{display:block;font-size:12px;color:var(--soft);margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:5px;background:var(--milk);border:2px solid #f1e4ea;border-radius:999px;padding:3px 10px 3px 4px;font-size:13px;font-weight:900}
+.chip svg{width:24px;height:24px}
+.chip.ok{border-color:#7cc8a0;background:#eefaf2}
+.chip.em{padding-left:10px}
+.chip small{font-weight:700;color:var(--soft)}
+.ordermini{width:100%;max-width:380px;margin:6px 0 0}
+.ordermini .chips{justify-content:center}
+.ordermini .chip{font-size:12px;padding:2px 8px 2px 3px}
+.react{font-size:64px;line-height:1.1;margin-top:4px}
+.react.pop{animation:facepop .6s}
+.check{list-style:none;margin:0;padding:0}
+.check li{display:flex;justify-content:space-between;gap:8px;padding:2px 0;border-bottom:1px dashed #f1e4ea}
+.check li:last-child{border:0}
+.check .ng{color:#c0392b;font-weight:900}.check .ok{color:#2e9e6a;font-weight:900}
+.dayhead{font-family:var(--f-latin);font-weight:700;font-size:clamp(40px,14vw,60px);line-height:1;color:var(--pink-deep);text-shadow:0 5px 0 #fff}
+.lifebig{font-size:34px;letter-spacing:.1em;margin-top:6px}
+.over{background:radial-gradient(circle at 50% 20%,#fff1f1,#ffe0e6 45%,#f3eef8)}
+.scroll{overflow-y:auto;width:100%;display:flex;flex-direction:column;align-items:center;-webkit-overflow-scrolling:touch;touch-action:pan-y}
+</style>
+</head>
+<body>
+<div class="hud">
+  <div class="l"><span class="pill round" id="hudRound" hidden>DAY 1</span><span class="pill lives" id="hudLives" hidden>❤️❤️❤️</span><span class="pill fever" id="hudFever" hidden>FEVER ×2</span></div><div class="l"><button class="pill peek" id="hudPeek" type="button" hidden>🤫 色？ −5秒</button><span class="pill coin" id="hudCoin" hidden>🪙 0</span><span class="pill timer" id="hudTime" hidden>60</span></div>
+  <button class="pill" id="hudSnd" type="button" aria-label="音">🔊</button>
+</div>
+<div class="flash" id="flash"></div>
+
+<!-- ===== タイトル ===== -->
+<section class="scene" id="scTitle">
+  <div class="spacer"></div>
+  <svg class="store" viewBox="0 0 300 200" aria-hidden="true" id="storeSvg">
+    <ellipse cx="150" cy="190" rx="140" ry="8" fill="#efe3cf"/>
+    <g id="st1"><rect x="70" y="100" width="160" height="80" rx="8" fill="#fff" stroke="#f1e4ea"/><path d="M60 100h180l-12-26H72z" fill="#f6a9c6"/><path d="M60 100h180v10q-9 10-18 0t-18 0-18 0-18 0-18 0-18 0-18 0-18 0-18 0q-9 10-18 0z" fill="#fde7ef"/><rect x="120" y="125" width="60" height="55" rx="5" fill="#9ccdf3" opacity=".5"/><rect x="85" y="120" width="26" height="26" rx="4" fill="#e6f1fb"/><rect x="189" y="120" width="26" height="26" rx="4" fill="#e6f1fb"/><g transform="translate(150 60) scale(.16)"><use href="#cakeShape"/></g></g>
+    <g id="st2" style="display:none"><rect x="40" y="90" width="220" height="90" rx="10" fill="#fff" stroke="#f1e4ea"/><path d="M30 90h240l-16-34H46z" fill="#e57fa6"/><path d="M30 90h240v12q-10 12-20 0t-20 0-20 0-20 0-20 0-20 0-20 0-20 0-20 0-20 0-20 0q-10 12-20 0z" fill="#f6a9c6"/><rect x="120" y="120" width="60" height="60" rx="6" fill="#9ccdf3" opacity=".5"/><rect x="55" y="112" width="44" height="36" rx="5" fill="#e6f1fb"/><rect x="201" y="112" width="44" height="36" rx="5" fill="#e6f1fb"/><rect x="100" y="30" width="100" height="26" rx="8" fill="#fff" stroke="#e0b84a" stroke-width="2"/><text x="150" y="48" text-anchor="middle" font-size="12" font-weight="900" fill="#b98f3f" font-family="Fredoka">CAKE SHOP</text><circle cx="48" cy="160" r="12" fill="#7cc8a0"/><circle cx="252" cy="160" r="12" fill="#7cc8a0"/><circle cx="44" cy="150" r="4" fill="#f6a9c6"/><circle cx="256" cy="150" r="4" fill="#ffd66b"/></g>
+    <g id="st3" style="display:none"><rect x="25" y="70" width="250" height="110" rx="12" fill="#fff" stroke="#f1e4ea"/><rect x="25" y="70" width="250" height="14" fill="#ffd66b"/><path d="M15 84h270l-18-30H33z" fill="#e57fa6"/><path d="M15 84h270v14q-11 14-22 0t-22 0-22 0-22 0-22 0-22 0-22 0-22 0-22 0-22 0-22 0-22 0q-11 14-22 0z" fill="#f6a9c6"/><rect x="115" y="118" width="70" height="62" rx="8" fill="#9ccdf3" opacity=".5"/><rect x="40" y="108" width="56" height="44" rx="6" fill="#e6f1fb"/><rect x="204" y="108" width="56" height="44" rx="6" fill="#e6f1fb"/><rect x="60" y="14" width="180" height="30" rx="10" fill="#6b4f5a"/><text x="150" y="34" text-anchor="middle" font-size="13" font-weight="900" fill="#ffd66b" font-family="Fredoka">GENDER REVEAL CAKES</text><g fill="#ffd66b"><circle cx="40" cy="60" r="3"/><circle cx="80" cy="60" r="3"/><circle cx="120" cy="60" r="3"/><circle cx="180" cy="60" r="3"/><circle cx="220" cy="60" r="3"/><circle cx="260" cy="60" r="3"/></g><circle cx="34" cy="166" r="14" fill="#7cc8a0"/><circle cx="266" cy="166" r="14" fill="#7cc8a0"/><g fill="#f6a9c6"><circle cx="28" cy="156" r="4"/><circle cx="40" cy="152" r="4"/><circle cx="260" cy="156" r="4"/><circle cx="272" cy="152" r="4"/></g><g transform="translate(150 150) scale(.14)"><use href="#cakeShape"/></g><text x="150" y="100" text-anchor="middle" font-size="9" fill="#b98f3f" font-family="Fredoka" font-weight="600">★ ★ ★</text></g>
+  </svg>
+  <p class="eb">GENDER REVEAL CAKE SHOP</p>
+  <h1 id="shopTitle">ジェンダーリビール<br>ケーキ屋さん</h1>
+  <div class="lvrow"><div class="lvbadge"><small>LEVEL</small><b id="lvNum">1</b></div><div class="xp"><b id="lvName">屋台のケーキ屋さん</b><div class="xpbar"><i id="xpBar"></i></div><small id="xpTxt">つぎのレベルまで 150 XP</small></div></div>
+  <div class="skills" id="skills"></div>
+  <div class="best" id="bestBox"></div>
+  <div class="spacer"></div>
+  <button class="btn" id="btnStart" type="button">開店する</button>
+  <p style="margin-top:8px" id="startNote">音が出ます。iPhoneはマナーモードを切ってね</p>
+</section>
+
+<!-- ===== 注文 ===== -->
+<section class="scene" id="scOrder" hidden>
+  <p class="eb" id="orderEb">DAY 1 ・ 1人目のお客さん</p>
+  <h2>いらっしゃいませ！</h2>
+  <div class="cust"><div class="face" id="custFace">👵</div><div class="bubble"><b id="custName">おばあちゃん</b><span id="custSay">…</span></div></div>
+  <div class="order">
+    <b class="t">🧾 注文</b>
+    <div class="chips" id="orderChips"></div>
+    <div style="margin-top:8px;font-size:13px" id="orderMeta"></div>
+  </div>
+  <div class="vipbar" id="vipBar" hidden>👑 VIPのお客さん！ 点数ぜんぶ2倍。でも時間は短め</div>
+  <div class="rep" id="repBar"><span>評判</span><i></i><i></i><i></i><span>3つで VIP が来る</span></div>
+  <div class="spacer"></div>
+  <button class="btn big" id="btnOrder" type="button">つくる！</button>
+  <p style="margin-top:10px">制限時間 <b id="orderTime">60</b> 秒。はやく作るほどボーナス<br><span style="font-size:12px">黄色い札は3秒でかくれます。おぼえてね</span></p>
+</section>
+
+<!-- ===== ① まぜる ===== -->
+<section class="scene" id="scMix" hidden>
+  <div class="stepnav"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+  <h2>色の素を入れて、まぜよう！</h2>
+  <p>お客さんの赤ちゃんに合わせて色を選んでね（まちがえると大変！）。<br>そのあと5秒間<b>連打</b>。なめらかになるまでまぜると高得点</p>
+  <div class="colors" id="colors"><button type="button" class="g" data-c="girl"><i></i>ピンク<small>女の子</small></button><button type="button" class="b" data-c="boy"><i></i>ブルー<small>男の子</small></button><button type="button" class="t" data-c="twins"><i></i>両方<small>ふたご</small></button></div>
+  <svg class="bowlbox" viewBox="0 0 200 170" id="bowlSvg">
+    <ellipse cx="100" cy="150" rx="70" ry="12" fill="#efe3cf"/>
+    <path d="M30 70q0 70 70 70t70-70z" fill="#fff" stroke="#f1e4ea" stroke-width="2"/>
+    <ellipse cx="100" cy="70" rx="70" ry="18" fill="#fff" stroke="#f1e4ea" stroke-width="2"/>
+    <ellipse cx="100" cy="72" rx="60" ry="13" fill="#fbe7c2" id="batter"/>
+    <g id="swirl" transform="rotate(0 100 72)"><path d="M60 72q20-10 40 0t40 0" fill="none" stroke="#f0cf8f" stroke-width="3" stroke-linecap="round"/><path d="M70 66q15 8 30 0t30 0" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".8"/></g>
+    
+    <g id="spoon" transform="rotate(20 100 40)"><rect x="96" y="-10" width="8" height="70" rx="4" fill="#c9a27a"/><ellipse cx="100" cy="66" rx="12" ry="7" fill="#c9a27a"/></g>
+  </svg>
+  <div class="counter"><span id="mixN">0</span><small>回</small></div>
+  <div class="meter"><div class="bar" id="mixBar"></div><div class="mk" style="left:45%"></div><div class="mk" style="left:75%"></div></div>
+  <p class="timer" id="mixTime">色の素を選んでから「まぜる！」</p>
+  <div class="spacer"></div>
+  <button class="btn big" id="btnMix" type="button">まぜる！</button>
+</section>
+
+<!-- ===== ② 焼く ===== -->
+<section class="scene" id="scBake" hidden>
+  <div class="stepnav"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+  <h2>スポンジを焼こう！</h2>
+  <p id="bakeLead">だんだん焼けていきます。<b>金色のゾーン</b>で取り出して。</p>
+  <div class="outnote" id="outNote" hidden>⚡ 停電！ メーターが見えない。スポンジの色で見きわめて</div>
+  <div class="oven" id="oven">
+    <div class="win"><div class="heat" id="heat"></div><div class="sponge" id="sponge"></div><div class="smoke"></div></div>
+    <div class="knobs"><i id="knob1"></i><i id="knob2"></i><i id="knob3"></i></div>
+  </div>
+  <div class="gauge"><div class="z2" id="bz2"></div><div class="z1" id="bz1"></div><div class="cur" id="bcur" style="left:0"></div><div class="lab"><span>なま</span><span id="bakePrefLab">こんがり</span><span>こげ</span></div></div>
+  <div class="spacer"></div>
+  <button class="btn big" id="btnBake" type="button">オーブンに入れる</button>
+</section>
+
+<!-- ===== ③ クリームをぬる ===== -->
+<section class="scene" id="scCream" hidden>
+  <div class="stepnav"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+  <h2>クリームをぬろう！</h2>
+  <p>ケーキの上を<b>指でなぞって</b>、ぜんぶ白くしよう。<span id="creamPct">0</span>% ぬれました</p>
+  <div class="cakebox cream" id="creamBox">
+    <svg viewBox="0 0 300 260" id="creamSvg"><g id="creamBase"></g><g id="creamCells"></g><use href="#candle"/></svg>
+    <svg class="spat" id="spat" viewBox="0 0 26 70"><rect x="9" y="0" width="8" height="34" rx="4" fill="#c9a27a"/><rect x="2" y="30" width="22" height="40" rx="6" fill="#e8eef3" stroke="#c6d0da"/></svg>
+  </div>
+  <div class="spacer"></div>
+  <button class="btn sm" id="btnCreamDone" type="button" disabled>ぬれた！つぎへ</button>
+</section>
+
+<!-- ===== ④ 飾る ===== -->
+<section class="scene" id="scDeco" hidden>
+  <div class="stepnav"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+  <h2>ケーキを飾ろう 🎂</h2>
+  <p>飾りを選んで、ケーキをタップ。<span id="decoCount">0</span>/12こ</p>
+  <div class="ordermini"><div class="chips" id="decoOrder"></div></div>
+  <div class="cakebox" id="decoBox">
+    <svg viewBox="0 0 300 260" id="decoSvg"><use href="#cakeShape"/><g id="decoLayer"></g><rect x="30" y="40" width="240" height="190" fill="transparent"/></svg>
+  </div>
+  <div class="spacer"></div>
+  <div class="tray">
+    <div class="row" id="tray"></div>
+    <div class="acts"><button class="link" id="decoUndo" type="button">ひとつ戻す</button><span>飾りをタップすると消せます</span><button class="link" id="decoSkip" type="button">飾らない</button></div>
+  </div>
+  <button class="btn sm" id="btnDecoDone" type="button" style="margin-top:12px">できた！つぎへ</button>
+</section>
+
+<!-- ===== ⑤ 切る ===== -->
+<section class="scene" id="scCut" hidden>
+  <div class="stepnav"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+  <h2 id="cutTitle">まっすぐ切ろう！</h2>
+  <p id="cutLead">ナイフが揺れています。まんなかの金色で止めると<b>パーフェクト</b></p>
+  <div class="cakebox" id="cutBox">
+    <svg viewBox="0 0 300 300" id="cutSvg">
+      <g id="knife" transform="translate(150 0)"><rect x="-5" y="4" width="10" height="92" rx="4" fill="url(#steel)"/><rect x="-6" y="92" width="12" height="34" rx="5" fill="#c9a27a"/><rect x="-3" y="20" width="2" height="60" rx="1" fill="#fff" opacity=".7"/></g>
+      <g id="cutCake" transform="translate(0 40)"><use href="#cakeShape"/><g id="cutDeco"></g><g id="cutLines"></g><line x1="150" y1="60" x2="150" y2="232" stroke="var(--pink)" stroke-width="2" stroke-dasharray="4 4" opacity=".7"/></g>
+    </svg>
+    <div class="judge" id="judge">PERFECT!</div>
+  </div>
+  <div class="gauge"><div class="z2" id="cz2"></div><div class="z1" id="cz1"></div><div class="cur" id="cur"></div></div>
+  <div class="cuts" id="cuts"><span></span><span></span><span></span></div>
+  <div class="spacer"></div>
+  <button class="btn big" id="btnCut" type="button">タップで切る！</button>
+</section>
+
+<!-- ===== ドラムロール ===== -->
+<section class="scene reveal" id="scReveal" hidden>
+  <div class="spacer"></div>
+  <p class="eb">DRUM ROLL</p>
+  <h2 style="font-size:28px" id="revealTxt">赤ちゃんは……</h2>
+  <div class="tv"><b>結果はCMのあとで！</b><small>…と見せかけて</small></div>
+  <div class="zuko" id="zuko">ズコーッ！</div>
+  <div class="cakebox" style="margin-top:12px"><svg viewBox="0 0 300 260" id="revealSvg"><use href="#cakeShape"/><g id="revealDeco"></g></svg></div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ===== 1日おわり ===== -->
+<section class="scene" id="scDay" hidden>
+  <div class="spacer"></div>
+  <p class="eb">DAY CLEAR</p>
+  <div class="dayhead" id="dayHead">DAY 1</div>
+  <h2 id="dayMsg">今日も おつかれさま！</h2>
+  <div class="lifebig" id="dayLives">❤️❤️❤️</div>
+  <div class="card" id="dayCard"></div>
+  <div class="spacer"></div>
+  <button class="btn" id="btnNextDay" type="button">お店を改装する</button>
+  <p style="margin-top:10px">明日はお客さんの注文がふえて、時間が短くなります</p>
+</section>
+
+<!-- ===== お店の改装 ===== -->
+<section class="scene" id="scShop" hidden>
+  <div class="scroll">
+    <p class="eb">UPGRADE</p>
+    <h2>お店を改装しよう</h2>
+    <p>売上の一部がコインになります。持っているコイン <b id="shopCoin">0</b> 🪙</p>
+    <div class="shop" id="shopList"></div>
+    <div class="res-btns"><button class="btn" id="btnShopDone" type="button">DAY 2 を はじめる</button></div>
+  </div>
+</section>
+
+<!-- ===== 閉店（ゲームオーバー） ===== -->
+<section class="scene over" id="scOver" hidden>
+  <div class="scroll">
+    <p class="eb">GAME OVER</p>
+    <div class="react">😵</div>
+    <h2>お客さんを怒らせすぎて、閉店…</h2>
+    <p id="overLine"></p>
+    <div class="card" id="overCard"></div>
+    <div class="card" id="overRank"></div>
+    <div class="res-btns">
+      <button class="btn" id="btnRetry" type="button">もう一度 DAY 1 から</button>
+      <button class="btn light sm" id="btnTitle" type="button">お店の様子を見る（タイトルへ）</button>
+      <div class="two"><button class="btn light sm" id="btnSaveOver" type="button">画像を保存</button><button class="btn light sm" id="btnShareOver" type="button">結果をシェア</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 結果 ===== -->
+<section class="scene result" id="scResult" hidden>
+  <div class="confetti" id="confetti"></div>
+  <div class="scroll">
+    <p class="eb" id="itsa">IT'S A</p>
+    <div class="revealword" id="revealWord">GIRL!</div>
+    <div class="react pop" id="reactFace">😊</div>
+    <h2 id="bigTxt" style="margin-top:0">満足！</h2>
+    <div class="stars" id="stars">★★★★★</div>
+    <p id="resLine"></p>
+    <div class="card" id="checkCard"></div>
+    <div class="cakebox" style="width:min(56vw,210px)"><svg viewBox="0 0 300 260" id="resultSvg"></svg></div>
+    <div class="card" id="scoreCard"></div>
+    <div class="card" id="xpCard"></div>
+    <div class="card" id="rankCard"></div>
+    <div class="res-btns">
+      <button class="btn dark" id="btnNext" type="button">つぎのお客さん</button>
+      <div class="two"><button class="btn light sm" id="btnSave" type="button">画像を保存</button><button class="btn light sm" id="btnShare" type="button">結果をシェア</button></div>
+    </div>
+  </div>
+</section>
+<div class="toast" id="toast"></div>
+
+<!-- ===== 共通のケーキの絵 ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="steel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#eef2f6"/><stop offset=".5" stop-color="#c8d2dc"/><stop offset="1" stop-color="#eef2f6"/></linearGradient>
+    <linearGradient id="twinG" x1="0" y1="0" x2="1" y2="0"><stop offset=".5" stop-color="#f9c2d6"/><stop offset=".5" stop-color="#bfe0fa"/></linearGradient>
+    <linearGradient id="plateG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#efe3cf"/></linearGradient>
+    <g id="candle"><rect x="146" y="40" width="8" height="40" rx="4" fill="#f6a9c6"/><ellipse cx="150" cy="34" rx="5" ry="8" fill="#ffd66b"/><ellipse cx="150" cy="36" rx="2.5" ry="4" fill="#fff3c4"/></g>
+    <g id="plate"><ellipse cx="150" cy="236" rx="118" ry="16" fill="url(#plateG)" stroke="#e7d7bd"/></g>
+    <g id="tiers">
+      <rect x="52" y="140" width="196" height="94" rx="10" fill="var(--cake-fill)" stroke="#f1e4ea"/>
+      <path d="M52 150q14 12 28 0t28 0 28 0 28 0 28 0 28 0 28 0v14H52z" fill="#fde7ef" opacity="var(--drip,1)"/>
+      <rect x="84" y="78" width="132" height="66" rx="10" fill="var(--cake-fill)" stroke="#f1e4ea"/>
+      <path d="M84 88q11 10 22 0t22 0 22 0 22 0 22 0 22 0v12H84z" fill="#e6f1fb" opacity="var(--drip,1)"/>
+    </g>
+    <g id="cakeBody"><use href="#plate"/><use href="#tiers"/></g>
+    <g id="cakeShape"><use href="#cakeBody"/><use href="#candle"/></g>
+    <!-- 飾り -->
+    <g id="tp-ichigo"><path d="M0 -12c7 0 12 6 12 13 0 8-7 15-12 15S-12 9-12 1c0-7 5-13 12-13z" fill="#ff5f7a"/><path d="M-6 -11l6-8 6 8-5-1-1 5-1-5z" fill="#5fbf6a"/><g fill="#ffe3a8"><circle cx="-4" cy="0" r="1.3"/><circle cx="4" cy="2" r="1.3"/><circle cx="0" cy="8" r="1.3"/><circle cx="-6" cy="7" r="1.3"/><circle cx="6" cy="8" r="1.3"/></g></g>
+    <g id="tp-macaron"><ellipse cx="0" cy="3" rx="13" ry="6" fill="#d9b7e6"/><ellipse cx="0" cy="-3" rx="13" ry="6" fill="#efd4f5"/><ellipse cx="0" cy="0" rx="12" ry="3" fill="#fff6d6"/></g>
+    <g id="tp-cherry"><path d="M-3 -4q3 -12 10 -16" stroke="#7a9a4a" stroke-width="2" fill="none"/><path d="M5 -4q-2 -10 2 -16" stroke="#7a9a4a" stroke-width="2" fill="none"/><circle cx="-4" cy="2" r="8" fill="#e63950"/><circle cx="7" cy="4" r="7" fill="#f05a6e"/><circle cx="-6" cy="-1" r="2.5" fill="#fff" opacity=".6"/></g>
+    <g id="tp-candle"><rect x="-4" y="-14" width="8" height="26" rx="3" fill="#9ccdf3"/><rect x="-4" y="-8" width="8" height="4" fill="#fff" opacity=".7"/><rect x="-4" y="2" width="8" height="4" fill="#fff" opacity=".7"/><ellipse cx="0" cy="-20" rx="4" ry="6" fill="#ffd66b"/></g>
+    <g id="tp-cream"><path d="M-12 8q0 -10 8 -10 0 -10 8 -8 4 -8 8 0 6 0 0 10 2 8 -6 8h-12q-6 0 -6 -0z" fill="#fff" stroke="#f1e4ea"/><circle cx="0" cy="-6" r="2.5" fill="#f6a9c6"/></g>
+    <g id="tp-heart"><path d="M0 10C-12 0-12-10-5-10c3 0 5 2 5 4 0-2 2-4 5-4 7 0 7 10-5 20z" fill="#f6a9c6"/></g>
+    <g id="tp-star"><path d="M0 -13l3.8 8 8.7 1-6.4 6 1.6 8.7L0 6.5l-7.7 4.2 1.6-8.7-6.4-6 8.7-1z" fill="#ffd66b" stroke="#f0b94a"/></g>
+    <g id="tp-ribbon"><path d="M0 0l-12 -8v16zM0 0l12 -8v16z" fill="#9ccdf3"/><circle cx="0" cy="0" r="4" fill="#5a9fd8"/></g>
+    <g id="tp-choco"><rect x="-11" y="-7" width="22" height="14" rx="3" fill="#7a4b3a"/><path d="M-11 0h22M0 -7v14M-5.5 -7v14M5.5 -7v14" stroke="#5a3328" stroke-width="1"/></g>
+    <g id="tp-blueberry"><circle cx="-6" cy="2" r="6" fill="#5b6fb5"/><circle cx="5" cy="-2" r="6" fill="#6f84c9"/><circle cx="2" cy="7" r="5" fill="#4d5f9e"/><circle cx="5" cy="-3" r="1.5" fill="#fff" opacity=".6"/></g>
+    <g id="tp-gold"><path d="M0 -12c7 0 12 6 12 13 0 8-7 15-12 15S-12 9-12 1c0-7 5-13 12-13z" fill="#f2c14e" stroke="#d9a21b"/><path d="M-6 -11l6-8 6 8-5-1-1 5-1-5z" fill="#c9a227"/><g fill="#fff6d0"><circle cx="-4" cy="0" r="1.3"/><circle cx="4" cy="2" r="1.3"/><circle cx="0" cy="8" r="1.3"/></g></g>
+    <g id="tp-unicorn"><path d="M-7 10L0 -16l7 26z" fill="#fff" stroke="#e9d7f2"/><path d="M-5 4l10-4M-3 -3l6-2" stroke="#e57fa6" stroke-width="1.5"/><circle cx="-9" cy="8" r="3" fill="#9ccdf3"/><circle cx="9" cy="8" r="3" fill="#f6a9c6"/><circle cx="0" cy="12" r="3" fill="#ffd66b"/></g>
+    <g id="tp-crown"><path d="M-13 8l3-16 7 8 3-12 3 12 7-8 3 16z" fill="#ffd66b" stroke="#d9a21b"/><rect x="-13" y="7" width="26" height="5" fill="#f0b94a"/><circle cx="-7" cy="2" r="1.8" fill="#e63950"/><circle cx="7" cy="2" r="1.8" fill="#5a9fd8"/><circle cx="0" cy="-2" r="1.8" fill="#e57fa6"/></g>
+  </defs>
+</svg>
+
+<script>
+(() => {
+'use strict';
+const $ = (s) => document.querySelector(s);
+const SVGNS = 'http://www.w3.org/2000/svg';
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+/* ---------- 記録（この端末の中だけ） ---------- */
+const KEY = 'gr-cake-game';
+let rec = { best: 0, bestDay: 0, games: 0, badges: [], golden: 0, five: 0, love: 0, prevBest: 0, xp: 0, level: 1, skill: { mix: 0, bake: 0, cream: 0, deco: 0, cut: 0 }, totalPts: 0 };
+try { Object.assign(rec, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(rec)); } catch (e) {} };
+const RANKS = [[0, '見習い', '🧁'], [6000, 'ケーキ職人', '🎂'], [15000, 'パティシエ', '👩‍🍳'], [30000, '伝説のパティシエ', '👑']];
+const rankOf = (s) => RANKS.reduce((a, r) => (s >= r[0] ? r : a), RANKS[0]);
+const BADGES = { first: '🎂 はじめてのケーキ', star5: '⭐ 星5つ', love: '😍 大満足', love5: '💕 大満足5回', pf3: '🔪 パーフェクト3連発', deco12: '🍓 デコ職人', golden3: '🍞 こんがり名人', smooth: '🥣 なめらか生地', white: '🧁 まっしろ名人', fever: '🔥 フィーバー', day3: '🌙 3日目まで営業', day5: '🏆 5日目まで営業', witch: '🧙 魔女のお気に入り', twins: '👶👶 ふたごのケーキ', vip: '👑 VIPが来た', blackout: '⚡ 停電でもこんがり', shop: '🛠 はじめての改装', day7: '🏅 7日間営業！', fast: '⚡ 残り30秒で完成', legend: '👑 伝説のパティシエ', cm: '📺 CMのあとで' };
+const _FILLINGS_UNUSED = [['いちごジャム', '#f48fb1', '#f9c2d6'], ['ブルーベリージャム', '#7b6fc4', '#b9b0e6'], ['チョコクリーム', '#8a5a3a', '#b98568'], ['マンゴークリーム', '#f6b93b', '#ffd98a'], ['抹茶クリーム', '#7cae6c', '#b6d6a8'], ['カスタード', '#f2c94c', '#fbe6a2']];
+
+/* ---------- 音（合成なので読み込みなし） ---------- */
+let AC = null, muted = false;
+try { muted = localStorage.getItem(KEY + ':mute') === '1'; } catch (e) {}
+const snd = $('#hudSnd'); snd.textContent = muted ? '🔇' : '🔊';
+snd.addEventListener('click', () => { muted = !muted; snd.textContent = muted ? '🔇' : '🔊'; try { localStorage.setItem(KEY + ':mute', muted ? '1' : '0'); } catch (e) {} });
+const audioInit = () => { if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } if (AC && AC.state === 'suspended') AC.resume(); };
+const tone = (f, t = 0.12, type = 'sine', g = 0.18, when = 0) => { if (!AC || muted) return; const o = AC.createOscillator(), v = AC.createGain(); o.type = type; o.frequency.value = f; v.gain.setValueAtTime(g, AC.currentTime + when); v.gain.exponentialRampToValueAtTime(0.001, AC.currentTime + when + t); o.connect(v).connect(AC.destination); o.start(AC.currentTime + when); o.stop(AC.currentTime + when + t + 0.02); };
+const noise = (when = 0, g = 0.25, len = 0.04, freq = 1800) => { if (!AC || muted) return; const buf = AC.createBuffer(1, AC.sampleRate * len, AC.sampleRate), d = buf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length); const s = AC.createBufferSource(), v = AC.createGain(), f = AC.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = freq; s.buffer = buf; v.gain.value = g; s.connect(f).connect(v).connect(AC.destination); s.start(AC.currentTime + when); };
+const sfx = {
+  pop: () => tone(880, 0.08, 'triangle', 0.12),
+  place: () => { tone(660, 0.06, 'triangle', 0.1); tone(990, 0.08, 'triangle', 0.08, 0.05); },
+  stir: () => noise(0, 0.12, 0.06, 600),
+  swish: () => noise(0, 0.08, 0.09, 900),
+  ding: () => { tone(1318, 0.3, 'sine', 0.14); tone(1760, 0.5, 'sine', 0.1, 0.12); },
+  cut: (q) => { noise(0, 0.3); if (q === 2) { tone(1046, 0.12, 'triangle', 0.14, 0.03); tone(1568, 0.18, 'triangle', 0.12, 0.1); } else if (q === 1) tone(784, 0.12, 'triangle', 0.12, 0.03); else tone(220, 0.18, 'sawtooth', 0.08, 0.03); },
+  roll: (sec) => { let t = 0, dt = 0.16; while (t < sec) { noise(t, 0.22); t += dt; dt = Math.max(0.045, dt * 0.93); } },
+  fanfare: () => { [[523, 0], [659, 0.12], [784, 0.24], [1046, 0.4]].forEach(([f, w]) => tone(f, 0.35, 'triangle', 0.16, w)); tone(1318, 0.6, 'triangle', 0.12, 0.6); },
+  wrong: () => { tone(330, 0.2, 'sawtooth', 0.07); tone(262, 0.3, 'sawtooth', 0.07, 0.18); },
+  zuko: () => { tone(600, 0.1, 'square', 0.08); tone(400, 0.12, 'square', 0.08, 0.1); tone(200, 0.35, 'square', 0.1, 0.2); },
+  fever: () => { [0, 0.08, 0.16, 0.24, 0.32].forEach((w, i) => tone(660 + i * 130, 0.12, 'triangle', 0.12, w)); },
+};
+
+/* ---------- 画面の切り替え ---------- */
+const scenes = ['scTitle', 'scOrder', 'scMix', 'scBake', 'scCream', 'scDeco', 'scCut', 'scReveal', 'scResult', 'scDay', 'scShop', 'scOver'];
+const show = (id) => { scenes.forEach((s) => { $('#' + s).hidden = s !== id; }); };
+const hudRound = $('#hudRound'), hudFever = $('#hudFever'), hudLives = $('#hudLives'), hudTime = $('#hudTime');
+const toast = (m) => { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('on'), 1900); };
+const flash = () => { const f = $('#flash'); f.classList.remove('on'); void f.offsetWidth; f.classList.add('on'); };
+const setCakeLook = (sponge, cream) => {
+  // クリームが足りないところはスポンジの色が透ける
+  const mix = (a, b, t) => { const h = (c) => [1, 3, 5].map((i) => parseInt(c.slice(i, i + 2), 16)); const A = h(a), B = h(b); return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, '0')).join(''); };
+  document.documentElement.style.setProperty('--sponge', sponge);
+  document.documentElement.style.setProperty('--cake-fill', mix(sponge, '#ffffff', clamp(cream, 0, 1)));
+  document.documentElement.style.setProperty('--drip', String(clamp(cream, 0.15, 1)));
+};
+
+/* ---------- お店の1日と、お客さん ---------- */
+const CUSTOMERS = [
+  ['👩‍🍼', 'ママ', ['明日が発表会なんです。中の色、ぜったい内緒ですよ！', 'パパにもまだ言ってないの。よろしくね']],
+  ['👨', 'パパ', ['ママをびっくりさせたくて。中の色はこれでお願いします', '切るまで誰にもばれないように！']],
+  ['👵', 'おばあちゃん', ['孫のお祝いにね。やさしい味にしておくれ', 'ひ孫の性別、わたしが一番に知ったのよ。ふふ']],
+  ['👴', 'おじいちゃん', ['ワシが切るんじゃ。まっすぐ切れるケーキにしてくれ', '焼き加減にはうるさいぞ']],
+  ['👭', 'ママ友', ['サプライズパーティーなの！ 派手にして！', 'みんなで動画撮るから、映えるやつね']],
+  ['👩‍💼', '会社の同僚', ['職場でお祝いするんです。きれいに切り分けたくて', '急いでるんです、お昼休みが終わっちゃう！']],
+  ['👩‍🍳', 'ライバル店のシェフ', ['ふん、お手並み拝見といこうか', '私の店より上手く焼けるかしら？']],
+  ['👸', 'お姫さま', ['王国じゅうに発表するのよ。ふさわしいケーキを', 'きらきらしたのがよろしくてよ']],
+  ['🧙', '魔女', ['まっくろに焼いておくれ…中の色だけは守るんじゃぞ', 'こんがりなんぞ、ぬるい！']],
+  ['🧑‍🎨', '芸術家', ['飾りは少なく。余白こそ美だ', 'クリームはまっしろに。中の色が映えるように']],
+  ['🐻', 'くまさん', ['はちみつ色に焼いてほしいな', 'ブルーベリーはあるかい？']],
+];
+const UPG = {
+  oven: ['🔥', '強いオーブン', '金色のゾーンが広くなる', [300, 600, 1000]],
+  mixer: ['🥣', '電動ミキサー', '1回の連打が1.5回ぶん…2.5回ぶんに', [250, 500, 800]],
+  spatula: ['🧁', '大きなヘラ', 'クリームが一度に広くぬれる', [200, 400, 700]],
+  clock: ['⏱', '下ごしらえ冷蔵庫', '制限時間 +8秒ずつ', [350, 700, 1100]],
+  sign: ['🪧', 'かわいい看板', 'チップ +100ずつ', [300, 600, 900]],
+  heart: ['❤️', '常連さんの応援', '❤️を1つ回復（なくなった時だけ）', [800, 800, 800]],
+};
+const lv = (k) => (RUN && RUN.upg[k]) || 0;
+/* ---------- お店のレベル：経験値はずっと残る ---------- */
+const xpNeed = (l) => 150 + (l - 1) * 130;                      // そのレベルから次へ必要なXP
+const LEVEL_NAMES = [[1, '屋台のケーキ屋さん'], [4, '町のケーキ屋さん'], [8, '人気のケーキ屋さん'], [12, '街いちばんのパティスリー'], [16, '伝説のジェンダーリビール工房']];
+const levelName = (l) => LEVEL_NAMES.reduce((a, x) => (l >= x[0] ? x[1] : a), LEVEL_NAMES[0][1]);
+const storeStage = (l) => (l >= 8 ? 3 : l >= 4 ? 2 : 1);
+const LEVEL_GIFT = { 2: '🪙 開店ボーナス +200（毎回）', 3: '🍓 飾り「金のいちご」', 4: '🏠 お店が大きくなった！ 制限時間 +5秒（ずっと）', 5: '🔥 強いオーブン Lv1 を持って開店', 6: '🦄 飾り「ユニコーン」', 7: '🪙 開店ボーナス +500', 8: '🏠 お店がさらに大きく！ ❤️が4つに', 9: '🥣 電動ミキサー Lv1 を持って開店', 10: '👑 飾り「王冠」', 12: '⏱ 制限時間 さらに +5秒', 14: '🧁 大きなヘラ Lv1 を持って開店', 16: '👑 伝説の工房！ すべてのお客さんのチップ +100' };
+const perk = {
+  startCoins: () => (rec.level >= 7 ? 500 : rec.level >= 2 ? 200 : 0),
+  timeBonus: () => (rec.level >= 12 ? 10 : rec.level >= 4 ? 5 : 0),
+  startUpg: () => ({ oven: rec.level >= 5 ? 1 : 0, mixer: rec.level >= 9 ? 1 : 0, spatula: rec.level >= 14 ? 1 : 0, clock: 0, sign: 0, heart: 0 }),
+  lives: () => (rec.level >= 8 ? 4 : 3),
+  tip: () => (rec.level >= 16 ? 100 : 0),
+};
+/* 腕前：パーフェクトの回数で星がふえ、少しずつ有利に */
+const SKILLS = { mix: ['🥣', '生地'], bake: ['🍞', '焼き'], cream: ['🧁', 'クリーム'], deco: ['🍓', '飾り'], cut: ['🔪', 'カット'] };
+const SK_STEP = [3, 10, 25, 50, 100];
+const skStars = (k) => SK_STEP.filter((n) => (rec.skill[k] || 0) >= n).length;
+const skillsHtml = () => Object.entries(SKILLS).map(([k, v]) => { const st = skStars(k); return `<div class="sk"><div class="ic">${v[0]}</div>${v[1]}<div class="st">${'★'.repeat(st)}<span>${'★'.repeat(5 - st)}</span></div></div>`; }).join('');
+const SEX = { girl: ['女の子', 'ピンク', '👧'], boy: ['男の子', 'ブルー', '👦'], twins: ['ふたご（男の子と女の子）', 'ピンクとブルー', '👶👶'] };
+const BAKE_PREF = { light: ['しっとり（うすめ）', 40, 52], golden: ['こんがり', 56, 70], dark: ['こんがり強め', 70, 82], black: ['まっくろ', 85, 96] };
+const DECO_IDS = ['ichigo', 'macaron', 'cherry', 'candle', 'cream', 'heart', 'star', 'ribbon', 'choco', 'blueberry'];
+const nameOf = (id) => (TOPPINGS.find((t) => t[0] === id) || [id, id])[1];
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const custTime = (day) => Math.max(40, 75 - (day - 1) * 5) + lv('clock') * 8 + perk.timeBonus();
+function makeOrder(day, idx) {
+  const c = pick(CUSTOMERS); const who = c[1];
+  const kinds = Math.min(3, 1 + Math.floor((day - 1) / 2) + (idx === 2 && day >= 2 ? 1 : 0));
+  const pool = DECO_IDS.slice(); const tops = [];
+  const fav = { 'ママ友': 'heart', 'おじいちゃん': 'candle', 'くまさん': 'blueberry', 'お姫さま': 'star', '会社の同僚': 'macaron' }[who];
+  if (fav) { tops.push({ id: fav, n: 1 + Math.floor(Math.random() * Math.min(3, day + 1)) }); pool.splice(pool.indexOf(fav), 1); }
+  while (tops.length < kinds) { const id = pool.splice(Math.floor(Math.random() * pool.length), 1)[0]; tops.push({ id, n: 1 + Math.floor(Math.random() * Math.min(3, day + 1)) }); }
+  let bake = 'golden';
+  if (who === '魔女') bake = 'black'; else if (who === 'くまさん') bake = 'light'; else if (day >= 2) bake = pick(['golden', 'golden', 'light', 'dark']);
+  const cream = who === '芸術家' || (day >= 3 && Math.random() < 0.4);
+  const maxTops = who === '芸術家' ? 4 : (day >= 4 && Math.random() < 0.3 ? 6 : 0);
+  const r = Math.random(); const sex = day >= 3 && r < 0.15 ? 'twins' : r < 0.5 ? 'girl' : 'boy';
+  const vip = RUN.vipNext; const o = { face: c[0], who, say: pick(c[2]), sex, tops, bake, cream, maxTops, time: custTime(day), vip, blackout: day >= 2 && Math.random() < 0.15 };
+  if (vip) { o.face = '👑'; o.who = '有名人の' + who; o.say = 'テレビの取材が来てるの。失敗は許されないわよ'; o.time = Math.max(30, o.time - 10); }
+  return o;
+}
+let RUN = null, G = null, timerId = 0, timeLeft = 0, timerOn = false;
+const newRun = () => ({ day: 1, idx: 0, strikes: 0, lives: perk.lives(), total: 0, served: 0, dayTotal: 0, fever: false, loves: 0, coins: perk.startCoins(), rep: 0, vipNext: false, upg: perk.startUpg() });
+const newGame = (order) => ({ order, day: RUN.day, color: null, fever: RUN.fever, deco: [], cuts: [], sponge: '#f7dfb5', cream: 1, cm: false, timeout: false,
+  score: { mix: 0, bake: 0, cream: 0, deco: 0, cut: 0, order: 0, time: 0, tip: 0 }, label: {}, bakeQ: 0 });
+const refreshHud = () => { hudRound.textContent = 'DAY ' + RUN.day; hudLives.textContent = '❤️'.repeat(RUN.lives - RUN.strikes) + '🖤'.repeat(RUN.strikes); hudFever.hidden = !(G && G.fever); $('#hudCoin').hidden = false; $('#hudCoin').textContent = '🪙 ' + RUN.coins; };
+/* 制限時間：注文を受けたら動き出し、切り終わるまで */
+const tickTimer = () => { hudTime.textContent = Math.ceil(timeLeft); hudTime.classList.toggle('low', timeLeft <= 10); };
+const startTimer = (sec) => { timeLeft = sec; timerOn = true; hudTime.hidden = false; $('#hudCoin').hidden = true; $('#hudSnd').hidden = true; tickTimer(); clearInterval(timerId); timerId = setInterval(() => { if (!timerOn) return; timeLeft -= 0.1; if (timeLeft <= 10 && Math.abs(timeLeft - Math.round(timeLeft)) < 0.05) sfx.pop(); tickTimer(); if (timeLeft <= 0) { timeLeft = 0; stopTimer(); timeUp(); } }, 100); };
+const stopTimer = () => { timerOn = false; clearInterval(timerId); $('#hudSnd').hidden = false; };
+function timeUp() {
+  // 途中でもそこまで。お客さんは怒ります
+  mixOn = false; clearInterval(mixTimer); bakeOn = false; cancelAnimationFrame(bakeRaf); cutting = false; cancelAnimationFrame(raf);
+  G.timeout = true; if (!G.color) G.color = 'none'; if (!G.label.bake) { G.label.bake = '焼けてない'; G.score.bake = 0; } if (!G.label.cream) { G.label.cream = 'ぬってない'; } if (!G.label.mix) G.label.mix = 'まぜ足りない';
+  toast('時間切れ！'); sfx.wrong(); setTimeout(result, 900);
+}
+const orderChipsHtml = (order, deco) => order.tops.map((t) => { const have = deco ? deco.filter((d) => d.id === t.id).length : null; const ok = have !== null && have >= t.n; return `<span class="chip${ok ? ' ok' : ''}"><svg viewBox="-16 -22 32 36"><use href="#tp-${t.id}"/></svg>${nameOf(t.id)} <small>${have === null ? '×' + t.n : have + '/' + t.n}</small>${ok ? ' ✓' : ''}</span>`; }).join('')
+  + `<span class="chip em">🔥 ${BAKE_PREF[order.bake][0]}</span>` + (order.cream ? '<span class="chip em">🧁 まっしろに</span>' : '') + (order.maxTops ? `<span class="chip em">✋ 飾りは${order.maxTops}こまで</span>` : '');
+function startOrder() {
+  const order = makeOrder(RUN.day, RUN.idx); G = newGame(order); setCakeLook('#f7dfb5', 1); refreshHud(); hudRound.hidden = false; hudLives.hidden = false; hudTime.hidden = true;
+  $('#orderEb').textContent = `DAY ${RUN.day} ・ ${RUN.idx + 1}人目のお客さん`;
+  const f = $('#custFace'); f.textContent = order.face; f.classList.remove('pop'); void f.offsetWidth; f.classList.add('pop');
+  $('#custName').textContent = order.who; $('#custSay').textContent = order.say;
+  $('#orderChips').innerHTML = orderChipsHtml(order, null);
+  $('#orderMeta').innerHTML = `<span class="secret">🤫 赤ちゃんは ${SEX[order.sex][2]} ${SEX[order.sex][0]} → 中は${SEX[order.sex][1]}</span><br>焼き加減は<b>${BAKE_PREF[order.bake][0]}</b>${order.cream ? '、クリームは<b>90%以上</b>' : ''}${order.maxTops ? `、飾りは<b>${order.maxTops}こまで</b>` : ''}。中の色をまちがえたり、注文の飾りが足りないと怒られます`;
+  $('#orderTime').textContent = order.time;
+  $('#vipBar').hidden = !order.vip; RUN.vipNext = false;
+  $('#repBar').querySelectorAll('i').forEach((i, k) => i.classList.toggle('on', k < RUN.rep));
+  $('#hudPeek').hidden = true;
+  clearTimeout(startOrder.h); startOrder.h = setTimeout(() => { const sc = $('#orderMeta .secret'); if (sc) { sc.classList.add('hide'); sc.textContent = '🤫 赤ちゃんは ？？？（おぼえた？）'; } }, 3000);
+  show('scOrder'); sfx.ding();
+}
+$('#btnOrder').addEventListener('click', () => { sfx.pop(); clearTimeout(startOrder.h); startTimer(G.order.time); $('#hudPeek').hidden = false; startMix(); });
+$('#hudPeek').addEventListener('click', () => { if (!timerOn) return; timeLeft = Math.max(1, timeLeft - 5); tickTimer(); toast(`🤫 ${SEX[G.order.sex][2]} ${SEX[G.order.sex][0]} → 中は${SEX[G.order.sex][1]}`); sfx.pop(); });
+
+/* ---------- タイトル ---------- */
+const renderBest = () => {
+  const r = rankOf(rec.best);
+  $('#lvNum').textContent = rec.level; $('#lvName').textContent = levelName(rec.level); $('#xpBar').style.width = Math.min(100, rec.xp / xpNeed(rec.level) * 100) + '%'; $('#xpTxt').textContent = `つぎのレベルまで あと ${xpNeed(rec.level) - rec.xp} XP`;
+  const st = storeStage(rec.level); ['st1', 'st2', 'st3'].forEach((id, i) => { $('#' + id).style.display = (i + 1) === st ? '' : 'none'; });
+  $('#skills').innerHTML = skillsHtml();
+  const perks = []; if (perk.startCoins()) perks.push(`🪙 開店ボーナス ${perk.startCoins()}`); if (perk.timeBonus()) perks.push(`⏱ +${perk.timeBonus()}秒`); if (perk.lives() > 3) perks.push('❤️ ×4'); const su = perk.startUpg(); Object.entries(su).forEach(([k, v]) => { if (v) perks.push(`${UPG[k][0]} ${UPG[k][1]} Lv${v}`); });
+  $('#startNote').innerHTML = (perks.length ? '開店のとき：' + perks.join('　') + '<br>' : '') + '音が出ます。iPhoneはマナーモードを切ってね';
+  $('#bestBox').innerHTML = rec.games ? `<span>自己ベスト<b>${rec.best.toLocaleString()}</b></span><span>最長営業<b>DAY ${rec.bestDay}</b></span><span>作ったケーキ<b>${rec.games}こ</b></span><span>大満足<b>${rec.love}回</b></span><span>バッジ<b>${rec.badges.length}/${Object.keys(BADGES).length}</b></span>` : '<span>はじめての開店<b>がんばって！</b></span>';
+};
+$('#btnStart').addEventListener('click', () => { audioInit(); sfx.pop(); RUN = newRun(); startOrder(); });
+
+/* ---------- ① まぜる：5秒連打 ---------- */
+let mixN = 0, mixOn = false, mixT0 = 0, mixTimer = 0;
+const MIX_SEC = 5, MIX_GOOD = 22, MIX_GREAT = 36;
+function startMix() {
+  mixN = 0; mixOn = false; $('#mixN').textContent = '0'; $('#mixBar').style.width = '0'; $('#mixTime').textContent = 'まぜる！を押すとスタート';
+  $('#btnMix').disabled = true; $('#btnMix').textContent = 'まぜる！'; $('#swirl').setAttribute('transform', 'rotate(0 100 72)'); G.color = null;
+  document.querySelectorAll('#colors button').forEach((b) => b.setAttribute('aria-pressed', 'false')); $('#batter').setAttribute('fill', '#fbe7c2');
+  show('scMix');
+}
+document.querySelectorAll('#colors button').forEach((b) => b.addEventListener('click', () => {
+  if (mixOn) return; G.color = b.dataset.c; sfx.place();
+  document.querySelectorAll('#colors button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+  $('#batter').setAttribute('fill', { girl: '#f9c2d6', boy: '#bfe0fa', twins: 'url(#twinG)' }[G.color]); $('#btnMix').disabled = false; $('#mixTime').textContent = 'まぜる！を押すとスタート';
+}));
+$('#btnMix').addEventListener('click', () => {
+  if (!G.color) return;
+  if (!mixOn) { mixOn = true; mixT0 = performance.now(); mixTimer = setInterval(() => { const left = MIX_SEC - (performance.now() - mixT0) / 1000; $('#mixTime').textContent = left > 0 ? `あと ${left.toFixed(1)} 秒` : ''; if (left <= 0) endMix(); }, 50); }
+  if (!mixOn) return;
+  mixN += 1 + lv('mixer') * 0.5 + skStars('mix') * 0.1; mixN = Math.round(mixN * 10) / 10; $('#mixN').textContent = Math.floor(mixN); $('#mixBar').style.width = clamp(mixN / 48 * 100, 0, 100) + '%';
+  $('#swirl').setAttribute('transform', `rotate(${mixN * 23 % 360} 100 72)`); $('#spoon').setAttribute('transform', `rotate(${20 + (mixN % 2 ? -22 : 22)} 100 40)`);
+  if (mixN % 2 === 0) sfx.stir();
+  if (mixN === MIX_GOOD) toast('いい感じ！'); if (mixN === MIX_GREAT) toast('なめらか！');
+});
+function endMix() {
+  clearInterval(mixTimer); mixOn = false; $('#btnMix').disabled = true; if (G.timeout) return;
+  const q = mixN >= MIX_GREAT ? 2 : mixN >= MIX_GOOD ? 1 : 0;
+  G.score.mix = [50, 150, 300][q]; G.label.mix = ['ダマだらけ', 'まあまあ', 'なめらか'][q]; if (q === 2) { earn('smooth'); rec.skill.mix += 1; }
+  $('#mixTime').textContent = `${G.label.mix}！ +${G.score.mix}点`; sfx.ding();
+  setTimeout(startBake, 1100);
+}
+
+/* ---------- ② 焼く：こんがりで取り出す ---------- */
+let bakeOn = false, bakeRaf = 0, bakeT0 = 0, heat = 0;
+const bakeZone = () => { const p = BAKE_PREF[G.order.bake]; const shrink = Math.min(5, (G.day - 1) * 1.0) - lv('oven') * 4 - skStars('bake') * 0.8 - (G.order.vip ? -3 : 0); const lo = p[1] + shrink / 2, hi = p[2] - shrink / 2; return { lo, hi, lo2: Math.max(0, lo - 12), hi2: Math.min(100, hi + 12) }; }; // 注文の焼き加減が金色。日がたつと狭く
+const spongeColor = (h) => { // 0 → 生っぽい白、こんがり → 金色、100 → まっくろ
+  const stops = [[0, [255, 241, 214]], [50, [250, 221, 165]], [66, [230, 168, 92]], [84, [120, 72, 40]], [100, [40, 28, 24]]];
+  let a = stops[0], b = stops[stops.length - 1]; for (let i = 0; i < stops.length - 1; i++) if (h >= stops[i][0] && h <= stops[i + 1][0]) { a = stops[i]; b = stops[i + 1]; }
+  const t = (h - a[0]) / (b[0] - a[0] || 1); return '#' + a[1].map((v, i) => Math.round(v + (b[1][i] - v) * t).toString(16).padStart(2, '0')).join('');
+};
+function startBake() {
+  const z = bakeZone(); $('#bz1').style.left = z.lo + '%'; $('#bz1').style.width = (z.hi - z.lo) + '%'; $('#bz2').style.left = z.lo2 + '%'; $('#bz2').style.width = (z.hi2 - z.lo2) + '%';
+  heat = 0; bakeOn = false; $('#bcur').style.left = '0'; $('#heat').style.opacity = 0; $('#sponge').style.background = spongeColor(0); $('#sponge').style.height = '30%'; $('#oven').classList.remove('burn');
+  ['knob1', 'knob2', 'knob3'].forEach((k) => $('#' + k).classList.remove('on'));
+  $('#btnBake').disabled = false; $('#btnBake').textContent = 'オーブンに入れる';
+  $('#scBake').classList.toggle('bakeout', !!G.order.blackout); $('#outNote').hidden = !G.order.blackout; $('#oven').classList.toggle('blackout', !!G.order.blackout);
+  $('#bakePrefLab').textContent = BAKE_PREF[G.order.bake][0]; $('#bakeLead').innerHTML = `${G.order.who}の希望は<b>${BAKE_PREF[G.order.bake][0]}</b>。金色のゾーンで取り出して。`;
+  show('scBake');
+}
+$('#btnBake').addEventListener('click', () => {
+  if (!bakeOn) { bakeOn = true; bakeT0 = performance.now(); $('#btnBake').textContent = '取り出す！'; $('#heat').style.opacity = 1; ['knob1', 'knob2', 'knob3'].forEach((k, i) => setTimeout(() => $('#' + k).classList.add('on'), i * 300)); sfx.pop(); bakeLoop(); return; }
+  endBake(false);
+});
+function bakeLoop() {
+  const t = (performance.now() - bakeT0) / 1000;
+  const speed = 1 + (G.day - 1) * 0.07;                       // 日がたつと少し速い
+  heat = clamp(Math.pow(t * speed / 5.2, 1.25) * 100, 0, 100);  // だんだん加速
+  $('#bcur').style.left = heat + '%'; $('#sponge').style.background = spongeColor(heat); $('#sponge').style.height = (30 + Math.min(heat, 70) * 0.2) + '%';
+  if (heat > 84) $('#oven').classList.add('burn');
+  if (heat >= 100) return endBake(true);
+  if (bakeOn) bakeRaf = requestAnimationFrame(bakeLoop);
+}
+function endBake(auto) {
+  bakeOn = false; cancelAnimationFrame(bakeRaf); $('#btnBake').disabled = true; if (G.timeout) return;
+  const z = bakeZone(); let q, lab; const want = BAKE_PREF[G.order.bake][0];
+  if (heat >= z.lo && heat <= z.hi) { q = 2; lab = want + '！'; rec.skill.bake += 1; if (G.order.blackout) earn('blackout'); if (G.order.bake === 'golden') { rec.golden += 1; if (rec.golden >= 3) earn('golden3'); } if (G.order.bake === 'black') earn('witch'); }
+  else if (heat >= z.lo2 && heat <= z.hi2) { q = 1; lab = heat < z.lo ? 'ちょっと うすい' : 'ちょっと 焼きすぎ'; }
+  else { q = 0; lab = heat < z.lo2 ? '生焼け…' : 'まっくろ！'; }
+  G.bakeQ = q; G.score.bake = [50, 200, 400][q]; G.label.bake = lab; G.sponge = spongeColor(clamp(heat, 8, 92));
+  setCakeLook(G.sponge, 0);
+  q === 2 ? sfx.ding() : q === 1 ? sfx.pop() : sfx.wrong();
+  toast(`${lab} +${G.score.bake}点`);
+  setTimeout(startCream, 1100);
+}
+
+/* ---------- ③ クリームをぬる：なぞって白く ---------- */
+const CELLS = []; // {x,y,w,h,on}
+(() => { const add = (x0, y0, x1, y1, nx, ny) => { const w = (x1 - x0) / nx, h = (y1 - y0) / ny; for (let j = 0; j < ny; j++) for (let i = 0; i < nx; i++) CELLS.push({ x: x0 + i * w, y: y0 + j * h, w, h, on: false }); };
+  add(84, 78, 216, 144, 6, 3); add(52, 140, 248, 234, 9, 4); })();
+let creamOn = false, creamDone = 0;
+function startCream() {
+  CELLS.forEach((c) => { c.on = false; }); creamDone = 0;
+  $('#creamBase').innerHTML = '<use href="#cakeBody"/>';
+  const g = $('#creamCells'); g.innerHTML = '';
+  CELLS.forEach((c, i) => { const r = document.createElementNS(SVGNS, 'rect'); r.setAttribute('x', c.x); r.setAttribute('y', c.y); r.setAttribute('width', c.w + 1.2); r.setAttribute('height', c.h + 1.2); r.setAttribute('rx', 1); r.setAttribute('fill', '#fff'); r.setAttribute('opacity', '0'); r.dataset.i = i; g.appendChild(r); });
+  $('#creamPct').textContent = '0'; $('#btnCreamDone').disabled = true; $('#btnCreamDone').textContent = 'ぬれた！つぎへ';
+  show('scCream');
+}
+const svgPoint = (svg, e) => { const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; return pt.matrixTransform(svg.getScreenCTM().inverse()); };
+const creamBox = $('#creamBox'), creamSvg = $('#creamSvg'), spat = $('#spat');
+const paint = (e) => {
+  const p = svgPoint(creamSvg, e); const R = 16 + lv('spatula') * 7 + skStars('cream') * 1.5; let hit = false;
+  CELLS.forEach((c, i) => { if (c.on) return; const cx = c.x + c.w / 2, cy = c.y + c.h / 2; if (Math.abs(p.x - cx) < c.w / 2 + R && Math.abs(p.y - cy) < c.h / 2 + R) { c.on = true; creamDone += 1; hit = true; $('#creamCells').children[i].setAttribute('opacity', '1'); } });
+  const bb = creamBox.getBoundingClientRect(); spat.style.left = (e.clientX - bb.left) + 'px'; spat.style.top = (e.clientY - bb.top) + 'px';
+  if (hit) { if (creamDone % 4 === 0) sfx.swish(); const pct = Math.round(creamDone / CELLS.length * 100); $('#creamPct').textContent = pct; $('#btnCreamDone').disabled = false; if (pct >= 100) { $('#btnCreamDone').textContent = 'まっしろ！つぎへ'; sfx.ding(); } }
+};
+creamBox.addEventListener('pointerdown', (e) => { creamOn = true; creamBox.classList.add('on'); creamBox.setPointerCapture(e.pointerId); paint(e); });
+creamBox.addEventListener('pointermove', (e) => { if (creamOn) paint(e); });
+creamBox.addEventListener('pointerup', () => { creamOn = false; creamBox.classList.remove('on'); });
+creamBox.addEventListener('pointercancel', () => { creamOn = false; creamBox.classList.remove('on'); });
+$('#btnCreamDone').addEventListener('click', () => {
+  const pct = creamDone / CELLS.length; G.cream = pct;
+  const q = pct >= 0.9 ? 2 : pct >= 0.6 ? 1 : 0; G.score.cream = [50, 150, 300][q]; G.label.cream = ['ぬりのこし…', 'まあまあ', 'まっしろ'][q];
+  setCakeLook(G.sponge, pct); if (q === 2) { earn('white'); rec.skill.cream += 1; } sfx.pop(); startDeco();
+  if (G.timeout) return;
+});
+
+/* ---------- ④ 飾る ---------- */
+const TOPPINGS = [['ichigo', 'いちご'], ['macaron', 'マカロン'], ['cherry', 'さくらんぼ'], ['candle', 'ろうそく'], ['cream', 'クリーム'], ['heart', 'ハート'], ['star', 'おほしさま'], ['ribbon', 'リボン'], ['choco', 'チョコ'], ['blueberry', 'ブルーベリー'], ['gold', '金のいちご', 3], ['unicorn', 'ユニコーン', 6], ['crown', '王冠', 10]];
+let tool = 'ichigo';
+const tray = $('#tray');
+const renderTray = () => {
+  tray.innerHTML = '';
+  TOPPINGS.forEach(([id, name, need]) => {
+    const locked = need && rec.level < need;
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'tp' + (locked ? ' lock' : ''); b.dataset.id = id; b.setAttribute('aria-pressed', String(id === tool));
+    b.innerHTML = `<svg viewBox="-16 -22 32 36"><use href="#tp-${id}"/></svg>${name}`;
+    b.addEventListener('click', () => { if (locked) { toast(`お店がレベル ${need} になると「${name}」が使えます`); return; } tool = id; tray.querySelectorAll('.tp').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); sfx.pop(); });
+    tray.appendChild(b);
+  });
+};
+const onCake = (x, y) => (x >= 88 && x <= 212 && y >= 70 && y <= 140) || (x >= 56 && x <= 244 && y >= 132 && y <= 226);
+const drawDeco = (layer, list, clickable) => {
+  layer.innerHTML = '';
+  list.forEach((d, i) => {
+    const u = document.createElementNS(SVGNS, 'use'); u.setAttribute('href', '#tp-' + d.id); u.setAttribute('transform', `translate(${d.x} ${d.y}) scale(${d.s})`);
+    if (clickable) { u.classList.add('placed'); u.addEventListener('pointerdown', (e) => { e.stopPropagation(); G.deco.splice(i, 1); sfx.pop(); renderDeco(); }); }
+    layer.appendChild(u);
+  });
+};
+const renderDeco = () => { drawDeco($('#decoLayer'), G.deco, true); $('#decoCount').textContent = G.deco.length; $('#decoOrder').innerHTML = orderChipsHtml(G.order, G.deco); };
+$('#decoSvg').addEventListener('pointerdown', (e) => {
+  const p = svgPoint($('#decoSvg'), e);
+  if (!onCake(p.x, p.y)) return;
+  if (G.deco.length >= 12) { toast('飾りは12こまで。いっぱいです！'); $('#decoBox').classList.remove('shake'); void $('#decoBox').offsetWidth; $('#decoBox').classList.add('shake'); return; }
+  G.deco.push({ id: tool, x: Math.round(p.x), y: Math.round(p.y), s: 0.9 + Math.random() * 0.25 }); sfx.place(); renderDeco();
+});
+$('#decoUndo').addEventListener('click', () => { if (G.deco.length) { G.deco.pop(); sfx.pop(); renderDeco(); } });
+$('#decoSkip').addEventListener('click', () => { G.deco = []; afterDeco(); });
+$('#btnDecoDone').addEventListener('click', () => { sfx.pop(); afterDeco(); });
+function startDeco() { G.deco = []; renderTray(); renderDeco(); show('scDeco'); }
+
+/* ---------- 飾りおわり → 切る ---------- */
+function afterDeco() { G.score.deco = Math.min(12, G.deco.length) * 50 + skStars('deco') * 10 * Math.min(12, G.deco.length); if (G.deco.length >= 12) earn('deco12'); startCut(); }
+
+/* ---------- ⑤ 切る：揺れるナイフをまんなかで ---------- */
+const knife = $('#knife'), cur = $('#cur'), cutsEl = $('#cuts'), judge = $('#judge');
+let raf = 0, t0 = 0, kx = 150, cutting = false;
+const AMP = 92, SPEEDS = [1.7, 2.3, 3.0];
+const cutZone = () => Math.max(0.08, 0.14 - (G.day - 1) * 0.01 - (G.order.vip ? 0.02 : 0) + skStars('cut') * 0.005);   // 日がたつと金色が狭く、VIPはさらに
+function startCut() {
+  const z = cutZone(); $('#cz1').style.left = (50 - z * 50) + '%'; $('#cz1').style.width = (z * 100) + '%'; $('#cz2').style.left = '30%'; $('#cz2').style.width = '40%';
+  drawDeco($('#cutDeco'), G.deco, false); $('#cutLines').innerHTML = '';
+  cutsEl.querySelectorAll('span').forEach((s) => { s.className = ''; });
+  G.cuts = []; $('#cutTitle').textContent = G.fever ? 'FEVER！点数2倍！' : 'まっすぐ切ろう！'; $('#btnCut').disabled = false; cutting = true;
+  show('scCut'); t0 = performance.now(); cancelAnimationFrame(raf); swing();
+}
+function swing() {
+  const n = G.cuts.length; const sp = (SPEEDS[n] || 3) * (n === 2 ? 0.75 : 1) * (1 + (G.day - 1) * 0.06);   // ラスト1回はスロー、日がたつと速く
+  const t = (performance.now() - t0) / 1000;
+  kx = 150 + AMP * Math.sin(t * sp * 1.6);
+  knife.setAttribute('transform', `translate(${kx.toFixed(1)} 0) rotate(${(Math.sin(t * sp * 1.6) * 10).toFixed(1)})`);
+  cur.style.left = (50 + (kx - 150) / AMP * 50) + '%';
+  if (cutting) raf = requestAnimationFrame(swing);
+}
+$('#btnCut').addEventListener('click', doCut);
+$('#cutBox').addEventListener('pointerdown', (e) => { if (e.target.closest('button')) return; doCut(); });
+const crumbs = (q) => { const box = $('#cutBox'); const bb = box.getBoundingClientRect(); for (let i = 0; i < (q === 0 ? 14 : 7); i++) { const c = document.createElement('i'); c.className = 'crumb'; c.style.left = (50 + (Math.random() - 0.5) * 30) + '%'; c.style.top = '55%'; c.style.setProperty('--dx', ((Math.random() - 0.5) * 120) + 'px'); c.style.animationDelay = (Math.random() * 0.15) + 's'; box.appendChild(c); setTimeout(() => c.remove(), 1000); } };
+async function doCut() {
+  if (!cutting || G.cuts.length >= 3) return;
+  const err = Math.abs(kx - 150) / AMP, z = cutZone();
+  const q = err < z ? 2 : err < 0.4 ? 1 : 0;
+  const pts = [100, 300, 500][q] * (G.fever ? 2 : 1);
+  G.cuts.push({ q, pts, err: kx - 150 });
+  sfx.cut(q); crumbs(q); if (q === 2) flash();
+  const ck = $('#cutCake'); ck.classList.remove('wob'); void ck.getBoundingClientRect(); ck.classList.add('wob');
+  const sp = cutsEl.querySelectorAll('span')[G.cuts.length - 1]; sp.className = ['ok', 'gd', 'pf'][q];
+  judge.textContent = ['ガタガタ…', 'グッド！', 'PERFECT!'][q]; judge.style.color = ['#8c727c', '#2e9e6a', '#e0a21b'][q];
+  judge.classList.remove('show'); void judge.offsetWidth; judge.classList.add('show');
+  const l = document.createElementNS(SVGNS, 'line'); const dx = (kx - 150) * 0.45;
+  l.setAttribute('x1', 150 + dx); l.setAttribute('y1', 62); l.setAttribute('x2', 150 - dx * 0.6); l.setAttribute('y2', 232);
+  l.setAttribute('stroke', q === 2 ? '#e0a21b' : q === 1 ? '#7cc8a0' : '#c9b0bb'); l.setAttribute('stroke-width', '3'); l.setAttribute('stroke-linecap', 'round'); l.setAttribute('opacity', '.85');
+  $('#cutLines').appendChild(l);
+  if (G.cuts.length < 3) { t0 = performance.now(); $('#cutTitle').textContent = ['', 'あと2回！', 'ラスト1回！ ゆっくり…'][G.cuts.length]; return; }
+  cutting = false; cancelAnimationFrame(raf); $('#btnCut').disabled = true; stopTimer();
+  G.score.time = Math.floor(timeLeft) * 10; if (timeLeft >= 30) earn('fast');
+  G.score.cut = G.cuts.reduce((a, c) => a + c.pts, 0);
+  const allPf = G.cuts.every((c) => c.q === 2); if (allPf) { earn('pf3'); rec.skill.cut += 1; }
+  RUN.fever = allPf && !G.fever;   // 3連パーフェクトで次のお客さんはフィーバー
+  if (G.fever) earn('fever');
+  await wait(700); reveal();
+}
+
+/* ---------- ドラムロール → （ときどきCM）→ 発表 ---------- */
+async function reveal() {
+  drawDeco($('#revealDeco'), G.deco, false);
+  const sc = $('#scReveal'); sc.classList.remove('cm'); $('#zuko').classList.remove('on'); $('#revealTxt').textContent = '審査員の判定は……';
+  show('scReveal');
+  const sec = 2.4; sfx.roll(sec); await wait(sec * 1000 + 100);
+  if (RUN.served >= 1 && Math.random() < 0.25) {            // ときどき「結果はCMのあとで！」
+    G.cm = true; earn('cm'); sc.classList.add('cm'); $('#revealTxt').textContent = '発表の前に…'; sfx.zuko(); await wait(1500);
+    $('#zuko').classList.add('on'); await wait(900); sc.classList.remove('cm'); $('#revealTxt').textContent = 'うそうそ。判定は……'; sfx.roll(1.2); await wait(1300);
+  }
+  result();
+}
+const openCakeSvg = (svg, color, deco, sponge) => {
+  const P = ['#f9c2d6', '#f48fb1'], B = ['#bfe0fa', '#7fbdf0'], N = ['#efe6dc', '#d9cbbd'];
+  const L = color === 'boy' ? B : color === 'girl' || color === 'twins' ? P : N, R = color === 'girl' ? P : color === 'boy' || color === 'twins' ? B : N;  // ふたごは左ピンク・右ブルー
+  const sp = sponge || '#f7dfb5';
+  svg.innerHTML = `
+    <use href="#plate"/>
+    <g>
+      <rect x="112" y="140" width="38" height="94" fill="${L[0]}"/><rect x="150" y="140" width="38" height="94" fill="${R[0]}"/>
+      <rect x="112" y="156" width="76" height="12" fill="${sp}"/><rect x="112" y="184" width="76" height="12" fill="${sp}"/><rect x="112" y="212" width="76" height="12" fill="${sp}"/>
+      <rect x="124" y="78" width="26" height="66" fill="${L[1]}"/><rect x="150" y="78" width="26" height="66" fill="${R[1]}"/>
+      <rect x="124" y="94" width="52" height="10" fill="${sp}"/><rect x="124" y="118" width="52" height="10" fill="${sp}"/>
+      <use href="#candle"/>
+    </g>
+    <g transform="translate(-34 0) rotate(-6 150 236)"><clipPath id="cl"><rect x="0" y="0" width="150" height="260"/></clipPath><g clip-path="url(#cl)"><use href="#tiers"/><g class="dl"></g></g><rect x="148" y="78" width="4" height="156" fill="${L[1]}" opacity=".6"/></g>
+    <g transform="translate(34 0) rotate(6 150 236)"><clipPath id="cr"><rect x="150" y="0" width="150" height="260"/></clipPath><g clip-path="url(#cr)"><use href="#tiers"/><g class="dr"></g></g><rect x="148" y="78" width="4" height="156" fill="${R[1]}" opacity=".6"/></g>`;
+  drawDeco(svg.querySelector('.dl'), deco.filter((d) => d.x < 150), false);
+  drawDeco(svg.querySelector('.dr'), deco.filter((d) => d.x >= 150), false);
+};
+let newBadges = [];
+function earn(id) { if (!rec.badges.includes(id)) { rec.badges.push(id); newBadges.push(id); } }
+function result() {
+  rec.games += 1; earn('first'); RUN.served += 1; stopTimer(); hudTime.hidden = true; $('#hudPeek').hidden = true; $('#hudCoin').hidden = false;
+  const O = G.order, S = G.score;
+  // 注文チェック
+  const checks = [];
+  let missing = 0;
+  O.tops.forEach((t) => { const have = G.deco.filter((d) => d.id === t.id).length; const ok = have >= t.n; if (!ok) missing += 1; checks.push([`${nameOf(t.id)} ×${t.n}`, ok ? `OK（${have}こ）` : `たりない（${have}こ）`, ok]); });
+  const colorOk = G.color === O.sex; if (!G.timeout) checks.unshift([`中の色「${SEX[O.sex][1]}」`, colorOk ? 'ばっちり' : G.color === 'none' ? '入れてない' : `ちがう（${SEX[G.color] ? SEX[G.color][1] : '?'}）`, colorOk]);
+  const bakeOk = G.bakeQ === 2, bakeBad = G.bakeQ === 0;
+  checks.push([`焼き加減「${BAKE_PREF[O.bake][0]}」`, bakeOk ? 'ぴったり' : bakeBad ? 'ぜんぜん違う' : 'おしい', bakeOk, !bakeBad]);
+  if (O.cream) { const ok = G.cream >= 0.9; checks.push(['クリーム まっしろ', ok ? 'OK' : `ぬりのこし ${Math.round(G.cream * 100)}%`, ok, true]); }
+  let over = false; if (O.maxTops) { over = G.deco.length > O.maxTops; checks.push([`飾りは${O.maxTops}こまで`, over ? `多すぎ（${G.deco.length}こ）` : 'OK', !over, true]); }
+  if (G.timeout) checks.push(['時間内に完成', '時間切れ！', false]);
+  const angry = G.timeout || !colorOk || missing > 0 || bakeBad;
+  if (!G.timeout && missing === 0 && O.tops.length) rec.skill.deco += 1;
+  const allOk = checks.every((c) => c[2]);
+  S.order = angry ? 0 : (missing === 0 ? 300 : 0) + (bakeOk ? 200 : 0) + (O.cream && G.cream >= 0.9 ? 100 : 0);
+  const base = S.mix + S.bake + S.cream + S.deco + S.cut;
+  const stars = angry ? 1 : base >= 2800 ? 5 : base >= 2200 ? 4 : base >= 1500 ? 3 : base >= 800 ? 2 : 1;
+  const love = !angry && allOk && stars >= 4;
+  S.tip = angry ? 0 : (love ? 500 : allOk ? 200 : 0) + (!angry && allOk ? lv('sign') * 100 : 0) + (!angry ? perk.tip() : 0);
+  if (G.timeout) S.time = 0; if (O.sex === 'twins' && colorOk) earn('twins');
+  let total = angry ? Math.floor(base / 2) : base + S.order + S.time + S.tip; if (O.vip && !angry) total *= 2;
+  RUN.rep = love ? Math.min(3, RUN.rep + 1) : 0; if (RUN.rep >= 3) { RUN.vipNext = true; RUN.rep = 0; earn('vip'); }
+  const coin = Math.floor(total / 10); RUN.coins += coin;
+  if (angry) RUN.strikes += 1;
+  if (love) { RUN.loves += 1; rec.love += 1; earn('love'); if (rec.love >= 5) earn('love5'); }
+  if (stars === 5) { rec.five += 1; earn('star5'); }
+  RUN.total += total; RUN.dayTotal += total;
+  const newBest = RUN.total > rec.best; if (newBest) rec.best = RUN.total; if (rec.best >= 30000) earn('legend');
+  // 画面
+  const sc = $('#scResult'); sc.classList.toggle('angry', angry);
+  const face = $('#reactFace'); face.textContent = angry ? '😠' : love ? '😍' : allOk ? '😊' : '😐'; face.classList.remove('pop'); void face.offsetWidth; face.classList.add('pop');
+  $('#bigTxt').textContent = angry ? (G.timeout ? '「おそいよ〜！」' : !colorOk ? `「ちがう！${SEX[O.sex][0]}なのに！」` : missing ? '「注文とちがう！」' : '「こんなの食べられない！」') : love ? `「わぁ、${SEX[O.sex][0]}！ さいこう！！」` : allOk ? '「ありがとう！」' : '「まあ…いいか」';
+  const shown = G.color === 'none' ? null : G.color; $('#itsa').textContent = shown === 'twins' ? "IT'S" : "IT'S A"; const rw = $('#revealWord'); rw.className = 'revealword ' + (shown || ''); rw.textContent = shown === 'girl' ? 'GIRL!' : shown === 'boy' ? 'BOY!' : shown === 'twins' ? 'TWINS!' : '……';
+  $('#stars').innerHTML = '★★★★★'.split('').map((c, i) => i < stars ? `<b>${c}</b>` : c).join('');
+  $('#resLine').innerHTML = `${O.face} ${O.who}の注文は <b>${SEX[O.sex][0]}</b>${angry ? '　<b style="color:#c0392b">❤️ −1</b>' : ''}`;
+  openCakeSvg($('#resultSvg'), G.color, G.deco, G.sponge);
+  $('#checkCard').innerHTML = `<b>🧾 注文チェック</b><ul class="check">${checks.map((c) => `<li><span>${c[0]}</span><span class="${c[2] ? 'ok' : (c[3] ? '' : 'ng')}">${c[2] ? '✓ ' : c[3] ? '△ ' : '✗ '}${c[1]}</span></li>`).join('')}</ul>`;
+  const pf = G.cuts.filter((c) => c.q === 2).length, gd = G.cuts.filter((c) => c.q === 1).length, ng = Math.max(0, 3 - pf - gd);
+  $('#scoreCard').innerHTML = `<b>今回のスコア</b>
+    <div class="r"><span>生地 ${G.label.mix || '—'}</span><em>+${S.mix}</em></div>
+    <div class="r"><span>焼き ${G.label.bake || '—'}</span><em>+${S.bake}</em></div>
+    <div class="r"><span>クリーム ${G.label.cream || '—'}</span><em>+${S.cream}</em></div>
+    <div class="r"><span>デコレーション ${G.deco.length}こ</span><em>+${S.deco}</em></div>
+    <div class="r"><span>カット ${G.cuts.length ? `${pf ? 'パーフェクト×' + pf + ' ' : ''}${gd ? 'グッド×' + gd + ' ' : ''}${ng ? 'ガタガタ×' + ng : ''}` : '—'}${G.fever ? '（FEVER ×2）' : ''}</span><em>+${S.cut}</em></div>
+    ${S.order ? `<div class="r"><span>注文どおりボーナス</span><em>+${S.order}</em></div>` : ''}
+    ${S.time ? `<div class="r"><span>はやさボーナス（残り${Math.floor(timeLeft)}秒）</span><em>+${S.time}</em></div>` : ''}
+    ${S.tip ? `<div class="r"><span>チップ ${love ? '😍 大満足' : '😊 満足'}</span><em>+${S.tip}</em></div>` : ''}
+    ${angry ? `<div class="r"><span>怒らせたので、半分に…</span><em>×½</em></div>` : ''}
+    ${O.vip && !angry ? '<div class="r"><span>👑 VIP</span><em>×2</em></div>' : ''}
+    <div class="r total"><span>このケーキ</span><em>${total.toLocaleString()}</em></div>
+    <div class="r"><span>もらったコイン</span><em>🪙 ${coin}</em></div>
+    <div class="r"><span>きょうの売上</span><em>${RUN.dayTotal.toLocaleString()}</em></div>
+    <div class="r"><span>開店からの合計${newBest ? '　🎉 自己ベスト更新！' : ''}</span><em>${RUN.total.toLocaleString()}</em></div>`;
+  const r = rankOf(rec.best), next = RANKS.find((x) => x[0] > rec.best);
+  // 経験値：怒らせても少しはもらえる。レベルアップでお店が育つ
+  const gain = Math.max(10, Math.floor(total / 20)) + (love ? 30 : 0) + (stars === 5 ? 20 : 0);
+  const before = rec.xp, lvBefore = rec.level; rec.xp += gain; rec.totalPts += total;
+  const gifts = []; while (rec.xp >= xpNeed(rec.level)) { rec.xp -= xpNeed(rec.level); rec.level += 1; if (LEVEL_GIFT[rec.level]) gifts.push(LEVEL_GIFT[rec.level]); }
+  const leveled = rec.level > lvBefore;
+  const unlocked = TOPPINGS.filter((t) => t[2] && rec.level >= t[2] && lvBefore < t[2]).map((t) => t[1]);
+  rec.prevBest = rec.best; save();
+  const need = xpNeed(rec.level), pctAfter = Math.min(100, rec.xp / need * 100), pctBefore = leveled ? 0 : Math.min(100, before / need * 100);
+  $('#xpCard').innerHTML = `<div class="r"><b>お店のレベル ${rec.level}　<span style="font-weight:700;color:var(--soft)">${levelName(rec.level)}</span></b><em>+${gain} XP</em></div><div class="xpbar"><i id="xpAnim" style="width:${pctBefore}%"></i></div><small style="color:var(--soft)">つぎのレベルまで あと ${need - rec.xp} XP</small>`
+    + (leveled ? `<div class="lvup"><b>LEVEL UP! → ${rec.level}</b>${gifts.map((g) => `<small>🎁 ${g}</small>`).join('')}${gifts.length ? '' : '<small>お店の評判が上がった！</small>'}</div>` : '');
+  setTimeout(() => { const el = $('#xpAnim'); if (el) el.style.width = pctAfter + '%'; }, 100);
+  if (leveled) setTimeout(() => { sfx.fanfare(); flash(); }, 900);
+  $('#rankCard').innerHTML = `<b>称号：${r[2]} ${r[1]}</b>自己ベスト ${rec.best.toLocaleString()}${next ? `<span style="color:var(--soft)">　あと ${(next[0] - rec.best).toLocaleString()}点で「${next[1]}」</span>` : '　最高の称号です！'}`
+    + (newBadges.length ? `<div style="margin-top:6px"><b style="font-size:13px">🏅 新しいバッジ</b>${newBadges.map((b) => `<span class="badge-new">${BADGES[b]}</span>`).join('')}</div>` : '')
+    + (unlocked.length ? `<div style="margin-top:6px;color:var(--pink-deep);font-weight:900">🔓 「${unlocked.join('」「')}」が飾りに追加！</div>` : '')
+    + (RUN.fever ? `<div style="margin-top:6px;font-weight:900">🎉 3連パーフェクト！ つぎのお客さんは <span style="color:#e0a21b">FEVER ×2</span></div>` : '')
+    + (RUN.vipNext ? `<div style="margin-top:6px;font-weight:900">👑 評判が広まった！ つぎは <span style="color:#e0a21b">VIP</span> のお客さん（点数2倍）</div>` : '');
+  newBadges = []; G.total = total; G.stars = stars; G.angry = angry;
+  $('#btnNext').textContent = RUN.strikes >= RUN.lives ? '閉店…' : RUN.idx >= 2 ? '今日の営業おわり' : 'つぎのお客さん';
+  show('scResult'); $('#scResult .scroll').scrollTop = 0; refreshHud(); confetti(angry ? 0 : stars);
+  if (RUN.fever) setTimeout(sfx.fever, 1200);
+  angry ? (sfx.wrong(), setTimeout(sfx.zuko, 300)) : stars >= 3 ? sfx.fanfare() : sfx.pop();
+}
+function nextCustomer() {
+  sfx.pop();
+  if (RUN.strikes >= RUN.lives) return gameOver();
+  RUN.idx += 1;
+  if (RUN.idx >= 3) return dayClear();
+  startOrder();
+}
+function dayClear() {
+  if (RUN.day >= 3) earn('day3'); if (RUN.day >= 5) earn('day5'); if (RUN.day >= 7) earn('day7'); rec.bestDay = Math.max(rec.bestDay, RUN.day); save();
+  $('#dayHead').textContent = 'DAY ' + RUN.day; $('#dayLives').textContent = '❤️'.repeat(RUN.lives - RUN.strikes) + '🖤'.repeat(RUN.strikes);
+  $('#dayMsg').textContent = RUN.day === 7 ? '7日間営業！ 伝説のケーキ屋さん！' : RUN.strikes === 0 ? 'だれも怒らせなかった！ 完璧な一日' : '今日も おつかれさま！';
+  $('#dayCard').innerHTML = `<div class="r"><span>きょうの売上</span><em>${RUN.dayTotal.toLocaleString()}</em></div><div class="r"><span>開店からの合計</span><em>${RUN.total.toLocaleString()}</em></div><div class="r"><span>大満足のお客さん</span><em>${RUN.loves}人</em></div><div class="r"><span>持っているコイン</span><em>🪙 ${RUN.coins}</em></div><div class="r"><span>明日の制限時間</span><em>${custTime(RUN.day + 1)}秒</em></div>`;
+  $('#btnNextDay').textContent = 'お店を改装する';
+  show('scDay'); sfx.fanfare();
+}
+$('#btnNextDay').addEventListener('click', () => { sfx.pop(); openShop(); });
+function openShop() {
+  $('#shopCoin').textContent = RUN.coins; $('#btnShopDone').textContent = `DAY ${RUN.day + 1} を はじめる`;
+  const list = $('#shopList'); list.innerHTML = '';
+  Object.entries(UPG).forEach(([k, u]) => {
+    const l = lv(k), max = k === 'heart' ? (RUN.strikes === 0) : l >= 3; const cost = u[3][Math.min(l, 2)];
+    const el = document.createElement('div'); el.className = 'item' + (max ? ' max' : '');
+    el.innerHTML = `<span class="ic">${u[0]}</span><div><b>${u[1]}</b><small>${u[2]}</small>${k === 'heart' ? '' : `<div class="lv">${[0, 1, 2].map((i) => `<i class="${i < l ? 'on' : ''}"></i>`).join('')}</div>`}</div><button type="button" ${max || RUN.coins < cost ? 'disabled' : ''}>${max ? (k === 'heart' ? '元気です' : 'MAX') : `🪙 ${cost}`}</button>`;
+    el.querySelector('button').addEventListener('click', () => { if (RUN.coins < cost) return; RUN.coins -= cost; if (k === 'heart') RUN.strikes = Math.max(0, RUN.strikes - 1); else RUN.upg[k] = l + 1; earn('shop'); sfx.ding(); refreshHud(); openShop(); });
+    list.appendChild(el);
+  });
+  show('scShop'); $('#scShop .scroll').scrollTop = 0;
+}
+$('#btnShopDone').addEventListener('click', () => { sfx.pop(); RUN.day += 1; RUN.idx = 0; RUN.dayTotal = 0; startOrder(); });
+function gameOver() {
+  rec.bestDay = Math.max(rec.bestDay, RUN.day); save();
+  $('#overLine').textContent = `DAY ${RUN.day} まで営業。${RUN.served}人のお客さんにケーキを作りました`; $('#hudPeek').hidden = true;
+  $('#overCard').innerHTML = `<div class="r"><span>開店からの合計</span><em>${RUN.total.toLocaleString()}</em></div><div class="r"><span>大満足のお客さん</span><em>${RUN.loves}人</em></div><div class="r"><span>自己ベスト</span><em>${rec.best.toLocaleString()}</em></div><div class="r"><span>最長営業</span><em>DAY ${rec.bestDay}</em></div>`;
+  const r = rankOf(rec.best);
+  $('#overRank').innerHTML = `<b>称号：${r[2]} ${r[1]}</b>バッジ ${rec.badges.length}/${Object.keys(BADGES).length}<div class="chips" style="margin-top:6px">${rec.badges.map((b) => `<span class="badge-new">${BADGES[b]}</span>`).join('')}</div>`;
+  show('scOver'); $('#scOver .scroll').scrollTop = 0; sfx.wrong(); setTimeout(sfx.zuko, 400);
+}
+$('#btnRetry').addEventListener('click', () => { sfx.pop(); RUN = newRun(); startOrder(); });
+$('#btnTitle').addEventListener('click', () => { sfx.pop(); renderBest(); hudRound.hidden = true; hudLives.hidden = true; $('#hudCoin').hidden = true; hudFever.hidden = true; show('scTitle'); });
+function confetti(stars) {
+  const box = $('#confetti'); box.innerHTML = ''; if (stars < 3) return;
+  const cols = ['#f6a9c6', '#9ccdf3', '#ffd66b', '#e57fa6', '#fff'];
+  for (let i = 0; i < 20 * stars - 40; i++) { const e = document.createElement('i'); e.style.left = Math.random() * 100 + '%'; e.style.background = cols[i % cols.length]; e.style.animationDuration = 2.6 + Math.random() * 2 + 's'; e.style.animationDelay = Math.random() * 1.2 + 's'; e.style.transform = `rotate(${Math.random() * 360}deg)`; box.appendChild(e); }
+}
+$('#btnNext').addEventListener('click', nextCustomer);
+
+/* ---------- 画像を保存・シェア ---------- */
+async function makeImage() {
+  const W = 1080, H = 1350, c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d');
+  const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#fff8ec'); g.addColorStop(1, '#fbe3ec'); x.fillStyle = g; x.fillRect(0, 0, W, H);
+  const col = G.color, word = col === 'girl' ? 'GIRL!' : col === 'boy' ? 'BOY!' : col === 'twins' ? 'TWINS!' : '...';
+  x.textAlign = 'center'; x.fillStyle = '#b98f3f'; x.font = '600 34px Fredoka, sans-serif'; x.fillText(col === 'twins' ? "I T ' S" : "I T ' S   A", W / 2, 130);
+  x.fillStyle = col === 'girl' ? '#e57fa6' : col === 'boy' ? '#5a9fd8' : '#c77dab'; x.font = '700 170px Fredoka, sans-serif'; x.fillText(word, W / 2, 290);
+  x.font = '400 70px "Zen Maru Gothic", sans-serif';
+  for (let i = 0; i < 5; i++) { x.fillStyle = i < G.stars ? '#f0b429' : '#e3d2c3'; x.fillText('★', W / 2 - 160 + i * 80, 380); }
+  x.fillStyle = '#6b4f5a'; x.font = '900 40px "Zen Maru Gothic", sans-serif'; x.fillText(`${G.order.face} ${G.order.who}${$('#bigTxt').textContent}`, W / 2, 440);
+  const svg = document.createElementNS(SVGNS, 'svg'); svg.setAttribute('xmlns', SVGNS); svg.setAttribute('viewBox', '0 0 300 260'); svg.setAttribute('width', 900); svg.setAttribute('height', 780);
+  openCakeSvg(svg, G.color, G.deco, G.sponge);
+  svg.insertAdjacentHTML('afterbegin', document.querySelector('body > svg defs').outerHTML);
+  svg.querySelectorAll('use').forEach((u) => { const h = u.getAttribute('href'); if (h) u.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', h); });
+  const cs = getComputedStyle(document.documentElement); const stl = document.createElementNS(SVGNS, 'style'); stl.textContent = `:root,svg{--cake-fill:${cs.getPropertyValue('--cake-fill')};--drip:${cs.getPropertyValue('--drip')}}`; svg.prepend(stl);
+  const url = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)], { type: 'image/svg+xml' }));
+  await new Promise((res) => { const im = new Image(); im.onload = () => { x.drawImage(im, 90, 430, 900, 780); URL.revokeObjectURL(url); res(); }; im.onerror = res; im.src = url; });
+  x.fillStyle = '#6b4f5a'; x.font = '900 44px "Zen Maru Gothic", sans-serif'; x.fillText(`DAY ${G.day}　スコア ${G.total.toLocaleString()}`, W / 2, 1220);
+  x.fillStyle = '#8c727c'; x.font = '500 30px "Zen Maru Gothic", sans-serif'; x.fillText('ジェンダーリビール ケーキ屋さん ｜ webkuuta.com/play/cake-shop', W / 2, 1285);
+  return new Promise((r) => c.toBlob(r, 'image/png'));
+}
+$('#btnSave').addEventListener('click', async () => {
+  const blob = await makeImage(); if (!blob) return toast('画像を作れませんでした');
+  const file = new File([blob], 'gender-reveal-cake.png', { type: 'image/png' });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file], title: 'ジェンダーリビール ケーキ屋さん' }); return; } catch (e) { if (e.name === 'AbortError') return; } }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name; document.body.appendChild(a); a.click(); a.remove(); toast('画像を保存しました');
+});
+$('#btnShare').addEventListener('click', async () => {
+  const text = `ジェンダーリビール ケーキ屋さん DAY ${G.day}：${G.order.who}の${SEX[G.order.sex][0]}ケーキで ${'★'.repeat(G.stars)}${'☆'.repeat(5 - G.stars)} ${G.total.toLocaleString()}点！ 開店からの合計 ${RUN.total.toLocaleString()}点。きみも開店してみて 🎂`;
+  const url = 'https://webkuuta.com/play/cake-shop/';
+  if (navigator.share) { try { await navigator.share({ text, url }); return; } catch (e) { if (e.name === 'AbortError') return; } }
+  try { await navigator.clipboard.writeText(text + ' ' + url); toast('コピーしました'); } catch (e) { toast(text); }
+});
+
+$('#btnSaveOver').addEventListener('click', () => $('#btnSave').click());
+$('#btnShareOver').addEventListener('click', async () => {
+  const text = `ジェンダーリビール ケーキ屋さん：DAY ${RUN.day} まで営業して ${RUN.total.toLocaleString()}点！ ${RUN.served}人のお客さんにケーキを作りました。きみも開店してみて 🎂`;
+  const url = 'https://webkuuta.com/play/cake-shop/';
+  if (navigator.share) { try { await navigator.share({ text, url }); return; } catch (e) { if (e.name === 'AbortError') return; } }
+  try { await navigator.clipboard.writeText(text + ' ' + url); toast('コピーしました'); } catch (e) { toast(text); }
+});
+renderBest(); show('scTitle');
+window.__cake = { hurry: () => { timeLeft = Math.min(timeLeft, 2); } };   // テスト用：時間切れをすぐ起こす
+})();
+</script>
+</body>
+</html>

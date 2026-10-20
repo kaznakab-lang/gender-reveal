@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>性別発表はいつがいい？ 出産予定日から計算する発表時期ツール｜ジェンダーリビール ケーキ</title>
+<meta name="description" content="出産予定日を入れるだけで、今の妊娠週数、性別がわかりやすいといわれる時期の目安、ジェンダーリビールにおすすめの時期、発表日から逆算した準備スケジュールを計算します。無料・登録不要。">
+<link rel="canonical" href="https://webkuuta.com/tools/timing/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="/style.css">
+<style>
+.tool{background:var(--card);border-radius:20px;padding:18px;box-shadow:0 8px 24px rgba(180,140,170,.14);margin-top:12px}
+.tool label{display:block;font-weight:900;margin-bottom:6px}
+.tool input[type=date]{font:inherit;font-size:18px;padding:10px 12px;border:2px solid #f1e4ea;border-radius:12px;width:100%;max-width:320px;background:#fff;color:var(--cocoa)}
+.tool .row2{display:grid;gap:14px;margin-top:14px}
+@media (min-width:560px){.tool .row2{grid-template-columns:1fr 1fr}}
+.res{display:grid;gap:10px;margin-top:16px}
+.stat{background:linear-gradient(100deg,var(--pink-wash),var(--blue-wash));border-radius:16px;padding:12px 14px}
+.stat b{display:block;font-size:13px;color:var(--cocoa-soft)}
+.stat .v{font-size:22px;font-weight:900}
+.stat small{display:block;font-size:12px;color:var(--cocoa-soft);margin-top:2px}
+.timeline{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:8px}
+.timeline li{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:start;background:#fff;border-radius:14px;padding:10px 12px;box-shadow:0 4px 12px rgba(180,140,170,.1)}
+.timeline .d{font-weight:900;color:var(--pink-deep);font-size:14px}
+.timeline b{display:block;font-size:14px}
+.timeline span{font-size:13px;color:var(--cocoa-soft)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.btn2{border:0;border-radius:999px;padding:10px 18px;font:inherit;font-weight:900;background:var(--cocoa);color:#fff;cursor:pointer}
+.btn2.l{background:#fff;color:var(--cocoa);box-shadow:0 4px 12px rgba(180,140,170,.16)}
+.warn{font-size:13px;color:var(--cocoa-soft);margin-top:10px}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"性別発表の時期 計算ツール","url":"https://webkuuta.com/tools/timing/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","isAccessibleForFree":true,"inLanguage":"ja","description":"出産予定日から、妊娠週数・性別がわかりやすい時期の目安・ジェンダーリビールにおすすめの時期・準備スケジュールを計算します。"}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="logo" href="/">GENDER REVEAL</a>
+    <nav><a href="/play/">あそぶ</a><a href="/articles/">読みもの</a><a href="/support.html">お問い合わせ</a></nav>
+  </header>
+
+  <p class="crumbs"><a href="/">トップ</a> › 発表時期の計算ツール</p>
+  <h1>性別発表はいつがいい？<br><span style="font-size:.7em">出産予定日から計算する、発表時期と準備スケジュール</span></h1>
+  <p class="meta">公開日 2026年10月20日</p>
+  <p class="lead">出産予定日を入れるだけで、今の妊娠週数、性別がわかりやすいといわれる時期の目安、ジェンダーリビールにおすすめの時期、そして発表日から逆算した準備の予定表を作ります。登録はいりません。入力した日付は、お使いの端末の中だけで計算し、どこにも送りません。</p>
+
+  <div class="tool">
+    <label for="due">出産予定日</label>
+    <input type="date" id="due">
+    <div class="row2">
+      <div><label for="reveal">発表したい日（決まっていれば）</label><input type="date" id="reveal"></div>
+      <div><label>&nbsp;</label><div class="btnrow"><button class="btn2" id="calc" type="button">計算する</button><button class="btn2 l" id="today" type="button">発表日を「おすすめの時期の土曜日」にする</button></div></div>
+    </div>
+    <div class="res" id="res" hidden></div>
+    <ol class="timeline" id="tl" hidden></ol>
+    <p class="warn">※ 週数や「性別がわかる時期」は一般的な目安です。赤ちゃんの向きや検査の方法で前後し、病院によっては性別を伝えない方針のところもあります。体調や検診の予定は、かかりつけの医師に確認してください。</p>
+  </div>
+
+  <h2>計算のしかた</h2>
+  <p>妊娠週数は、一般に「出産予定日の280日前（40週0日前）を妊娠0週0日」として数えます。このツールもその数え方で、今日が何週何日にあたるかを計算しています。生理の周期や排卵日によって医師が予定日を調整することがあるので、母子手帳や検診で言われた週数とずれる場合は、そちらを優先してください。</p>
+
+  <h2>性別がわかりやすい時期の目安</h2>
+  <p>エコー検査で性別の判定がつきやすくなるのは、妊娠中期（おおむね16〜20週ごろ）からだといわれることが多いです。ただし、赤ちゃんの足の位置や向きによっては見えにくく、次の検診に持ち越しになることもめずらしくありません。「この週数に必ずわかる」というものではないので、発表日を決めるときは、性別を聞ける検診の日から1〜2週間の余裕を見ておくと安心です。</p>
+  <p>自分たちも当日まで知りたくない場合は、検診のときに「性別は私たちには言わず、紙に書いて封筒に入れてください」とお願いする方法があります。くわしくは<a href="/articles/timing.html">性別を知るタイミングと、発表までの段取り</a>をどうぞ。</p>
+
+  <h2>ジェンダーリビールにおすすめの時期</h2>
+  <p>多くの家族が選んでいるのは、性別がわかってから、おなかが大きくなりすぎる前の、妊娠20〜28週ごろです。理由は3つあります。</p>
+  <ul>
+    <li>つわりが落ち着いている人が多く、集まりの準備や当日の負担が比較的軽い。</li>
+    <li>性別がわかってすぐなので、家族の「知りたい！」という気持ちが高い。</li>
+    <li>後期に入ると、体調の変化や予定外の入院もありうるので、早めに済ませておくと安心。</li>
+  </ul>
+  <p>もちろん、体調が最優先です。遠くの家族とオンラインで行う、家族3人だけで行うなど、小さな形でも十分に楽しめます。</p>
+
+  <h2>準備スケジュールの考え方</h2>
+  <p>発表日が決まったら、そこから逆算して準備を並べます。このツールが作る予定表は、次の考え方にもとづいています。</p>
+  <ol class="steps">
+    <li><span class="n">1</span><div><b>4週間前：形を決める</b><span>誰と、どこで、どんな方法で。遠くの家族がいるならオンラインも検討。</span></div></li>
+    <li><span class="n">2</span><div><b>3週間前：性別を知る人を決める</b><span>自分たちが知るか、封筒で誰かに預けるか。</span></div></li>
+    <li><span class="n">3</span><div><b>2週間前：注文・購入</b><span>ケーキや風船の注文はこのころまでに。手作りなら材料をそろえる。</span></div></li>
+    <li><span class="n">4</span><div><b>1週間前：当日の役割を決める</b><span>切る人、撮る人、カウントダウンをする人。</span></div></li>
+    <li><span class="n">5</span><div><b>前日：道具と充電</b><span>スマホの充電、三脚、カメラの空き容量、音が出るか。</span></div></li>
+    <li><span class="n">6</span><div><b>当日：無理をしない</b><span>1時間ほどで終わる流れに。体調がすぐれなければ日を変える勇気を。</span></div></li>
+  </ol>
+  <p>チェックリストの全体は<a href="/articles/checklist.html">ジェンダーリビールの準備チェックリスト</a>にまとめています。</p>
+
+  <div class="app-card">
+    <img src="/icon.png" alt="">
+    <div><b>ジェンダーリビール ケーキ</b><span>URLを送るだけで、受け取った人がスマホの画面でケーキを切って発表を楽しめるiPhoneアプリです。</span></div>
+  </div>
+
+  <h2>あわせて読みたい</h2>
+  <div class="related">
+    <a href="/articles/weeks.html">赤ちゃんの性別はいつわかる？ 週数の目安と確かめ方<small>検診で聞くときのコツ</small></a>
+    <a href="/articles/checklist.html">ジェンダーリビールの準備チェックリスト<small>1か月前から当日まで</small></a>
+    <a href="/articles/timing.html">性別を知るタイミングと、発表までの段取り<small>内緒にしてもらうコツ</small></a>
+    <a href="/articles/far-family.html">遠くの家族とジェンダーリビールを楽しむ方法<small>里帰りできないときのアイデア</small></a>
+  </div>
+
+  <footer>
+    <span>ジェンダーリビール ケーキ</span>
+    <a href="/about.html">運営者情報</a>
+    <a href="/articles/">読みもの</a>
+    <a href="/privacy.html">プライバシーポリシー</a>
+    <a href="/support.html">お問い合わせ</a>
+  </footer>
+</div>
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const DAY = 86400000;
+  const fmt = (d) => `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日（${'日月火水木金土'[d.getDay()]}）`;
+  const ymd = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const parse = (v) => { if (!v) return null; const [y, m, d] = v.split('-').map(Number); return new Date(y, m - 1, d); };
+  const addDays = (d, n) => new Date(d.getTime() + n * DAY);
+  const weekOf = (due, d) => { const days = 280 - Math.round((due - d) / DAY); return { w: Math.floor(days / 7), d: ((days % 7) + 7) % 7, days }; };
+  const dateAtWeek = (due, w, d = 0) => addDays(due, -(280 - (w * 7 + d)));
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  try { const saved = localStorage.getItem('gr-tool-due'); if (saved) $('#due').value = saved; } catch (e) {}
+  function calc() {
+    const due = parse($('#due').value); if (!due) { alert('出産予定日を入れてください'); return; }
+    try { localStorage.setItem('gr-tool-due', $('#due').value); } catch (e) {}
+    const now = weekOf(due, today);
+    const seeFrom = dateAtWeek(due, 16), seeTo = dateAtWeek(due, 20, 6);
+    const recFrom = dateAtWeek(due, 20), recTo = dateAtWeek(due, 28, 6);
+    const left = Math.round((due - today) / DAY);
+    const res = $('#res'); res.hidden = false;
+    const nowTxt = now.days < 0 ? 'まだ妊娠0週より前の日付です' : now.days > 300 ? '出産予定日を過ぎています' : `妊娠 ${now.w}週${now.d}日`;
+    res.innerHTML = `
+      <div class="stat"><b>今日（${fmt(today)}）</b><div class="v">${nowTxt}</div><small>出産予定日まで ${left >= 0 ? 'あと ' + left + ' 日' : left * -1 + ' 日経過'}</small></div>
+      <div class="stat"><b>性別がわかりやすいといわれる時期（目安：16〜20週）</b><div class="v" style="font-size:17px">${fmt(seeFrom)} 〜 ${fmt(seeTo)}</div><small>赤ちゃんの向きで前後します。検診の予定に合わせて、余裕を持って発表日を決めましょう。</small></div>
+      <div class="stat"><b>ジェンダーリビールにおすすめの時期（目安：20〜28週）</b><div class="v" style="font-size:17px">${fmt(recFrom)} 〜 ${fmt(recTo)}</div><small>体調が落ち着いている人が多く、おなかが大きくなりすぎる前。もちろん体調が最優先です。</small></div>`;
+    const rv = parse($('#reveal').value);
+    const tl = $('#tl');
+    if (rv) {
+      const w = weekOf(due, rv);
+      const items = [[-28, '形を決める', '誰と・どこで・どんな方法で。遠くの家族ならオンラインも。'], [-21, '性別を知る人を決める', '自分たちが知るか、封筒で預けるか。検診の日も確認。'], [-14, '注文・購入', 'ケーキや風船の注文はここまでに。手作りなら材料を。'], [-7, '当日の役割を決める', '切る人・撮る人・カウントダウンをする人。招待の最終確認。'], [-1, '道具と充電', 'スマホの充電、三脚、空き容量、音の確認。'], [0, '発表の日', `妊娠 ${w.w}週${w.d}日。無理をせず、1時間ほどで。`]];
+      tl.hidden = false; tl.innerHTML = items.map(([n, t, s]) => `<li><span class="d">${fmt(addDays(rv, n)).replace(/（.）/, (m) => m)}</span><div><b>${n === 0 ? '🎂 ' : ''}${t}</b><span>${s}</span></div></li>`).join('');
+      const warn = rv < seeFrom ? '<li><span class="d">⚠</span><div><b>発表日が、性別がわかりやすい時期より前です</b><span>検診で性別が聞けない可能性があります。日程を見直すか、医師に確認してください。</span></div></li>' : rv > recTo ? '<li><span class="d">⚠</span><div><b>発表日が後期にかかっています</b><span>体調の変化が起きやすい時期です。短時間で、無理のない形にしましょう。</span></div></li>' : '';
+      tl.insertAdjacentHTML('afterbegin', warn);
+    } else { tl.hidden = true; }
+    res.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  $('#calc').addEventListener('click', calc);
+  $('#today').addEventListener('click', () => {
+    const due = parse($('#due').value); if (!due) { alert('先に出産予定日を入れてください'); return; }
+    let d = dateAtWeek(due, 22); if (d < today) d = addDays(today, 14);
+    while (d.getDay() !== 6) d = addDays(d, 1);
+    $('#reveal').value = ymd(d); calc();
+  });
+})();
+</script>
+</body>
+</html>
