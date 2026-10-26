@@ -59,6 +59,8 @@ footer a{color:var(--cocoa-soft)}
 .app-card img{width:64px;height:64px;border-radius:15px;box-shadow:0 4px 12px rgba(0,0,0,.12)}
 .app-card b{display:block}
 .app-card span{font-size:13px;color:var(--cocoa-soft)}
+a.app-card{text-decoration:none;color:var(--cocoa)}
+.app-card .app-dl{display:inline-block;margin-top:6px;font-style:normal;font-size:13px;font-weight:900;color:#fff;background:var(--cocoa);border-radius:999px;padding:5px 12px}
 .related{display:grid;gap:10px;margin-top:12px}
 .related a{display:block;background:var(--card);border-radius:14px;padding:12px 16px;text-decoration:none;color:var(--cocoa);font-weight:700;box-shadow:0 4px 12px rgba(180,140,170,.1)}
 .related a small{display:block;font-weight:500;color:var(--cocoa-soft);font-size:12px}
